@@ -6,7 +6,6 @@ import PrayerCountdown from '@/components/PrayerCountdown';
 import AnimatedCounter from '@/components/AnimatedCounter';
 import ScrollReveal from '@/components/ScrollReveal';
 import GlowCard from '@/components/GlowCard';
-import PrayerTimesWidget from '@/components/PrayerTimesWidget';
 import ScreenshotCarousel from '@/components/ScreenshotCarousel';
 import TestimonialsSection from '@/components/TestimonialsSection';
 
@@ -201,21 +200,6 @@ export default function Home() {
             </ScrollReveal>
 
           </div>
-        </div>
-      </section>
-
-      {/* ── Prayer Times Widget ── */}
-      <section className={styles.prayerSection} aria-labelledby="prayer-widget-heading">
-        <div className="container">
-          <ScrollReveal variant="up">
-            <div className={styles.prayerHeader}>
-              <span className="text-gold-label">Live Schedule</span>
-              <h2 id="prayer-widget-heading" className={styles.sectionTitle}>
-                Today&apos;s prayer times
-              </h2>
-            </div>
-            <PrayerTimesWidget />
-          </ScrollReveal>
         </div>
       </section>
 
