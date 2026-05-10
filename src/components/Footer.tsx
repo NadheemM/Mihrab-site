@@ -5,35 +5,70 @@ import styles from './Footer.module.css';
 
 export default function Footer() {
   return (
-    <footer className={styles.footer}>
-      <div className={`container ${styles.footerContainer}`}>
-        <div className={styles.brand}>
-          <Image src="/logo.png" alt="Mihrab App Logo" width={120} height={40} style={{ objectFit: 'contain', marginBottom: '1rem' }} />
-          <p>Deepen your connection with your Masjid. Accurate prayer times, Qibla direction, and much more.</p>
-        </div>
-        
-        <div className={styles.linksSection}>
-          <h4>Quick Links</h4>
-          <ul>
-            <li><Link href="/">Home</Link></li>
-            <li><Link href="/about">About Us</Link></li>
-            <li><Link href="/features">Features</Link></li>
-            <li><Link href="/contact">Contact Us</Link></li>
-          </ul>
+    <div className={styles.footerWrapper}>
+      <footer className={styles.footer}>
+        <div className={`container ${styles.footerContainer}`}>
+
+          {/* Brand column */}
+          <div className={styles.brand}>
+            <div className={styles.logoPill}>
+              <Image
+                src="/logo.png"
+                alt="Mihrab App"
+                width={110}
+                height={34}
+                className={styles.logoImg}
+              />
+            </div>
+            <p className={styles.brandTagline}>
+              Connecting the Ummah
+            </p>
+            <p className={styles.brandDesc}>
+              Accurate prayer times, masjid directory, community news, and local business listings — all in one place.
+            </p>
+          </div>
+
+          {/* Quick links */}
+          <div className={styles.linksSection}>
+            <span className={styles.sectionHeading}>Quick Links</span>
+            <ul>
+              <li><Link href="/">Home</Link></li>
+              <li><Link href="/about">About Us</Link></li>
+              <li><Link href="/features">Features</Link></li>
+              <li><Link href="/masjids">Masjids</Link></li>
+              <li><Link href="/contact">Contact</Link></li>
+            </ul>
+          </div>
+
+          {/* Social */}
+          <div className={styles.socialSection}>
+            <span className={styles.sectionHeading}>Follow Us</span>
+            <div className={styles.socialIcons}>
+              <a href="#" aria-label="Follow Mihrab on Facebook">
+                <FaFacebook size={18} aria-hidden="true" />
+              </a>
+              <a href="#" aria-label="Follow Mihrab on Twitter">
+                <FaTwitter size={18} aria-hidden="true" />
+              </a>
+              <a href="#" aria-label="Follow Mihrab on Instagram">
+                <FaInstagram size={18} aria-hidden="true" />
+              </a>
+            </div>
+          </div>
+
         </div>
 
-        <div className={styles.socialSection}>
-          <h4>Follow Us</h4>
-          <div className={styles.socialIcons}>
-            <a href="#" aria-label="Facebook"><FaFacebook size={24} /></a>
-            <a href="#" aria-label="Twitter"><FaTwitter size={24} /></a>
-            <a href="#" aria-label="Instagram"><FaInstagram size={24} /></a>
-          </div>
+        {/* Bottom bar */}
+        <div className={styles.copyright}>
+          <p className={styles.copyrightText}>
+            &copy; {new Date().getFullYear()} Mihrab App. All rights reserved.
+          </p>
+          <span className={styles.copyrightDiamond} aria-hidden="true">◆</span>
+          <p className={styles.copyrightText}>
+            Made with care for the community
+          </p>
         </div>
-      </div>
-      <div className={styles.copyright}>
-        <p>&copy; {new Date().getFullYear()} Mihrab App. All rights reserved.</p>
-      </div>
-    </footer>
+      </footer>
+    </div>
   );
 }

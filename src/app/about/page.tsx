@@ -1,41 +1,78 @@
+import styles from './page.module.css';
+
 export default function AboutPage() {
   return (
-    <div className="container" style={{ padding: '6rem 2rem' }}>
-      <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-        <h1 style={{ color: 'var(--primary)', marginBottom: '2rem', fontSize: '3rem', textAlign: 'center' }}>
-          About Mihrab App
-        </h1>
-        
-        <div className="glass-panel" style={{ padding: '3rem', borderRadius: '1rem' }}>
-          <p style={{ fontSize: '1.2rem', lineHeight: '1.8', marginBottom: '1.5rem' }}>
-            Mihrab App was created with a singular vision: to help Muslims around the world deepen their connection with their faith and their local communities.
-          </p>
-          
-          <p style={{ fontSize: '1.2rem', lineHeight: '1.8', marginBottom: '1.5rem' }}>
-            In today's fast-paced digital world, maintaining a consistent spiritual routine can be challenging. We built Mihrab to be the ultimate, all-in-one Islamic companion that fits seamlessly into your daily life.
-          </p>
-          
-          <h2 style={{ color: 'var(--primary)', marginTop: '2rem', marginBottom: '1rem' }}>Our Mission</h2>
-          <p style={{ fontSize: '1.2rem', lineHeight: '1.8', marginBottom: '1.5rem' }}>
-            To empower Muslims with accessible, accurate, and ad-free Islamic knowledge and tools, fostering a stronger bond between the individual, the Masjid, and the Creator.
-          </p>
+    <div className={styles.page}>
 
-          <h2 style={{ color: 'var(--primary)', marginTop: '2rem', marginBottom: '1rem' }}>What We Offer</h2>
-          <ul style={{ fontSize: '1.1rem', lineHeight: '1.8', paddingLeft: '1.5rem', marginBottom: '1.5rem' }}>
-            <li>Precision prayer times and reminders tailored to your location.</li>
-            <li>A comprehensive Mosque locator to find your nearest place of worship.</li>
-            <li>The Holy Quran in readable formats with translations.</li>
-            <li>Authentic Hadith collections from trusted sources.</li>
-            <li>A dedicated platform for discovering verified Islamic businesses and services.</li>
-          </ul>
-
-          <div style={{ marginTop: '3rem', textAlign: 'center' }}>
-            <p style={{ fontStyle: 'italic', color: 'var(--primary)' }}>
-              "Supported by Digital Dawah Center"
-            </p>
-          </div>
+      {/* Dark hero band */}
+      <section className={styles.hero} aria-labelledby="about-title">
+        <div className={styles.heroContent}>
+          <span className="text-gold-label">Our Story</span>
+          <h1 id="about-title" className={styles.heroTitle}>About Mihrab</h1>
         </div>
-      </div>
+      </section>
+
+      {/* Main content */}
+      <main className={styles.main}>
+        <div className="container">
+
+          {/* 2-column panel */}
+          <div className={styles.panel}>
+            <div className={styles.twoCol}>
+
+              {/* Pull-quote column */}
+              <aside className={styles.pullQuote} aria-label="Mission statement">
+                <blockquote className={styles.pullQuoteText}>
+                  "Empowering Muslims with accessible, accurate, and ad-free Islamic tools."
+                </blockquote>
+                <p className={styles.pullQuoteAttr}>— Supported by Digital Dawah Center</p>
+              </aside>
+
+              {/* Body copy column */}
+              <div className={styles.body}>
+                <p>
+                  Mihrab was created with a singular vision: to help Muslims deepen their connection with their faith and their local communities. Wherever the call to prayer echoes across the neighbourhood, we wanted to give that tradition a digital home.
+                </p>
+                <p>
+                  In today's fast-paced world, maintaining a consistent spiritual routine can be challenging. We built Mihrab to be the ultimate, all-in-one Islamic companion that fits seamlessly into daily life.
+                </p>
+
+                <h2 className={styles.bodyHeading}>Our Mission</h2>
+                <p>
+                  To empower Muslims with accessible, accurate, and ad-free Islamic knowledge and tools — fostering a stronger bond between the individual, the Masjid, and the Creator.
+                </p>
+
+                <h2 className={styles.bodyHeading}>What We Offer</h2>
+                <ul className={styles.offerList}>
+                  <li>Precision prayer times and reminders tailored to your location.</li>
+                  <li>A comprehensive Mosque locator to find your nearest place of worship.</li>
+                  <li>The Holy Quran in readable formats with clear navigation by Surah or Juz.</li>
+                  <li>Authentic Hadith collections from trusted, verified sources.</li>
+                  <li>A dedicated platform for discovering Islamic businesses and services.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Stat boxes */}
+          <div className={styles.stats} aria-label="Platform statistics">
+            <div className={`${styles.statBox} animate-card stagger-1`}>
+              <span className={styles.statNumber}>12</span>
+              <span className={styles.statLabel}>Masjids Listed</span>
+            </div>
+            <div className={`${styles.statBox} animate-card stagger-2`}>
+              <span className={styles.statNumber}>5</span>
+              <span className={styles.statLabel}>Daily Prayers</span>
+            </div>
+            <div className={`${styles.statBox} animate-card stagger-3`}>
+              <span className={styles.statNumber}>1</span>
+              <span className={styles.statLabel}>Community</span>
+            </div>
+          </div>
+
+        </div>
+      </main>
+
     </div>
   );
 }

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" preserveAspectRatio="xMidYMax meet">
+  <defs>
+    <linearGradient id="mosqueGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+  <!-- Main Dome -->
+  <path d="M 400 100 C 350 100 320 200 320 250 L 480 250 C 480 200 450 100 400 100 Z" fill="url(#mosqueGrad)"/>
+  <path d="M 400 80 L 398 100 L 402 100 Z" fill="#cbd5e1"/>
+  <!-- Crescent -->
+  <path d="M 400 65 A 10 10 0 1 1 390 75 A 12 12 0 1 0 400 65 Z" fill="#cbd5e1"/>
+  
+  <!-- Left Small Dome -->
+  <path d="M 280 180 C 250 180 230 220 230 250 L 330 250 C 330 220 310 180 280 180 Z" fill="url(#mosqueGrad)"/>
+  
+  <!-- Right Small Dome -->
+  <path d="M 520 180 C 490 180 470 220 470 250 L 570 250 C 570 220 550 180 520 180 Z" fill="url(#mosqueGrad)"/>
+
+  <!-- Left Minaret -->
+  <rect x="180" y="120" width="20" height="130" fill="url(#mosqueGrad)"/>
+  <path d="M 190 90 L 175 120 L 205 120 Z" fill="url(#mosqueGrad)"/>
+  <path d="M 190 80 L 189 90 L 191 90 Z" fill="#cbd5e1"/>
+  
+  <!-- Right Minaret -->
+  <rect x="600" y="120" width="20" height="130" fill="url(#mosqueGrad)"/>
+  <path d="M 610 90 L 595 120 L 625 120 Z" fill="url(#mosqueGrad)"/>
+  <path d="M 610 80 L 609 90 L 611 90 Z" fill="#cbd5e1"/>
+  
+  <!-- Base Building -->
+  <rect x="150" y="250" width="500" height="150" fill="url(#mosqueGrad)"/>
+  
+  <!-- Main Arch/Door -->
+  <path d="M 400 280 C 370 280 350 310 350 400 L 450 400 C 450 310 430 280 400 280 Z" fill="#020617"/>
+  
+  <!-- Side Windows -->
+  <path d="M 280 300 C 265 300 255 320 255 360 L 305 360 C 305 320 295 300 280 300 Z" fill="#020617"/>
+  <path d="M 520 300 C 505 300 495 320 495 360 L 545 360 C 545 320 535 300 520 300 Z" fill="#020617"/>
+</svg>

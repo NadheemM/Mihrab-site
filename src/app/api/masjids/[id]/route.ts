@@ -1,45 +1,55 @@
-import { NextResponse } from 'next/server';
-import connectToDatabase from '@/lib/mongodb';
-import Masjid from '@/models/masjid';
+import { getMosque, getPrayerTimes } from '@/lib/mihrab-api';
+import type { MihrabPrayerTime } from '@/types/mihrab';
 
-export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  try {
-    const resolvedParams = await params;
-    await connectToDatabase();
-    const masjid = await Masjid.findById(resolvedParams.id);
-    if (!masjid) {
-      return NextResponse.json({ error: 'Masjid not found' }, { status: 404 });
-    }
-    return NextResponse.json(masjid, { status: 200 });
-  } catch (error) {
-    console.error('Masjid GET Error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+const PRAYER_MAP: Record<string, string> = {
+  fazar:  'fajr',
+  zuhar:  'zuhar',
+  asr:    'asar',
+  magrib: 'maghrib',
+  esha:   'isha',
+  jumma:  'jummah',
+};
+
+function buildTimings(records: MihrabPrayerTime[]) {
+  const t: Record<string, { azaan: string; iqamah: string }> = {
+    fajr:    { azaan: '', iqamah: '' },
+    zuhar:   { azaan: '', iqamah: '' },
+    asar:    { azaan: '', iqamah: '' },
+    maghrib: { azaan: '', iqamah: '' },
+    isha:    { azaan: '', iqamah: '' },
+    jummah:  { azaan: '', iqamah: '' },
+  };
+  for (const pt of records) {
+    const key = PRAYER_MAP[pt.prayer];
+    if (!key || !pt.time) continue;
+    const time = pt.time.slice(0, 5); // "HH:MM:SS" → "HH:MM"
+    if (pt.type === 'azan')   t[key].azaan  = time;
+    if (pt.type === 'ikamah') t[key].iqamah = time;
   }
+  return t;
 }
 
-export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const resolvedParams = await params;
-    const { timings } = await req.json();
+    const { id } = await params;
+    const numId = Number(id);
+    const [mosque, prayerTimes] = await Promise.all([
+      getMosque(numId),
+      getPrayerTimes(numId),
+    ]);
+    const lastUpdated = prayerTimes.length
+      ? new Date(Math.max(...prayerTimes.map(p => p.updated_at)) * 1000).toISOString()
+      : new Date().toISOString();
 
-    if (!timings) {
-      return NextResponse.json({ error: 'Timings data required' }, { status: 400 });
-    }
-
-    await connectToDatabase();
-    const updatedMasjid = await Masjid.findByIdAndUpdate(
-      resolvedParams.id,
-      { timings, lastUpdated: new Date() },
-      { new: true }
-    );
-
-    if (!updatedMasjid) {
-      return NextResponse.json({ error: 'Masjid not found' }, { status: 404 });
-    }
-
-    return NextResponse.json({ success: true, masjid: updatedMasjid }, { status: 200 });
-  } catch (error) {
-    console.error('Masjid PUT Error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return Response.json({
+      _id:         String(mosque.id),
+      name:        mosque.name,
+      address:     mosque.address || mosque.location_name || '',
+      timings:     buildTimings(prayerTimes),
+      lastUpdated,
+    });
+  } catch (err) {
+    console.error('[masjids/id GET]', err);
+    return Response.json({ error: 'Mosque not found' }, { status: 404 });
   }
 }

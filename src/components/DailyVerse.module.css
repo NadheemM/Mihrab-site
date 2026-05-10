@@ -1,0 +1,80 @@
+.card {
+  background: #FFFFFF;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 207, 207, 0.16);
+  box-shadow: 0 8px 40px rgba(0, 207, 207, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle top accent bar */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #00CFCF, #C9922A);
+  border-radius: 20px 20px 0 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #718096;
+}
+
+.datePill {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #007A7A;
+  background: rgba(0, 207, 207, 0.09);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  letter-spacing: 0.04em;
+}
+
+.arabic {
+  font-family: 'Scheherazade New', 'Amiri', 'Traditional Arabic', Georgia, serif;
+  font-size: 1.35rem;
+  line-height: 2;
+  color: #0F1A30;
+  text-align: right;
+  margin: 0;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(0, 207, 207, 0.1);
+}
+
+.translation {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.05rem;
+  font-style: italic;
+  line-height: 1.65;
+  color: #2D3748;
+  margin: 0;
+}
+
+.ref {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  color: #718096;
+  margin: 0;
+  letter-spacing: 0.03em;
+}

@@ -2,15 +2,17 @@
 
 import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Lock } from 'lucide-react';
+import { ArrowLeft, MapPin, Clock } from 'lucide-react';
+import GlowCard from '@/components/GlowCard';
+import PrayerCountdown from '@/components/PrayerCountdown';
 
 interface Timings {
-  fajr: { azaan: string; iqamah: string };
-  zuhar: { azaan: string; iqamah: string };
-  asar: { azaan: string; iqamah: string };
+  fajr:    { azaan: string; iqamah: string };
+  zuhar:   { azaan: string; iqamah: string };
+  asar:    { azaan: string; iqamah: string };
   maghrib: { azaan: string; iqamah: string };
-  isha: { azaan: string; iqamah: string };
-  jummah: { azaan: string; iqamah: string };
+  isha:    { azaan: string; iqamah: string };
+  jummah:  { azaan: string; iqamah: string };
 }
 
 interface Masjid {
@@ -21,184 +23,226 @@ interface Masjid {
   lastUpdated: string;
 }
 
+const prayerMeta = [
+  { key: 'fajr',    label: 'Fajr',    color: 'var(--fajr-color)' },
+  { key: 'zuhar',   label: 'Zuhar',   color: 'var(--dhuhr-color)' },
+  { key: 'asar',    label: 'Asar',    color: 'var(--asr-color)' },
+  { key: 'maghrib', label: 'Maghrib', color: 'var(--maghrib-color)' },
+  { key: 'isha',    label: 'Isha',    color: 'var(--isha-color)' },
+  { key: 'jummah',  label: 'Jummah',  color: 'var(--brand-gold)' },
+];
+
+function getCurrentPrayerKey(): string {
+  const h = new Date().getHours();
+  if (h < 6)  return 'fajr';
+  if (h < 13) return 'zuhar';
+  if (h < 16) return 'asar';
+  if (h < 19) return 'maghrib';
+  return 'isha';
+}
+
+function timeAgo(dateString: string): string {
+  if (!dateString) return 'Just now';
+  const diffMins = Math.round((Date.now() - new Date(dateString).getTime()) / 60000);
+  if (diffMins < 60) return `${diffMins || 1}m ago`;
+  const diffHours = Math.round(diffMins / 60);
+  if (diffHours < 24) return `${diffHours}h ago`;
+  return `${Math.round(diffHours / 24)}d ago`;
+}
+
 export default function MasjidDetailsPage({ params }: { params: { id: string } | Promise<{ id: string }> }) {
   const router = useRouter();
-  
-  // Try resolving params to support Next.js 15 breaking changes if needed
   const resolvedParams = params instanceof Promise ? use(params) : params;
   const masjidId = resolvedParams.id;
 
-  const [masjid, setMasjid] = useState<Masjid | null>(null);
+  const [masjid, setMasjid]   = useState<Masjid | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editTimings, setEditTimings] = useState<Timings | null>(null);
-
-  const defaultTimings: Timings = {
-    fajr: { azaan: '', iqamah: '' },
-    zuhar: { azaan: '', iqamah: '' },
-    asar: { azaan: '', iqamah: '' },
-    maghrib: { azaan: '', iqamah: '' },
-    isha: { azaan: '', iqamah: '' },
-    jummah: { azaan: '', iqamah: '' },
-  };
+  const currentPrayer = getCurrentPrayerKey();
 
   useEffect(() => {
-    // Adding timestamp to URL to bypass any aggressive client-side caching
     fetch(`/api/masjids/${masjidId}?t=${Date.now()}`, { cache: 'no-store' })
-      .then(res => res.json())
-      .then(data => {
-        setMasjid(data);
-        setEditTimings(data.timings || defaultTimings);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Error fetching masjid details:", err);
-        setLoading(false);
-      });
+      .then(r => r.json())
+      .then(data => { setMasjid(data); setLoading(false); })
+      .catch(() => setLoading(false));
   }, [masjidId]);
 
-  const handleUpdateTimings = async () => {
-    if (!editTimings) return;
-    try {
-      console.log("Sending timings update for:", masjidId);
-      const res = await fetch(`/api/masjids/${masjidId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ timings: editTimings })
-      });
-      const data = await res.json();
-      if (data.success) {
-        setMasjid(data.masjid);
-        setIsEditing(false);
-      } else {
-        console.error("Update failed:", data.error);
-        alert("Failed to update timings: " + (data.error || "Unknown error"));
-      }
-    } catch (err) {
-      console.error(err);
-      alert("An error occurred while updating");
-    }
-  };
+  if (loading) return (
+    <div style={{ backgroundColor: 'var(--surface-cream)', minHeight: '100vh', padding: '3rem 1rem 7rem' }}>
+      <div className="container" style={{ maxWidth: '600px', margin: '0 auto' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
+          <div className="skeleton" style={{ width: 40, height: 40, borderRadius: '50%' }} />
+          <div style={{ flex: 1 }}>
+            <div className="skeleton" style={{ height: 26, width: '55%', borderRadius: 6, marginBottom: 8 }} />
+            <div className="skeleton" style={{ height: 14, width: '35%', borderRadius: 4 }} />
+          </div>
+        </div>
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="skeleton" style={{ height: 52, borderRadius: 8, marginBottom: 4 }} />
+        ))}
+      </div>
+    </div>
+  );
 
-  const calculateTimeAgo = (dateString: string) => {
-    if (!dateString) return "Just now";
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffMins = Math.round(diffMs / 60000);
-    const diffHours = Math.round(diffMins / 60);
-    const diffDays = Math.round(diffHours / 24);
-
-    if (diffMins < 60) return `${diffMins || 1} minutes ago`;
-    if (diffHours < 24) return `${diffHours} hours ago`;
-    return `${diffDays} days ago`;
-  };
-
-  if (loading) return <div style={{ minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Loading...</div>;
-  if (!masjid) return <div style={{ minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Masjid not found!</div>;
-
-  const prayers = [
-    { key: 'fajr', label: 'Fajr' },
-    { key: 'zuhar', label: 'Zuhar' },
-    { key: 'asar', label: 'Asar' },
-    { key: 'maghrib', label: 'Maghrib' },
-    { key: 'isha', label: 'Isha' },
-    { key: 'jummah', label: 'Jummah' },
-  ];
+  if (!masjid) return (
+    <div style={{ minHeight: '100vh', background: 'var(--surface-cream)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'DM Sans', sans-serif", color: 'var(--text-muted)' }}>
+      Masjid not found.
+    </div>
+  );
 
   return (
-    <div style={{ backgroundColor: '#FAF8F1', minHeight: '100vh', padding: '2rem 1rem 6rem 1rem', fontFamily: 'inherit' }}>
-      <div className="container" style={{ maxWidth: '600px', margin: '0 auto', position: 'relative' }}>
-        
-        {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '2rem' }}>
-          <div onClick={() => router.back()} style={{ background: 'var(--primary)', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', marginRight: '1rem' }}>
-            <ArrowLeft size={24} color="#fff" />
+    <div style={{ backgroundColor: 'var(--surface-cream)', minHeight: '100vh', padding: '3rem 1rem 5rem' }}>
+      <div className="container" style={{ maxWidth: '600px', margin: '0 auto' }}>
+
+        {/* Back + name */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '2rem' }}>
+          <button
+            onClick={() => router.back()}
+            aria-label="Back to masjid directory"
+            style={{
+              background: 'var(--surface-dark)',
+              borderRadius: '50%',
+              width: 42, height: 42, flexShrink: 0,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer', border: 'none',
+              transition: 'background var(--duration-base) ease',
+              marginTop: 2,
+            }}
+            onMouseEnter={e => (e.currentTarget.style.background = 'var(--brand-teal-dark)')}
+            onMouseLeave={e => (e.currentTarget.style.background = 'var(--surface-dark)')}
+          >
+            <ArrowLeft size={18} color="var(--text-inverse)" aria-hidden="true" />
+          </button>
+          <div style={{ flex: 1 }}>
+            <h1 style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: 'clamp(1.5rem, 4vw, 2rem)',
+              fontWeight: 700, color: 'var(--text-headline)',
+              margin: 0, lineHeight: 1.15,
+            }}>
+              {masjid.name}
+            </h1>
+            <p style={{
+              display: 'flex', alignItems: 'center', gap: '0.3rem',
+              fontFamily: "'DM Sans', sans-serif", fontSize: '0.875rem',
+              color: 'var(--text-muted)', margin: '0.3rem 0 0',
+            }}>
+              <MapPin size={13} aria-hidden="true" /> {masjid.address}
+            </p>
           </div>
-          <h1 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>{masjid.name}</h1>
         </div>
 
-        <h2 style={{ textAlign: 'center', fontSize: '2rem', marginBottom: '1.5rem', color: '#111' }}>Salah Timings</h2>
-
-        {/* Timings Card */}
-        <div style={{ background: 'var(--primary)', borderRadius: '1.5rem', padding: '2rem 1.5rem', color: 'white', marginBottom: '4rem', boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', marginBottom: '1.5rem', fontWeight: 'bold', fontSize: '0.9rem', color: '#fff', textTransform: 'uppercase', opacity: 0.9 }}>
-            <div>NAMAZ</div>
-            <div style={{ textAlign: 'center' }}>AZAAN</div>
-            <div style={{ textAlign: 'center' }}>IQAMAH</div>
+        {/* Live prayer countdown */}
+        <div style={{
+          background: 'var(--surface-warm-white)',
+          borderRadius: 'var(--radius-lg)',
+          padding: '1.25rem 1.5rem',
+          marginBottom: '1.75rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '1rem',
+          flexWrap: 'wrap',
+          border: '1px solid rgba(0,207,207,0.18)',
+          borderLeft: '4px solid var(--brand-teal)',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'var(--brand-teal-dark)', flexShrink: 0 }}>
+            <Clock size={15} aria-hidden="true" />
+            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+              Next Prayer
+            </span>
           </div>
-          
-          {prayers.map((prayer) => (
-            <div key={prayer.key} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', marginBottom: '1.5rem', fontSize: '1.1rem', fontWeight: '600', alignItems: 'center' }}>
-              <div>{prayer.label}</div>
-              <div style={{ textAlign: 'center' }}>
-                {isEditing ? (
-                  <input 
-                    type="text" 
-                    value={(editTimings as any)?.[prayer.key]?.azaan || ''}
-                    onChange={(e) => {
-                       if(editTimings) setEditTimings({
-                          ...editTimings,
-                          [prayer.key]: { ...(editTimings as any)[prayer.key], azaan: e.target.value }
-                       })
+          <PrayerCountdown />
+        </div>
+
+        {/* Section label */}
+        <span className="text-gold-label" style={{ marginBottom: '0.75rem' }}>Salah Timings</span>
+        <div className="divider-arabesque" aria-hidden="true" style={{ marginBottom: '1.25rem' }}>
+          <span className="divider-arabesque-icon" />
+        </div>
+
+        {/* Prayer times table */}
+        <GlowCard style={{ padding: 0, overflow: 'hidden' }}>
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
+            padding: '0.75rem 1rem 0',
+            fontFamily: "'DM Sans', sans-serif", fontSize: '0.75rem', color: 'var(--text-muted)',
+          }}>
+            Updated {timeAgo(masjid.lastUpdated)}
+          </div>
+
+          <table
+            style={{ width: '100%', borderCollapse: 'collapse' }}
+            aria-label={`Prayer times for ${masjid.name}`}
+          >
+            <caption style={{ display: 'none' }}>Prayer times for {masjid.name}</caption>
+            <thead>
+              <tr style={{ background: 'var(--surface-dark)' }}>
+                {['Prayer', 'Azaan', 'Iqamah'].map((col, ci) => (
+                  <th
+                    key={col}
+                    scope="col"
+                    style={{
+                      padding: '0.75rem 1rem',
+                      fontFamily: "'DM Sans', sans-serif", fontSize: '0.7rem',
+                      fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase',
+                      color: 'var(--text-inverse)',
+                      textAlign: ci === 0 ? 'left' : 'center',
                     }}
-                    style={{ width: '80%', padding: '0.3rem', borderRadius: '0.25rem', border: 'none', color: '#000', textAlign: 'center', fontSize: '1rem' }}
-                  />
-                ) : (
-                  (masjid.timings as any)?.[prayer.key]?.azaan || '-'
-                )}
-              </div>
-              <div style={{ textAlign: 'center' }}>
-                {isEditing ? (
-                  <input 
-                    type="text" 
-                    value={(editTimings as any)?.[prayer.key]?.iqamah || ''}
-                    onChange={(e) => {
-                       if(editTimings) setEditTimings({
-                          ...editTimings,
-                          [prayer.key]: { ...(editTimings as any)[prayer.key], iqamah: e.target.value }
-                       })
+                  >
+                    {col}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {prayerMeta.map((prayer, i) => {
+                const isCurrent = prayer.key === currentPrayer;
+                return (
+                  <tr
+                    key={prayer.key}
+                    style={{
+                      background: isCurrent
+                        ? 'rgba(201,146,42,0.07)'
+                        : i % 2 === 0 ? 'var(--surface-cream)' : 'var(--surface-warm-white)',
+                      borderLeft: `3px solid ${prayer.color}`,
+                      animation: isCurrent ? 'goldPulse 2.5s ease-in-out infinite' : 'none',
+                      transition: 'background var(--duration-base) ease',
                     }}
-                    style={{ width: '80%', padding: '0.3rem', borderRadius: '0.25rem', border: 'none', color: '#000', textAlign: 'center', fontSize: '1rem' }}
-                  />
-                ) : (
-                  (masjid.timings as any)?.[prayer.key]?.iqamah || '-'
-                )}
-              </div>
-            </div>
-          ))}
-
-          <div style={{ textAlign: 'center', marginTop: '2rem', fontSize: '0.9rem', color: '#fff', opacity: 0.8 }}>
-            Updated: {calculateTimeAgo(masjid.lastUpdated)}
-          </div>
-        </div>
-
-        {/* Action Button */}
-        <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, padding: '1rem', background: 'white', borderTop: '1px solid #eee', display: 'flex', gap: '1rem', justifyContent: 'center', zIndex: 10 }}>
-          {isEditing ? (
-            <>
-               <button 
-                onClick={() => { setIsEditing(false); setEditTimings(masjid.timings || defaultTimings); }}
-                style={{ flex: 1, maxWidth: '290px', background: '#eee', color: '#000', padding: '1rem', borderRadius: '0.5rem', border: 'none', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}
-              >
-                Cancel
-              </button>
-              <button 
-                onClick={handleUpdateTimings}
-                style={{ flex: 1, maxWidth: '290px', background: 'var(--primary)', color: 'white', padding: '1rem', borderRadius: '0.5rem', border: 'none', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}
-              >
-                Save Changes
-              </button>
-            </>
-          ) : (
-            <button 
-              onClick={() => setIsEditing(true)}
-              style={{ width: '100%', maxWidth: '600px', background: 'var(--primary)', color: 'white', padding: '1rem', borderRadius: '0.5rem', border: 'none', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}
-            >
-              Update Time
-            </button>
-          )}
-        </div>
+                  >
+                    <th scope="row" style={{
+                      padding: '0.9rem 1rem',
+                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      fontSize: '1.1rem', fontWeight: 600,
+                      color: 'var(--text-headline)', textAlign: 'left',
+                    }}>
+                      {prayer.label}
+                      {isCurrent && (
+                        <span style={{
+                          marginLeft: '0.5rem',
+                          fontFamily: "'DM Sans', sans-serif",
+                          fontSize: '0.6rem', fontWeight: 700,
+                          letterSpacing: '0.08em', textTransform: 'uppercase',
+                          color: 'var(--brand-gold)', verticalAlign: 'middle',
+                        }}>
+                          Now
+                        </span>
+                      )}
+                    </th>
+                    {(['azaan', 'iqamah'] as const).map(field => (
+                      <td key={field} style={{
+                        padding: '0.9rem 1rem', textAlign: 'center',
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontVariantNumeric: 'tabular-nums',
+                        fontSize: '1rem', color: 'var(--text-body)',
+                      }}>
+                        {(masjid.timings as any)?.[prayer.key]?.[field] || '—'}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </GlowCard>
 
       </div>
     </div>

@@ -1,14 +1,34 @@
 .navbar {
-  position: absolute; /* Scrolls with the page */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 50;
+  z-index: var(--z-nav, 300);
   padding: 1rem 0;
-  background: rgba(18, 18, 20, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Only border at the bottom */
+  transition:
+    background var(--duration-slow, 400ms) ease,
+    backdrop-filter var(--duration-slow, 400ms) ease,
+    border-color var(--duration-slow, 400ms) ease,
+    padding var(--duration-slow, 400ms) ease;
+}
+
+/* Dark glassmorphic on hero — sky visible through, text always readable */
+.transparent {
+  background: rgba(6, 12, 32, 0.42);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 1px 0 rgba(0, 207, 207, 0.08);
+}
+
+/* White frosted when scrolled or on non-home pages */
+.scrolled {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border-bottom: 1px solid rgba(0, 207, 207, 0.15);
+  padding: 0.625rem 0;
+  box-shadow: 0 4px 24px rgba(0, 207, 207, 0.08);
 }
 
 .navContainer {
@@ -18,62 +38,320 @@
 }
 
 .logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #ffffff;
   display: flex;
   align-items: center;
+  text-decoration: none;
+  transition: opacity var(--duration-base, 250ms) ease;
+}
+
+.logo:hover {
+  opacity: 0.8;
+}
+
+.logo:focus-visible {
+  outline: 2px solid #00CFCF;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.logoPill {
+  display: inline-flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 4px 10px;
+  transition: box-shadow var(--duration-base, 250ms) ease;
+}
+
+.logo:hover .logoPill {
+  box-shadow: 0 2px 12px rgba(0, 207, 207, 0.25);
+}
+
+.logoImg {
+  height: 30px;
+  width: auto;
+  display: block;
 }
 
 .navLinks {
   display: flex;
-  gap: 2rem;
+  gap: 1.75rem;
   align-items: center;
 }
 
 .link {
+  position: relative;
+  font-family: 'DM Sans', sans-serif;
   font-weight: 500;
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.7);
-  transition: color 0.3s ease;
+  font-size: 0.875rem;
+  letter-spacing: 0.03em;
+  color: rgba(15, 26, 48, 0.65);
+  text-decoration: none;
+  padding-bottom: 2px;
+  transition: color var(--duration-base, 250ms) ease;
 }
 
-.link:hover,
-.active {
+/* White links when nav is over the dark sky */
+.transparent .link {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.transparent .link:hover {
   color: #ffffff;
 }
 
+.transparent .active {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.transparent .mobileMenuToggle {
+  color: rgba(255, 255, 255, 0.80);
+}
+
+.link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: #00CFCF;
+  transition: width var(--duration-base, 250ms) var(--ease-smooth, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.link:hover {
+  color: #0F1A30;
+}
+
+.link:hover::after {
+  width: 100%;
+}
+
+.link:focus-visible {
+  outline: 2px solid #00CFCF;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.active {
+  color: #0F1A30;
+  font-weight: 600;
+}
+
+.active::after {
+  width: 100%;
+  background: #00CFCF;
+}
+
+/* ============================================================
+   ORGANISATION DROPDOWN
+   ============================================================ */
+.dropdown {
+  position: relative;
+}
+
+.dropdownTrigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 0 2px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 0.875rem;
+  letter-spacing: 0.03em;
+  color: rgba(15, 26, 48, 0.65);
+  transition: color var(--duration-base, 250ms) ease;
+}
+
+.dropdownTrigger:hover {
+  color: #0F1A30;
+}
+
+.dropdownTrigger:focus-visible {
+  outline: 2px solid #00CFCF;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.transparent .dropdownTrigger {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.transparent .dropdownTrigger:hover {
+  color: #ffffff;
+}
+
+.transparent .dropdownTrigger.active {
+  color: #ffffff;
+}
+
+.chevron {
+  transition: transform 220ms var(--ease-smooth, cubic-bezier(0.16, 1, 0.3, 1));
+  flex-shrink: 0;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+/* Dropdown panel */
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  min-width: 150px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(0, 207, 207, 0.15);
+  border-radius: 12px;
+  padding: 6px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 200ms ease,
+    transform 200ms var(--ease-smooth, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.dropdownVisible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Dark glass panel when navbar is over the sky */
+.transparent .dropdownMenu {
+  background: rgba(6, 12, 38, 0.72);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border-color: rgba(255, 255, 255, 0.10);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.40);
+}
+
+.dropdownItem {
+  display: block;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: rgba(15, 26, 48, 0.75);
+  text-decoration: none;
+  transition: background 150ms ease, color 150ms ease;
+}
+
+.dropdownItem:hover {
+  background: rgba(0, 207, 207, 0.09);
+  color: #00CFCF;
+}
+
+.dropdownItem:focus-visible {
+  outline: 2px solid #00CFCF;
+  outline-offset: -2px;
+  border-radius: 8px;
+}
+
+.dropdownItemActive {
+  color: #00CFCF;
+  font-weight: 600;
+}
+
+.transparent .dropdownItem {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.transparent .dropdownItem:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: #ffffff;
+}
+
+.transparent .dropdownItemActive {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Mobile toggle button */
 .mobileMenuToggle {
   display: none;
   cursor: pointer;
-  color: #ffffff;
+  color: #0F1A30;
+  background: none;
+  border: none;
+  padding: var(--space-2, 8px);
+  border-radius: var(--radius-sm, 6px);
+  transition: color var(--duration-fast, 150ms) ease;
 }
 
+.mobileMenuToggle:hover {
+  color: #00CFCF;
+}
+
+.mobileMenuToggle:focus-visible {
+  outline: 2px solid #00CFCF;
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   MOBILE FULL-SCREEN OVERLAY
+   ============================================================ */
 @media (max-width: 768px) {
-  .navLinks {
+  .mobileMenuToggle {
     display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .navLinks {
+    position: fixed;
+    inset: 0;
+    background: #FFFFFF;
     flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: var(--card-bg);
-    padding: 2rem 0;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    transform: translateY(-150%);
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+    z-index: var(--z-modal, 200);
     opacity: 0;
-    transition: all 0.3s ease;
-    z-index: 40;
     pointer-events: none;
+    transform: translateY(-8px);
+    transition:
+      opacity var(--duration-slow, 400ms) var(--ease-smooth, cubic-bezier(0.16, 1, 0.3, 1)),
+      transform var(--duration-slow, 400ms) var(--ease-smooth, cubic-bezier(0.16, 1, 0.3, 1));
+    background-image:
+      repeating-linear-gradient(45deg, rgba(0, 207, 207, 0.03) 0px, rgba(0, 207, 207, 0.03) 1px, transparent 1px, transparent 20px),
+      repeating-linear-gradient(-45deg, rgba(0, 207, 207, 0.03) 0px, rgba(0, 207, 207, 0.03) 1px, transparent 1px, transparent 20px);
   }
 
   .navLinks.open {
-    transform: translateY(0);
     opacity: 1;
     pointer-events: auto;
+    transform: translateY(0);
   }
 
-  .mobileMenuToggle {
-    display: block;
+  .link {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 2.25rem;
+    font-weight: 600;
+    color: rgba(15, 26, 48, 0.75);
+    letter-spacing: -0.02em;
+    animation: none;
+  }
+
+  .link::after {
+    height: 2px;
+    bottom: -6px;
+  }
+
+  .link:hover {
+    color: #00CFCF;
+  }
+
+  .active {
+    color: #0F1A30;
   }
 }

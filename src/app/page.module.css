@@ -3,196 +3,631 @@
   flex-direction: column;
 }
 
-.hero {
+/* ============================================================
+   SKY SECTION (viewport 1 — pure 3D scene)
+   ============================================================ */
+.skySection {
   position: relative;
-  padding: 8rem 0;
+  background: #0B132B;
+  margin-top: -64px;
+  height: 100vh;
   overflow: hidden;
-  background-image: url('/hero-bg.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  color: white; /* Ensure text is readable against the dark blue image */
 }
 
-/* Optional overlay to make text pop even more against the background */
-.hero::before {
+.scrollHint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  color: rgba(255, 255, 255, 0.5);
+  animation: scrollBounce 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0);   opacity: 0.5; }
+  50%       { transform: translateX(-50%) translateY(8px); opacity: 1;   }
+}
+
+/* ============================================================
+   HERO SECTION (viewport 2 — heading, CTAs, stats on dark bg)
+   ============================================================ */
+.heroSection {
+  background: #0F1A30;
+  padding: 5rem 0 6rem;
+  position: relative;
+}
+
+/* ── Floating ornamental shapes ── */
+.orb1 {
+  position: absolute;
+  top: 10%;
+  right: 6%;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,207,207,0.08) 0%, transparent 70%);
+  animation: floatA 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.orb2 {
+  position: absolute;
+  bottom: 15%;
+  left: 2%;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,146,42,0.06) 0%, transparent 70%);
+  animation: floatB 11s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.ring1 {
+  position: absolute;
+  top: 20%;
+  right: 30%;
+  width: 110px;
+  height: 110px;
+  border: 1px solid rgba(0,207,207,0.18);
+  border-radius: 50%;
+  animation: slowSpin 25s linear infinite;
+  pointer-events: none;
+}
+
+.ring1::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.4); /* Dark overlay */
-  z-index: 1;
+  inset: 14px;
+  border: 1px solid rgba(0,207,207,0.10);
+  border-radius: 50%;
 }
 
+.ring2 {
+  position: absolute;
+  bottom: 22%;
+  right: 14%;
+  width: 56px;
+  height: 56px;
+  border: 1px solid rgba(0,207,207,0.25);
+  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+  background: rgba(0,207,207,0.04);
+  animation: slowSpin 18s linear infinite reverse;
+  pointer-events: none;
+}
+
+/* ── Hero layout ── */
 .heroContainer {
   position: relative;
-  z-index: 2; /* Bring text above the overlay */
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.heroContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0;
+  max-width: 680px;
+}
+
+/* Micro hairline divider */
+.heroDivider {
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 4rem;
-}
-
-.heroText {
-  flex: 1;
-  max-width: 800px;
-}
-
-.heroText h1 {
-  font-size: 3.5rem;
-  color: #ffffff; /* Override primary color for contrast */
+  gap: 0.75rem;
   margin-bottom: 1.5rem;
 }
 
-.heroText p {
-  font-size: 1.25rem;
-  line-height: 1.6;
-  color: #ffffff; /* Contrast against bg */
-  opacity: 0.9;
-  margin-bottom: 2rem;
-  max-width: 600px;
+.heroDivider::before,
+.heroDivider::after {
+  content: '';
+  flex: 0 0 40px;
+  height: 1px;
+  background: rgba(0,207,207,0.35);
+}
+
+.heroDividerDot {
+  width: 5px;
+  height: 5px;
+  background: var(--brand-cyan);
+  transform: rotate(45deg);
+}
+
+/* Display heading */
+.heroHeading {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(3.25rem, 6.5vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  margin: 0 0 1.5rem;
+  color: rgba(255,255,255,0.95);
+}
+
+.heroHeadingItalic {
+  font-style: italic;
+  font-weight: 600;
+  display: block;
+  color: rgba(255,255,255,0.85);
+}
+
+.heroHeadingRoman {
+  font-style: normal;
+  font-weight: 700;
+  display: block;
+  color: #00CFCF;
+}
+
+.heroSub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.68);
+  max-width: 480px;
+  margin: 0 0 2rem;
 }
 
 .ctaGroup {
   display: flex;
-  gap: 1rem;
+  gap: 0.875rem;
   flex-wrap: wrap;
-  justify-content: center; /* Center buttons */
+  align-items: center;
+  margin-bottom: 0;
 }
 
-.btnSecondary {
-  background-color: transparent;
-  color: #ffffff;
-  border: 2px solid #ffffff;
-  padding: 0.75rem 1.5rem;
-  border-radius: 999px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: inline-flex;
+/* ── Stats strip under buttons ── */
+.statsStrip {
+  display: flex;
+  gap: 0;
+  align-items: stretch;
+  margin-top: 2.25rem;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  width: fit-content;
+  backdrop-filter: blur(10px);
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.7rem 1.5rem;
+}
+
+.statNumber {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1;
+}
+
+.statLabel {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  margin-top: 0.2rem;
+}
+
+.statSep {
+  width: 1px;
+  background: rgba(255,255,255,0.15);
+  align-self: stretch;
+}
+
+/* ── Hero right — Visual panel ── */
+.heroImageCol {
+  position: relative;
+  height: 520px;
+  display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.btnSecondary:hover {
-  background-color: rgba(65, 194, 220, 0.1);
+.heroVisual {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
-.heroImage {
+/* Verse card wrapper — positioned in lower half */
+.verseWrapper {
+  position: absolute;
+  bottom: 2%;
+  left: 4%;
+  right: 4%;
+  z-index: 4;
+}
+
+/* Ambient orbs behind cards */
+.visualOrb1 {
+  position: absolute;
+  top: 10%;
+  left: 15%;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,207,207,0.13) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.visualOrb2 {
+  position: absolute;
+  bottom: 8%;
+  right: 5%;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,146,42,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Base card */
+.visualCard {
+  position: absolute;
+  background: #FFFFFF;
+  border-radius: 20px;
+  border: 1px solid rgba(0,207,207,0.14);
+  box-shadow: 0 8px 32px rgba(0,207,207,0.10), 0 2px 8px rgba(0,0,0,0.04);
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 200px;
+  backdrop-filter: blur(8px);
+}
+
+.visualCardLabel {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #718096;
+}
+
+.visualCardSub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  color: #00CFCF;
+  font-weight: 600;
+}
+
+/* Prayer card internals */
+.visualCardPrayer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.visualPrayerDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00CFCF;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(0,207,207,0.2);
+}
+
+.visualPrayerName {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #0F1A30;
   flex: 1;
+}
+
+.visualPrayerTime {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #007A7A;
+  font-variant-numeric: tabular-nums;
+}
+
+.visualPrayerBar {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(0,207,207,0.15);
+  overflow: hidden;
+}
+
+.visualPrayerBarFill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #00CFCF, #009999);
+}
+
+
+/* ============================================================
+   BENTO FEATURES
+   ============================================================ */
+.bentoSection {
+  padding: 6rem 0 5rem;
+  background: #F4FAFA;
+}
+
+.bentoHeader {
+  margin-bottom: 2.75rem;
+}
+
+.bentoTitle {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: #0F1A30;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0.5rem 0 0;
+}
+
+/* ── Bento card base ── */
+.bentoCard {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 260px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* Number badge */
+.cardNum {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(15,26,48,0.15);
+  letter-spacing: 0.06em;
+  align-self: flex-end;
+  line-height: 1;
+}
+
+.cardNumLight {
+  color: rgba(255,255,255,0.18);
+}
+
+.bentoIconWrap {
+  width: 56px;
+  height: 56px;
+  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bentoCardTitle {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #0F1A30;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.bentoCardTitleLight {
+  color: #FFFFFF;
+}
+
+.bentoCardText {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  color: #718096;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.bentoCardTextLight {
+  color: rgba(255,255,255,0.65);
+}
+
+/* Accent strip at top */
+.accentTeal::after  { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #00CFCF; }
+.accentGold::after  { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--brand-gold); }
+.accentFajr::after  { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--fajr-color); }
+.accentAsr::after   { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--asr-color); }
+.accentIsha::after  { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--isha-color); }
+
+/* ============================================================
+   PRAYER TIMES WIDGET SECTION
+   ============================================================ */
+.prayerSection {
+  padding: 5rem 0;
+  background: #FFFFFF;
+}
+
+.prayerHeader {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.sectionTitle {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 700;
+  color: #0F1A30;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0.5rem 0 0;
+}
+
+/* ============================================================
+   SCREENSHOT CAROUSEL SECTION
+   ============================================================ */
+.carouselSection {
+  background: #EEF8F8;
+  overflow: hidden;
+}
+
+.carouselInner {
+  padding: 5rem 0 4rem;
+}
+
+.carouselHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 0 var(--space-5);
+}
+
+.carouselSub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  color: #718096;
+  max-width: 480px;
+  margin: 0.75rem auto 0;
+  line-height: 1.7;
+}
+
+.carouselCta {
   display: flex;
   justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  padding: 0 var(--space-5);
 }
 
-.phoneMockup {
-  width: 300px;
-  height: 600px;
-  background: var(--card-bg);
-  border: 12px solid #333;
-  border-radius: 40px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+/* ============================================================
+   STATS BAND
+   ============================================================ */
+.statsBand {
+  background: #0F1A30;
+  padding: 3.5rem 0;
   position: relative;
   overflow: hidden;
 }
 
-.appScreenshotPlaceholder {
-  width: 100%;
-  height: 100%;
+.statsBand::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(0,207,207,0.05) 0px, rgba(0,207,207,0.05) 1px, transparent 1px, transparent 22px),
+    repeating-linear-gradient(-45deg, rgba(0,207,207,0.05) 0px, rgba(0,207,207,0.05) 1px, transparent 1px, transparent 22px);
+  pointer-events: none;
+}
+
+.statsBandInner {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--primary);
-  color: white;
-  font-weight: bold;
+  gap: 0;
+  position: relative;
+  z-index: 1;
 }
 
-.features {
-  padding: 6rem 0;
-  background: var(--card-bg);
-}
-
-.sectionTitle {
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 4rem;
-  color: var(--foreground);
-}
-
-.featureGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-}
-
-.featureCard {
-  background: var(--background);
-  padding: 2.5rem 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid var(--border-color);
-}
-
-.featureCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  border-color: var(--primary-light);
-}
-
-.featureIcon {
-  width: 64px;
-  height: 64px;
-  background: rgba(65, 194, 220, 0.1);
-  color: var(--primary);
-  border-radius: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-}
-
-.featureCard h3 {
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
-}
-
-.featureCard p {
-  color: var(--foreground);
-  opacity: 0.8;
-  line-height: 1.6;
-}
-
+/* ============================================================
+   CTA SECTION
+   ============================================================ */
 .ctaSection {
   padding: 6rem 0;
-  background: var(--primary);
-  color: white;
+  background: #07101E;
+  color: #FFFFFF;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.ctaSection h2 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
+.ctaSection::before {
+  content: '';
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(0,207,207,0.09) 0%, transparent 65%);
+  pointer-events: none;
 }
 
-.ctaSection p {
-  font-size: 1.25rem;
-  opacity: 0.9;
+.ctaInner {
+  position: relative;
+  z-index: 1;
+  max-width: 580px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
 }
 
-@media (max-width: 900px) {
-  .heroContainer {
-    flex-direction: column;
-    text-align: center;
+.ctaHeading {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.ctaSub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.075rem;
+  color: rgba(255,255,255,0.6);
+  margin: 0;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 960px) {
+  .heroSection {
+    padding: 4rem 0 5rem;
   }
-  
-  .heroText h1 {
-    font-size: 2.5rem;
+
+  .heroSub {
+    max-width: 100%;
   }
-  
+
+  .heroDivider {
+    display: none;
+  }
+
+  .statsStrip {
+    margin: 2rem auto 0;
+  }
+}
+
+@media (max-width: 560px) {
   .ctaGroup {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .ctaGroup a,
+  .ctaGroup button {
+    width: 100%;
     justify-content: center;
   }
-  
-  .text-center {
+
+  .statsStrip {
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .statItem {
+    padding: 0.7rem 1rem;
+  }
+
+  .statsBandInner {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .carouselHeader {
     text-align: center;
   }
 }
