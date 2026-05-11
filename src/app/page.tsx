@@ -8,6 +8,7 @@ import ScrollReveal from '@/components/ScrollReveal';
 import GlowCard from '@/components/GlowCard';
 import ScreenshotCarousel from '@/components/ScreenshotCarousel';
 import TestimonialsSection from '@/components/TestimonialsSection';
+// v2
 
 
 export default function Home() {
