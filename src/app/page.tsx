@@ -6,9 +6,10 @@ import PrayerCountdown from '@/components/PrayerCountdown';
 import AnimatedCounter from '@/components/AnimatedCounter';
 import ScrollReveal from '@/components/ScrollReveal';
 import GlowCard from '@/components/GlowCard';
+import MotionLift from '@/components/MotionLift';
+import HeroReveal from '@/components/HeroReveal';
 import ScreenshotCarousel from '@/components/ScreenshotCarousel';
 import TestimonialsSection from '@/components/TestimonialsSection';
-// v2
 
 
 export default function Home() {
@@ -58,10 +59,7 @@ export default function Home() {
               <span className={styles.heroDividerDot} />
             </div>
 
-            <h1 className={styles.heroHeading}>
-              <span className={styles.heroHeadingItalic}>Every Prayer.</span>
-              <span className={styles.heroHeadingRoman}>Every Masjid.</span>
-            </h1>
+            <HeroReveal />
 
             <p className={styles.heroSub}>
               Mihrab connects Muslims with accurate prayer times, every local masjid, and the pulse of the community — all in one place.
@@ -69,7 +67,7 @@ export default function Home() {
 
             <div className={styles.ctaGroup}>
               <Link
-                href="https://play.google.com/store/apps/details?id=in.mihrab.app&hl=en_IN"
+                href="https://play.google.com/store/apps/details?id=in.mihrab.app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-primary"
@@ -77,7 +75,7 @@ export default function Home() {
                 Google Play
               </Link>
               <Link
-                href="https://apps.apple.com/in/app/mihrab/id6630381320"
+                href="https://apps.apple.com/app/mihrab/id6630381320"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-primary"
@@ -130,74 +128,86 @@ export default function Home() {
 
             {/* 01 — Prayer Times */}
             <ScrollReveal delay={0} variant="scale" style={{ height: '100%' }}>
-              <GlowCard className={`${styles.bentoCard} ${styles.accentTeal}`} style={{ position: 'relative', overflow: 'hidden' }}>
-                <span className={styles.cardNum}>01</span>
-                <div className={styles.bentoIconWrap} style={{ background: 'rgba(0,207,207,0.12)', color: 'var(--brand-teal-dark)' }}>
-                  <Clock size={24} aria-hidden="true" />
-                </div>
-                <h3 className={styles.bentoCardTitle}>Prayer Times &amp; Reminders</h3>
-                <p className={styles.bentoCardText}>Exact Azaan and Iqamah schedules for every local masjid, updated in real-time. Set custom notifications so you never miss a Salah.</p>
-              </GlowCard>
+              <MotionLift>
+                <GlowCard className={`${styles.bentoCard} ${styles.accentTeal}`} style={{ position: 'relative', overflow: 'hidden' }}>
+                  <span className={styles.cardNum}>01</span>
+                  <div className={styles.bentoIconWrap} style={{ background: 'rgba(0,207,207,0.12)', color: 'var(--brand-teal-dark)' }}>
+                    <Clock size={24} aria-hidden="true" />
+                  </div>
+                  <h3 className={styles.bentoCardTitle}>Prayer Times &amp; Reminders</h3>
+                  <p className={styles.bentoCardText}>Exact Azaan and Iqamah schedules for every local masjid, updated in real-time. Set custom notifications so you never miss a Salah.</p>
+                </GlowCard>
+              </MotionLift>
             </ScrollReveal>
 
             {/* 02 — Mosque Locator */}
             <ScrollReveal delay={80} variant="scale" style={{ height: '100%' }}>
-              <GlowCard className={`${styles.bentoCard} ${styles.accentGold}`} style={{ position: 'relative', overflow: 'hidden' }}>
-                <span className={styles.cardNum}>02</span>
-                <div className={styles.bentoIconWrap} style={{ background: 'rgba(201,146,42,0.12)', color: 'var(--brand-gold)' }}>
-                  <MapPin size={24} aria-hidden="true" />
-                </div>
-                <h3 className={styles.bentoCardTitle}>Mosque Locator</h3>
-                <p className={styles.bentoCardText}>Find every masjid nearby with distances and saved favourites.</p>
-              </GlowCard>
+              <MotionLift>
+                <GlowCard className={`${styles.bentoCard} ${styles.accentGold}`} style={{ position: 'relative', overflow: 'hidden' }}>
+                  <span className={styles.cardNum}>02</span>
+                  <div className={styles.bentoIconWrap} style={{ background: 'rgba(201,146,42,0.12)', color: 'var(--brand-gold)' }}>
+                    <MapPin size={24} aria-hidden="true" />
+                  </div>
+                  <h3 className={styles.bentoCardTitle}>Mosque Locator</h3>
+                  <p className={styles.bentoCardText}>Find every masjid nearby with distances and saved favourites.</p>
+                </GlowCard>
+              </MotionLift>
             </ScrollReveal>
 
             {/* 03 — Qibla */}
             <ScrollReveal delay={160} variant="scale" style={{ height: '100%' }}>
-              <GlowCard className={`${styles.bentoCard} ${styles.accentFajr}`} style={{ position: 'relative', overflow: 'hidden' }}>
-                <span className={styles.cardNum}>03</span>
-                <div className={styles.bentoIconWrap} style={{ background: 'rgba(107,140,174,0.15)', color: 'var(--fajr-color)' }}>
-                  <Compass size={24} aria-hidden="true" />
-                </div>
-                <h3 className={styles.bentoCardTitle}>Qibla Direction</h3>
-                <p className={styles.bentoCardText}>Precise Qibla from anywhere, using your device compass.</p>
-              </GlowCard>
+              <MotionLift>
+                <GlowCard className={`${styles.bentoCard} ${styles.accentFajr}`} style={{ position: 'relative', overflow: 'hidden' }}>
+                  <span className={styles.cardNum}>03</span>
+                  <div className={styles.bentoIconWrap} style={{ background: 'rgba(107,140,174,0.15)', color: 'var(--fajr-color)' }}>
+                    <Compass size={24} aria-hidden="true" />
+                  </div>
+                  <h3 className={styles.bentoCardTitle}>Qibla Direction</h3>
+                  <p className={styles.bentoCardText}>Precise Qibla from anywhere, using your device compass.</p>
+                </GlowCard>
+              </MotionLift>
             </ScrollReveal>
 
             {/* 04 — Quran */}
             <ScrollReveal delay={80} variant="up" style={{ height: '100%' }}>
-              <GlowCard className={`${styles.bentoCard} ${styles.accentAsr}`} style={{ position: 'relative', overflow: 'hidden' }}>
-                <span className={styles.cardNum}>04</span>
-                <div className={styles.bentoIconWrap} style={{ background: 'rgba(224,123,57,0.12)', color: 'var(--asr-color)' }}>
-                  <BookOpen size={24} aria-hidden="true" />
-                </div>
-                <h3 className={styles.bentoCardTitle}>Quran &amp; Authentic Hadith</h3>
-                <p className={styles.bentoCardText}>Read the Holy Quran by Surah or Juz. Authentic Hadith from trusted sources to enrich your knowledge daily.</p>
-              </GlowCard>
+              <MotionLift>
+                <GlowCard className={`${styles.bentoCard} ${styles.accentAsr}`} style={{ position: 'relative', overflow: 'hidden' }}>
+                  <span className={styles.cardNum}>04</span>
+                  <div className={styles.bentoIconWrap} style={{ background: 'rgba(224,123,57,0.12)', color: 'var(--asr-color)' }}>
+                    <BookOpen size={24} aria-hidden="true" />
+                  </div>
+                  <h3 className={styles.bentoCardTitle}>Quran &amp; Authentic Hadith</h3>
+                  <p className={styles.bentoCardText}>Read the Holy Quran by Surah or Juz. Authentic Hadith from trusted sources to enrich your knowledge daily.</p>
+                </GlowCard>
+              </MotionLift>
             </ScrollReveal>
 
             {/* 05 — Radio */}
             <ScrollReveal delay={160} variant="up" style={{ height: '100%' }}>
-              <GlowCard className={`${styles.bentoCard} ${styles.accentIsha}`} style={{ position: 'relative', overflow: 'hidden' }}>
-                <span className={styles.cardNum}>05</span>
-                <div className={styles.bentoIconWrap} style={{ background: 'rgba(74,72,128,0.12)', color: 'var(--isha-color)' }}>
-                  <Radio size={24} aria-hidden="true" />
-                </div>
-                <h3 className={styles.bentoCardTitle}>Mihrab FM &amp; Duas</h3>
-                <p className={styles.bentoCardText}>Live Islamic broadcast, Duas and 99 Names of Allah.</p>
-              </GlowCard>
+              <MotionLift>
+                <GlowCard className={`${styles.bentoCard} ${styles.accentIsha}`} style={{ position: 'relative', overflow: 'hidden' }}>
+                  <span className={styles.cardNum}>05</span>
+                  <div className={styles.bentoIconWrap} style={{ background: 'rgba(74,72,128,0.12)', color: 'var(--isha-color)' }}>
+                    <Radio size={24} aria-hidden="true" />
+                  </div>
+                  <h3 className={styles.bentoCardTitle}>Mihrab FM &amp; Duas</h3>
+                  <p className={styles.bentoCardText}>Live Islamic broadcast, Duas and 99 Names of Allah.</p>
+                </GlowCard>
+              </MotionLift>
             </ScrollReveal>
 
             {/* 06 — Business */}
             <ScrollReveal delay={240} variant="up" style={{ height: '100%' }}>
-              <GlowCard className={`${styles.bentoCard} ${styles.accentTeal}`} style={{ position: 'relative', overflow: 'hidden' }}>
-                <span className={styles.cardNum}>06</span>
-                <div className={styles.bentoIconWrap} style={{ background: 'rgba(0,207,207,0.1)', color: 'var(--brand-teal-dark)' }}>
-                  <Building2 size={24} aria-hidden="true" />
-                </div>
-                <h3 className={styles.bentoCardTitle}>Business Listings</h3>
-                <p className={styles.bentoCardText}>Halal businesses and Islamic services, right from the app.</p>
-              </GlowCard>
+              <MotionLift>
+                <GlowCard className={`${styles.bentoCard} ${styles.accentTeal}`} style={{ position: 'relative', overflow: 'hidden' }}>
+                  <span className={styles.cardNum}>06</span>
+                  <div className={styles.bentoIconWrap} style={{ background: 'rgba(0,207,207,0.1)', color: 'var(--brand-teal-dark)' }}>
+                    <Building2 size={24} aria-hidden="true" />
+                  </div>
+                  <h3 className={styles.bentoCardTitle}>Business Listings</h3>
+                  <p className={styles.bentoCardText}>Halal businesses and Islamic services, right from the app.</p>
+                </GlowCard>
+              </MotionLift>
             </ScrollReveal>
 
           </div>
@@ -221,7 +231,7 @@ export default function Home() {
           <ScreenshotCarousel />
           <div className={styles.carouselCta}>
             <Link
-              href="https://play.google.com/store/apps/details?id=in.mihrab.app&hl=en_IN"
+              href="https://play.google.com/store/apps/details?id=in.mihrab.app"
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-primary"
@@ -229,7 +239,7 @@ export default function Home() {
               Google Play
             </Link>
             <Link
-              href="https://apps.apple.com/in/app/mihrab/id6630381320"
+              href="https://apps.apple.com/app/mihrab/id6630381320"
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-primary"
@@ -290,7 +300,7 @@ export default function Home() {
               </p>
               <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <Link
-                  href="https://play.google.com/store/apps/details?id=in.mihrab.app&hl=en_IN"
+                  href="https://play.google.com/store/apps/details?id=in.mihrab.app"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-gold"
@@ -299,7 +309,7 @@ export default function Home() {
                   Google Play
                 </Link>
                 <Link
-                  href="https://apps.apple.com/in/app/mihrab/id6630381320"
+                  href="https://apps.apple.com/app/mihrab/id6630381320"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-gold"

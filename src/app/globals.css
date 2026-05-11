@@ -683,6 +683,52 @@ img, video {
   }
 }
 
+.sr-blur {
+  opacity: 0;
+  filter: blur(10px);
+  transition:
+    opacity 0.75s var(--ease-smooth),
+    filter  0.85s var(--ease-smooth);
+}
+.sr-blur.sr-visible {
+  opacity: 1;
+  filter: blur(0px);
+}
+
+.sr-rotate {
+  opacity: 0;
+  transform: rotate(-4deg) translateY(24px);
+  transition:
+    opacity   0.75s var(--ease-smooth),
+    transform 0.75s var(--ease-smooth);
+}
+.sr-rotate.sr-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.sr-clip {
+  opacity: 0;
+  clip-path: inset(0 0 100% 0);
+  transition:
+    opacity   0.6s var(--ease-smooth),
+    clip-path 0.7s var(--ease-smooth);
+}
+.sr-clip.sr-visible {
+  opacity: 1;
+  clip-path: inset(0 0 0% 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sr-blur, .sr-rotate, .sr-clip {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    clip-path: none;
+    transition: none;
+  }
+}
+
 /* ============================================================
    GLOW CARD — mouse-follow gradient
    ============================================================ */

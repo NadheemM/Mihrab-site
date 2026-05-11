@@ -1,63 +1,83 @@
 'use client';
 import { useState, useEffect } from 'react';
 
-const PRAYERS = [
-  { name: 'Fajr',    h: 5,  m: 15 },
-  { name: 'Dhuhr',   h: 12, m: 30 },
-  { name: 'Asr',     h: 15, m: 45 },
-  { name: 'Maghrib', h: 18, m: 20 },
-  { name: 'Isha',    h: 20, m: 0  },
-];
+interface PrayerEntry { name: string; h: number; m: number; }
 
-function getCountdown() {
+function parseTime(t: string): { h: number; m: number } {
+  const [h, m] = t.split(':').map(Number);
+  return { h, m };
+}
+
+function buildCountdown(prayers: PrayerEntry[]) {
   const now = new Date();
   const nowSecs = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
-
-  for (const p of PRAYERS) {
+  for (const p of prayers) {
     const pSecs = p.h * 3600 + p.m * 60;
     if (pSecs > nowSecs) {
       const diff = pSecs - nowSecs;
       return { name: p.name, h: Math.floor(diff / 3600), m: Math.floor((diff % 3600) / 60), s: diff % 60 };
     }
   }
-  const fajrSecs = PRAYERS[0].h * 3600 + PRAYERS[0].m * 60;
+  const fajrSecs = prayers[0].h * 3600 + prayers[0].m * 60;
   const diff = (86400 - nowSecs) + fajrSecs;
-  return { name: PRAYERS[0].name, h: Math.floor(diff / 3600), m: Math.floor((diff % 3600) / 60), s: diff % 60 };
+  return { name: prayers[0].name, h: Math.floor(diff / 3600), m: Math.floor((diff % 3600) / 60), s: diff % 60 };
 }
 
 function pad(n: number) { return String(n).padStart(2, '0'); }
 
 export default function PrayerCountdown() {
-  const [cd, setCd] = useState<ReturnType<typeof getCountdown> | null>(null);
+  const [prayers, setPrayers] = useState<PrayerEntry[] | null>(null);
+  const [cd, setCd] = useState<ReturnType<typeof buildCountdown> | null>(null);
 
   useEffect(() => {
-    setCd(getCountdown());
-    const id = setInterval(() => setCd(getCountdown()), 1000);
-    return () => clearInterval(id);
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+      try {
+        const { latitude, longitude } = pos.coords;
+        const res = await fetch(
+          `https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=2`
+        );
+        const json = await res.json();
+        const t = json.data.timings;
+        setPrayers([
+          { name: 'Fajr',    ...parseTime(t.Fajr) },
+          { name: 'Dhuhr',   ...parseTime(t.Dhuhr) },
+          { name: 'Asr',     ...parseTime(t.Asr) },
+          { name: 'Maghrib', ...parseTime(t.Maghrib) },
+          { name: 'Isha',    ...parseTime(t.Isha) },
+        ]);
+      } catch { /* silently ignore — pill stays hidden */ }
+    });
   }, []);
+
+  useEffect(() => {
+    if (!prayers) return;
+    setCd(buildCountdown(prayers));
+    const id = setInterval(() => setCd(buildCountdown(prayers)), 1000);
+    return () => clearInterval(id);
+  }, [prayers]);
 
   if (!cd) return null;
 
   return (
-    <div style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: '0.875rem',
-      background: 'rgba(0,207,207,0.06)',
-      backdropFilter: 'blur(12px)',
-      WebkitBackdropFilter: 'blur(12px)',
-      border: '1px solid rgba(0,207,207,0.2)',
-      borderRadius: 'var(--radius-pill)',
-      padding: '0.55rem 1.25rem 0.55rem 0.875rem',
-    }}
-    role="timer"
-    aria-label={`Time until ${cd.name}: ${pad(cd.h)} hours ${pad(cd.m)} minutes ${pad(cd.s)} seconds`}
-    aria-live="off"
+    <div
+      role="timer"
+      aria-label={`Time until ${cd.name}: ${pad(cd.h)} hours ${pad(cd.m)} minutes ${pad(cd.s)} seconds`}
+      aria-live="off"
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '0.875rem',
+        background: 'rgba(0,207,207,0.06)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        border: '1px solid rgba(0,207,207,0.2)',
+        borderRadius: 'var(--radius-pill)',
+        padding: '0.55rem 1.25rem 0.55rem 0.875rem',
+      }}
     >
       <span style={{ position: 'relative', width: 8, height: 8, flexShrink: 0 }} aria-hidden="true">
-        <span style={{
-          display: 'block', width: 8, height: 8, borderRadius: '50%', background: '#4ade80',
-        }} />
+        <span style={{ display: 'block', width: 8, height: 8, borderRadius: '50%', background: '#4ade80' }} />
         <span style={{
           position: 'absolute', inset: 0, borderRadius: '50%', background: '#4ade80',
           animation: 'pulseRing 1.5s ease-out infinite',

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Mail, MapPin, MessageSquare } from 'lucide-react';
+import ScrollReveal from '@/components/ScrollReveal';
 import styles from './page.module.css';
 
 export default function ContactPage() {
@@ -45,15 +46,18 @@ export default function ContactPage() {
       <div className="container">
 
         {/* Header */}
-        <header className={styles.header}>
-          <span className="text-gold-label">Get in Touch</span>
-          <h1 className={styles.title}>Contact Us</h1>
-        </header>
+        <ScrollReveal variant="blur">
+          <header className={styles.header}>
+            <span className="text-gold-label">Get in Touch</span>
+            <h1 className={styles.title}>Contact Us</h1>
+          </header>
+        </ScrollReveal>
 
         {/* Two-column layout */}
         <div className={styles.layout}>
 
           {/* Left — dark info card */}
+          <ScrollReveal variant="left">
           <aside className={styles.infoCard} aria-label="Contact details">
             <div className={styles.infoCardContent}>
               <h2 className={styles.infoTitle}>We'd love to hear from you</h2>
@@ -92,8 +96,10 @@ export default function ContactPage() {
               </div>
             </div>
           </aside>
+          </ScrollReveal>
 
           {/* Right — form */}
+          <ScrollReveal variant="right" delay={120}>
           <section className={styles.formPanel} aria-label="Contact form">
             {status.msg && (
               <div role="status" aria-live="polite" className={`${styles.statusMsg} ${statusClass}`}>
@@ -155,6 +161,7 @@ export default function ContactPage() {
               </button>
             </form>
           </section>
+          </ScrollReveal>
 
         </div>
       </div>

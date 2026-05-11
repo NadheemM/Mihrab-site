@@ -6,7 +6,7 @@ interface Props {
   className?: string;
   style?: CSSProperties;
   delay?: number;
-  variant?: 'up' | 'left' | 'right' | 'scale' | 'fade';
+  variant?: 'up' | 'left' | 'right' | 'scale' | 'fade' | 'blur' | 'rotate' | 'clip';
   threshold?: number;
 }
 
@@ -40,10 +40,13 @@ export default function ScrollReveal({
   }, [delay, threshold]);
 
   const variantClass =
-    variant === 'left'  ? 'sr-left'  :
-    variant === 'right' ? 'sr-right' :
-    variant === 'scale' ? 'sr-scale' :
-    variant === 'fade'  ? 'sr-fade'  : 'sr-up';
+    variant === 'left'   ? 'sr-left'   :
+    variant === 'right'  ? 'sr-right'  :
+    variant === 'scale'  ? 'sr-scale'  :
+    variant === 'fade'   ? 'sr-fade'   :
+    variant === 'blur'   ? 'sr-blur'   :
+    variant === 'rotate' ? 'sr-rotate' :
+    variant === 'clip'   ? 'sr-clip'   : 'sr-up';
 
   return (
     <div ref={ref} className={`${variantClass} ${className}`} style={style}>

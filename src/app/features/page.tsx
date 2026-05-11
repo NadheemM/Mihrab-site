@@ -2,6 +2,7 @@
 import { Clock, MapPin, BookOpen, Compass, Radio, Building2 } from 'lucide-react';
 import styles from './page.module.css';
 import TiltCard from '@/components/TiltCard';
+import ScrollReveal from '@/components/ScrollReveal';
 
 const features = [
   {
@@ -42,6 +43,7 @@ export default function FeaturesPage() {
 
       {/* Dark hero band */}
       <section className={styles.hero} aria-labelledby="features-title">
+        <ScrollReveal variant="blur">
         <div className={styles.heroContent}>
           <span className="text-gold-label">Platform Features</span>
           <h1 id="features-title" className={styles.heroTitle}>
@@ -51,6 +53,7 @@ export default function FeaturesPage() {
             Beautifully designed tools for every Muslim — prayer times, Quran, Qibla, community, and more, all unified in one application.
           </p>
         </div>
+        </ScrollReveal>
       </section>
 
       {/* Card grid */}
@@ -58,10 +61,14 @@ export default function FeaturesPage() {
         <div className="container">
           <div className={styles.grid} role="list">
             {features.map((f, i) => (
-              <TiltCard
+              <ScrollReveal
                 key={f.title}
-                wrapperClassName={`animate-card stagger-${Math.min(i + 1, 6)}`}
-                wrapperStyle={{ display: 'flex' }}
+                variant={i % 2 === 0 ? 'left' : 'right'}
+                delay={Math.floor(i / 2) * 80}
+                style={{ display: 'flex', height: '100%' }}
+              >
+              <TiltCard
+                wrapperStyle={{ display: 'flex', width: '100%' }}
                 className={styles.card}
                 style={{ width: '100%' }}
               >
@@ -73,6 +80,7 @@ export default function FeaturesPage() {
                   <p className={styles.cardText}>{f.description}</p>
                 </article>
               </TiltCard>
+              </ScrollReveal>
             ))}
           </div>
         </div>

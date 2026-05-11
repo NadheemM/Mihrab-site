@@ -136,7 +136,7 @@ export default function ShopPage() {
             </p>
             <div className={styles.comingSoonCtas}>
               <a
-                href="https://play.google.com/store/apps/details?id=in.mihrab.app&hl=en_IN"
+                href="https://play.google.com/store/apps/details?id=in.mihrab.app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-primary"
@@ -144,7 +144,7 @@ export default function ShopPage() {
                 Google Play
               </a>
               <a
-                href="https://apps.apple.com/in/app/mihrab/id6630381320"
+                href="https://apps.apple.com/app/mihrab/id6630381320"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-primary"

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import connectToDatabase from '@/lib/mongodb';
 import Blog from '@/models/Blog';
 import { Calendar, ArrowRight } from 'lucide-react';
+import ScrollReveal from '@/components/ScrollReveal';
 import styles from './page.module.css';
 
 export const dynamic = 'force-dynamic';
@@ -15,6 +16,7 @@ export default async function BlogPage() {
       <div className="container">
 
         {/* Header */}
+        <ScrollReveal variant="blur">
         <header style={{ textAlign: 'center', marginBottom: '3rem' }}>
           <span className="text-gold-label" style={{ marginBottom: '0.5rem' }}>Community News</span>
           <h1 style={{
@@ -32,6 +34,7 @@ export default async function BlogPage() {
             <span className="divider-arabesque-icon" />
           </div>
         </header>
+        </ScrollReveal>
 
         {posts.length === 0 ? (
           <div className="glass-panel--warm" style={{
@@ -63,11 +66,11 @@ export default async function BlogPage() {
           aria-label="Blog posts"
           >
             {posts.map((post, i) => (
+              <ScrollReveal key={post.slug} variant="scale" delay={i * 60} style={{ display: 'flex', height: '100%' }}>
               <Link
-                key={post.slug}
                 href={`/blog/${post.slug}`}
                 role="listitem"
-                className={`${styles.card} animate-card stagger-${Math.min(i + 1, 6)}`}
+                className={styles.card}
               >
                 {/* Image area / geometric gradient header */}
                 <div style={{
@@ -157,6 +160,7 @@ export default async function BlogPage() {
                   </div>
                 </div>
               </Link>
+              </ScrollReveal>
             ))}
           </div>
         )}

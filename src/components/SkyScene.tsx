@@ -273,6 +273,10 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
   const npItem3 = useRef<HTMLDivElement>(null);
   const npItem4 = useRef<HTMLDivElement>(null);
   const prevActiveIdx = useRef(-1);
+  const cwCardRef  = useRef<HTMLDivElement>(null);
+  const cwNameRef  = useRef<HTMLSpanElement>(null);
+  const cwTimeRef  = useRef<HTMLSpanElement>(null);
+  const cwNextRef  = useRef<HTMLSpanElement>(null);
 
   // Glow sprite textures
   const sCoreT   = useMemo(() => makeGlowTexture('rgba(255,255,230,1)',   'rgba(255,220,100,0.8)', 'rgba(255,180,50,0.18)'),  []);
@@ -370,6 +374,7 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
     if (srCardRef.current) srCardRef.current.style.background = cardBg;
     if (ssCardRef.current) ssCardRef.current.style.background = cardBg;
     if (npTimelineRef.current) npTimelineRef.current.style.background = cardBg;
+    if (cwCardRef.current)     cwCardRef.current.style.background     = cardBg;
 
     // Highlight upcoming prayer in timeline
     if (prayer) {
@@ -387,6 +392,12 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
           ref.current.style.boxShadow   = on ? '0 0 16px rgba(0,207,207,0.2), 0 6px 16px rgba(0,0,0,0.4)' : 'none';
           ref.current.style.animation   = on ? 'npPulse 2.5s ease-in-out infinite' : 'none';
         });
+        // Current Waqth card text
+        const cwIdx = (activeIdx - 1 + 5) % 5;
+        const RK = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+        if (cwNameRef.current) cwNameRef.current.textContent = RK[cwIdx];
+        if (cwTimeRef.current) cwTimeRef.current.textContent = prayer.raw[RK[cwIdx]] ? fmt12(prayer.raw[RK[cwIdx]]) : '—';
+        if (cwNextRef.current) cwNextRef.current.textContent = `Next: ${RK[activeIdx]}  ${prayer.raw[RK[activeIdx]] ? fmt12(prayer.raw[RK[activeIdx]]) : '—'}`;
       }
     }
   });
@@ -494,6 +505,64 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
                 </div>
               );
             })}
+          </div>
+        </div>
+      </Html>
+
+      {/* Current Waqth card — top left */}
+      <Html center position={[-12, 2.5, -12]}>
+        <div
+          ref={cwCardRef}
+          aria-hidden="true"
+          style={{
+            pointerEvents:        'none',
+            userSelect:           'none',
+            background:           'rgba(6, 12, 38, 0.52)',
+            backdropFilter:       'blur(20px) saturate(140%)',
+            WebkitBackdropFilter: 'blur(20px) saturate(140%)',
+            borderRadius:         '14px',
+            padding:              '13px 18px 14px',
+            border:               '1px solid rgba(255,255,255,0.10)',
+            boxShadow:            '0 4px 28px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06)',
+            minWidth:             '170px',
+            animation:            'skyLabelIn 1.4s ease-out forwards',
+          }}
+        >
+          {/* Header row */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '7px' }}>
+            <span style={{
+              width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
+              background: '#4ade80', boxShadow: '0 0 7px rgba(74,222,128,0.9)',
+              display: 'inline-block',
+            }} />
+            <span style={{
+              fontSize: '9px', letterSpacing: '0.18em', textTransform: 'uppercase',
+              fontFamily: 'DM Sans, sans-serif', color: 'rgba(0,207,207,0.9)',
+            }}>Current Waqth</span>
+          </div>
+
+          {/* Prayer name — big */}
+          <span ref={cwNameRef} style={{
+            display: 'block', fontSize: '26px', fontWeight: 700,
+            fontFamily: 'Cormorant Garamond, Georgia, serif',
+            letterSpacing: '0.02em', color: '#FFFFFF',
+            whiteSpace: 'nowrap', lineHeight: 1.1, marginBottom: '3px',
+          }}>—</span>
+
+          {/* Prayer start time — muted */}
+          <span ref={cwTimeRef} style={{
+            display: 'block', fontFamily: 'DM Sans, sans-serif',
+            fontSize: '12px', color: 'rgba(255,255,255,0.48)',
+            letterSpacing: '0.03em', marginBottom: '10px',
+          }}>—</span>
+
+          {/* Next prayer */}
+          <div style={{ borderTop: '1px solid rgba(255,255,255,0.09)', paddingTop: '8px' }}>
+            <span ref={cwNextRef} style={{
+              display: 'block', fontFamily: 'DM Sans, sans-serif',
+              fontSize: '11px', letterSpacing: '0.04em',
+              color: 'rgba(0,207,207,0.85)', whiteSpace: 'nowrap',
+            }}>Next: —</span>
           </div>
         </div>
       </Html>

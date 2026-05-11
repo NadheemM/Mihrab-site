@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import ScrollReveal from '@/components/ScrollReveal';
 import styles from './page.module.css';
 
 const images = [
@@ -24,12 +25,15 @@ export default function GalleryPage() {
       <div className="container">
 
         {/* Header */}
-        <header className={styles.header}>
-          <span className="text-gold-label">Community Moments</span>
-          <h1 className={styles.title}>Gallery</h1>
-        </header>
+        <ScrollReveal variant="blur">
+          <header className={styles.header}>
+            <span className="text-gold-label">Community Moments</span>
+            <h1 className={styles.title}>Gallery</h1>
+          </header>
+        </ScrollReveal>
 
         {/* Phone mockup */}
+        <ScrollReveal variant="scale">
         <div className={styles.phoneStage} aria-label="App screenshot slideshow">
           {/* Floating gold accent dots */}
           <span className={styles.dot + ' ' + styles.dot1} aria-hidden="true" />
@@ -73,8 +77,10 @@ export default function GalleryPage() {
             </div>
           </div>
         </div>
+        </ScrollReveal>
 
         {/* Video section */}
+        <ScrollReveal variant="up">
         <section className={styles.videoSection} aria-labelledby="video-title">
           <div className={styles.videoHeader}>
             <span className="text-gold-label">Watch & Explore</span>
@@ -89,13 +95,15 @@ export default function GalleryPage() {
             />
           </div>
         </section>
+        </ScrollReveal>
 
         {/* CTA */}
+        <ScrollReveal variant="fade">
         <div className={styles.cta}>
           <p className={styles.ctaText}>Experience it yourself. Download the app today.</p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link
-              href="https://play.google.com/store/apps/details?id=in.mihrab.app&hl=en_IN"
+              href="https://play.google.com/store/apps/details?id=in.mihrab.app"
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-gold"
@@ -103,7 +111,7 @@ export default function GalleryPage() {
               Google Play
             </Link>
             <Link
-              href="https://apps.apple.com/in/app/mihrab/id6630381320"
+              href="https://apps.apple.com/app/mihrab/id6630381320"
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-gold"
@@ -112,6 +120,7 @@ export default function GalleryPage() {
             </Link>
           </div>
         </div>
+        </ScrollReveal>
 
       </div>
     </div>
