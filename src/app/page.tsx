@@ -1,4 +1,7 @@
+'use client';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
+import type { Variants } from 'framer-motion';
 import { Clock, MapPin, BookOpen, Compass, Radio, Building2 } from 'lucide-react';
 import SkySceneClient from '@/components/SkySceneClient';
 import styles from './page.module.css';
@@ -10,6 +13,23 @@ import MotionLift from '@/components/MotionLift';
 import HeroReveal from '@/components/HeroReveal';
 import ScreenshotCarousel from '@/components/ScreenshotCarousel';
 import TestimonialsSection from '@/components/TestimonialsSection';
+
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
+const staggerParent: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
+};
+
+const revealCard: Variants = {
+  hidden: { opacity: 0, y: 20, scale: 0.96 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.85, ease: EASE } },
+};
+
+const revealUp: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } },
+};
 
 
 export default function Home() {
@@ -256,70 +276,83 @@ export default function Home() {
       {/* ── Stats band ── */}
       <section className={styles.statsBand} aria-label="Platform statistics">
         <div className="container">
-          <ScrollReveal variant="fade">
-            <div className={styles.statsBandInner}>
-              <div className="stat-box">
-                <span className="stat-box__number">
-                  <AnimatedCounter target={12} />
-                </span>
-                <span className="stat-box__label">Masjids Listed</span>
-              </div>
-              <span className="stat-divider" aria-hidden="true" />
-              <div className="stat-box">
-                <span className="stat-box__number">5</span>
-                <span className="stat-box__label">Daily Prayers</span>
-              </div>
-              <span className="stat-divider" aria-hidden="true" />
-              <div className="stat-box">
-                <span className="stat-box__number">
-                  <AnimatedCounter target={10} suffix="k+" />
-                </span>
-                <span className="stat-box__label">Downloads</span>
-              </div>
-              <span className="stat-divider" aria-hidden="true" />
-              <div className="stat-box">
-                <span className="stat-box__number">1</span>
-                <span className="stat-box__label">Community</span>
-              </div>
-            </div>
-          </ScrollReveal>
+          <motion.div
+            className={styles.statsBandInner}
+            variants={staggerParent}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+          >
+            <motion.div className="stat-box" variants={revealCard}>
+              <span className="stat-box__number">
+                <AnimatedCounter target={12} />
+              </span>
+              <span className="stat-box__label">Masjids Listed</span>
+            </motion.div>
+            <span className="stat-divider" aria-hidden="true" />
+            <motion.div className="stat-box" variants={revealCard}>
+              <span className="stat-box__number">5</span>
+              <span className="stat-box__label">Daily Prayers</span>
+            </motion.div>
+            <span className="stat-divider" aria-hidden="true" />
+            <motion.div className="stat-box" variants={revealCard}>
+              <span className="stat-box__number">
+                <AnimatedCounter target={10} suffix="k+" />
+              </span>
+              <span className="stat-box__label">Downloads</span>
+            </motion.div>
+            <span className="stat-divider" aria-hidden="true" />
+            <motion.div className="stat-box" variants={revealCard}>
+              <span className="stat-box__number">1</span>
+              <span className="stat-box__label">Community</span>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* ── CTA ── */}
       <section className={styles.ctaSection} aria-label="Download call to action">
         <div className="container">
-          <ScrollReveal variant="up">
-            <div className={styles.ctaInner}>
-              <span className="text-gold-label">Get Started</span>
-              <h2 className={styles.ctaHeading}>
-                Ready to transform your<br />spiritual routine?
-              </h2>
-              <p className={styles.ctaSub}>
-                Join the growing community of Muslims using Mihrab every day.
-              </p>
-              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                <Link
-                  href="https://play.google.com/store/apps/details?id=in.mihrab.app"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-gold"
-                  style={{ fontSize: '1rem', padding: '0.9rem 2.5rem' }}
-                >
-                  Google Play
-                </Link>
-                <Link
-                  href="https://apps.apple.com/app/mihrab/id6630381320"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-gold"
-                  style={{ fontSize: '1rem', padding: '0.9rem 2.5rem' }}
-                >
-                  App Store
-                </Link>
-              </div>
-            </div>
-          </ScrollReveal>
+          <motion.div
+            className={styles.ctaInner}
+            variants={staggerParent}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.25 }}
+          >
+            <motion.span className="text-gold-label" variants={revealUp}>
+              Get Started
+            </motion.span>
+            <motion.h2 className={styles.ctaHeading} variants={revealCard}>
+              Ready to transform your<br />spiritual routine?
+            </motion.h2>
+            <motion.p className={styles.ctaSub} variants={revealUp}>
+              Join the growing community of Muslims using Mihrab every day.
+            </motion.p>
+            <motion.div
+              variants={revealUp}
+              style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}
+            >
+              <Link
+                href="https://play.google.com/store/apps/details?id=in.mihrab.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-gold"
+                style={{ fontSize: '1rem', padding: '0.9rem 2.5rem' }}
+              >
+                Google Play
+              </Link>
+              <Link
+                href="https://apps.apple.com/app/mihrab/id6630381320"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-gold"
+                style={{ fontSize: '1rem', padding: '0.9rem 2.5rem' }}
+              >
+                App Store
+              </Link>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 

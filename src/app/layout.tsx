@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import TransitionProvider from '@/components/TransitionProvider';
 
 export const metadata: Metadata = {
   title: 'Mihrab — Where the Adhan Meets the Digital Age',
@@ -22,7 +23,9 @@ export default function RootLayout({
       <body>
         <Navbar />
         {/* pt accounts for fixed navbar height; hero pages override this with their own full-height section */}
-        <main style={{ flex: 1, paddingTop: '64px' }}>{children}</main>
+        <main style={{ flex: 1, paddingTop: '64px' }}>
+          <TransitionProvider>{children}</TransitionProvider>
+        </main>
         <Footer />
       </body>
     </html>
