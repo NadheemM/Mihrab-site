@@ -656,10 +656,9 @@ img, video {
    ============================================================ */
 .sr-up, .sr-left, .sr-right, .sr-scale, .sr-fade {
   opacity: 0;
-  will-change: opacity, transform;
   transition:
-    opacity   0.8s var(--ease-reveal),
-    transform 0.8s var(--ease-reveal);
+    opacity   0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .sr-up    { transform: translateY(40px); }
@@ -689,11 +688,10 @@ img, video {
   opacity: 0;
   filter: blur(12px);
   transform: translateY(20px);
-  will-change: opacity, transform, filter;
   transition:
-    opacity   0.85s var(--ease-reveal),
-    filter    0.85s var(--ease-reveal),
-    transform 0.85s var(--ease-reveal);
+    opacity   0.85s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    filter    0.85s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.85s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .sr-blur.sr-visible {
   opacity: 1;
@@ -703,11 +701,10 @@ img, video {
 
 .sr-rotate {
   opacity: 0;
-  will-change: opacity, transform;
   transform: rotate(-4deg) translateY(20px);
   transition:
-    opacity   0.8s var(--ease-reveal),
-    transform 0.8s var(--ease-reveal);
+    opacity   0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .sr-rotate.sr-visible {
   opacity: 1;
@@ -718,8 +715,8 @@ img, video {
   opacity: 0;
   clip-path: inset(0 0 100% 0);
   transition:
-    opacity   0.65s var(--ease-reveal),
-    clip-path 0.65s var(--ease-reveal);
+    opacity   0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    clip-path 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .sr-clip.sr-visible {
   opacity: 1;
