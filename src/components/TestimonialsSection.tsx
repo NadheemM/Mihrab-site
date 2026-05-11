@@ -76,7 +76,7 @@ export default function TestimonialsSection() {
           }}
         >
           {testimonials.map((t, i) => (
-            <ScrollReveal key={t.name} delay={i * 100} variant="up">
+            <ScrollReveal key={t.name} delay={i * 150} variant="up">
               <TiltCard
                 style={{
                   background: '#FFFFFF',

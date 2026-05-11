@@ -99,7 +99,7 @@ export default function ContactPage() {
           </ScrollReveal>
 
           {/* Right — form */}
-          <ScrollReveal variant="right" delay={120}>
+          <ScrollReveal variant="right" delay={150}>
           <section className={styles.formPanel} aria-label="Contact form">
             {status.msg && (
               <div role="status" aria-live="polite" className={`${styles.statusMsg} ${statusClass}`}>

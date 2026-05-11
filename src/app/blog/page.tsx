@@ -66,7 +66,7 @@ export default async function BlogPage() {
           aria-label="Blog posts"
           >
             {posts.map((post, i) => (
-              <ScrollReveal key={post.slug} variant="scale" delay={i * 60} style={{ display: 'flex', height: '100%' }}>
+              <ScrollReveal key={post.slug} variant="scale" delay={i * 150} style={{ display: 'flex', height: '100%' }}>
               <Link
                 href={`/blog/${post.slug}`}
                 role="listitem"

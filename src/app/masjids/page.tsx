@@ -177,7 +177,7 @@ export default function MasjidsPage() {
         </ScrollReveal>
 
         {/* Action chips */}
-        <ScrollReveal variant="up" delay={60}>
+        <ScrollReveal variant="up" delay={150}>
           <div style={{ display: 'flex', gap: '0.6rem', marginBottom: '1.75rem', flexWrap: 'wrap' }}>
             <button className="btn btn-primary" style={{ fontSize: '0.8125rem', padding: '0.5rem 1.1rem' }}>
               <Star size={14} fill="currentColor" aria-hidden="true" />
@@ -197,7 +197,7 @@ export default function MasjidsPage() {
         </ScrollReveal>
 
         {/* Search */}
-        <ScrollReveal variant="up" delay={120}>
+        <ScrollReveal variant="up" delay={300}>
           <div role="search" style={{ position: 'relative', marginBottom: '1.25rem' }}>
             <Search size={17} aria-hidden="true" style={{
               position: 'absolute', left: '1rem', top: '50%',
@@ -379,7 +379,7 @@ export default function MasjidsPage() {
             const distKm     = masjid.dist ?? null;
 
             return (
-              <ScrollReveal key={masjid._id} variant="up" delay={i * 55} style={{ marginBottom: '0.75rem' }}>
+              <ScrollReveal key={masjid._id} variant="up" delay={i * 150} style={{ marginBottom: '0.75rem' }}>
                 <GlowCard style={{ cursor: 'pointer' }} className="glow-card">
                   <div
                     role="listitem"

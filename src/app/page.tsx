@@ -14,20 +14,20 @@ import HeroReveal from '@/components/HeroReveal';
 import ScreenshotCarousel from '@/components/ScreenshotCarousel';
 import TestimonialsSection from '@/components/TestimonialsSection';
 
-const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const EASE: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
 
 const staggerParent: Variants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
+  visible: { transition: { staggerChildren: 0.15, delayChildren: 0.05 } },
 };
 
 const revealCard: Variants = {
-  hidden: { opacity: 0, y: 20, scale: 0.96 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.85, ease: EASE } },
+  hidden: { opacity: 0, y: 40, scale: 0.96 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.8, ease: EASE } },
 };
 
 const revealUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 40 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } },
 };
 
@@ -161,7 +161,7 @@ export default function Home() {
             </ScrollReveal>
 
             {/* 02 — Mosque Locator */}
-            <ScrollReveal delay={80} variant="scale" style={{ height: '100%' }}>
+            <ScrollReveal delay={150} variant="scale" style={{ height: '100%' }}>
               <MotionLift>
                 <GlowCard className={`${styles.bentoCard} ${styles.accentGold}`} style={{ position: 'relative', overflow: 'hidden' }}>
                   <span className={styles.cardNum}>02</span>
@@ -175,7 +175,7 @@ export default function Home() {
             </ScrollReveal>
 
             {/* 03 — Qibla */}
-            <ScrollReveal delay={160} variant="scale" style={{ height: '100%' }}>
+            <ScrollReveal delay={300} variant="scale" style={{ height: '100%' }}>
               <MotionLift>
                 <GlowCard className={`${styles.bentoCard} ${styles.accentFajr}`} style={{ position: 'relative', overflow: 'hidden' }}>
                   <span className={styles.cardNum}>03</span>
@@ -189,7 +189,7 @@ export default function Home() {
             </ScrollReveal>
 
             {/* 04 — Quran */}
-            <ScrollReveal delay={80} variant="up" style={{ height: '100%' }}>
+            <ScrollReveal delay={150} variant="up" style={{ height: '100%' }}>
               <MotionLift>
                 <GlowCard className={`${styles.bentoCard} ${styles.accentAsr}`} style={{ position: 'relative', overflow: 'hidden' }}>
                   <span className={styles.cardNum}>04</span>
@@ -203,7 +203,7 @@ export default function Home() {
             </ScrollReveal>
 
             {/* 05 — Radio */}
-            <ScrollReveal delay={160} variant="up" style={{ height: '100%' }}>
+            <ScrollReveal delay={300} variant="up" style={{ height: '100%' }}>
               <MotionLift>
                 <GlowCard className={`${styles.bentoCard} ${styles.accentIsha}`} style={{ position: 'relative', overflow: 'hidden' }}>
                   <span className={styles.cardNum}>05</span>
@@ -217,7 +217,7 @@ export default function Home() {
             </ScrollReveal>
 
             {/* 06 — Business */}
-            <ScrollReveal delay={240} variant="up" style={{ height: '100%' }}>
+            <ScrollReveal delay={450} variant="up" style={{ height: '100%' }}>
               <MotionLift>
                 <GlowCard className={`${styles.bentoCard} ${styles.accentTeal}`} style={{ position: 'relative', overflow: 'hidden' }}>
                   <span className={styles.cardNum}>06</span>

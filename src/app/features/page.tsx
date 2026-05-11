@@ -64,7 +64,7 @@ export default function FeaturesPage() {
               <ScrollReveal
                 key={f.title}
                 variant={i % 2 === 0 ? 'left' : 'right'}
-                delay={Math.floor(i / 2) * 80}
+                delay={Math.floor(i / 2) * 150}
                 style={{ display: 'flex', height: '100%' }}
               >
               <TiltCard

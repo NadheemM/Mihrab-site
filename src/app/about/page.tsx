@@ -34,7 +34,7 @@ export default function AboutPage() {
               </ScrollReveal>
 
               {/* Body copy column */}
-              <ScrollReveal variant="right" delay={100}>
+              <ScrollReveal variant="right" delay={150}>
                 <div className={styles.body}>
                   <p>
                     Mihrab was created with a singular vision: to help Muslims deepen their connection with their faith and their local communities. Wherever the call to prayer echoes across the neighbourhood, we wanted to give that tradition a digital home.
@@ -69,13 +69,13 @@ export default function AboutPage() {
                 <span className={styles.statLabel}>Masjids Listed</span>
               </div>
             </ScrollReveal>
-            <ScrollReveal variant="scale" delay={100} style={{ height: '100%' }}>
+            <ScrollReveal variant="scale" delay={150} style={{ height: '100%' }}>
               <div className={styles.statBox}>
                 <span className={styles.statNumber}>5</span>
                 <span className={styles.statLabel}>Daily Prayers</span>
               </div>
             </ScrollReveal>
-            <ScrollReveal variant="scale" delay={200} style={{ height: '100%' }}>
+            <ScrollReveal variant="scale" delay={300} style={{ height: '100%' }}>
               <div className={styles.statBox}>
                 <span className={styles.statNumber}>1</span>
                 <span className={styles.statLabel}>Community</span>
