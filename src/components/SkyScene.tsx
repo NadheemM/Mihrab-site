@@ -656,7 +656,7 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
               <>
                 <span style={{
                   fontFamily: 'DM Sans, sans-serif',
-                  fontSize: '11px', color: 'rgba(255,255,255,0.65)',
+                  fontSize: '11px', color: 'rgba(255,255,255,0.85)',
                   letterSpacing: '0.03em', lineHeight: 1.3,
                 }}>
                   {hijriDate.gregorian}
