@@ -278,34 +278,29 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
   const cwTimeRef  = useRef<HTMLSpanElement>(null);
   const cwNextRef  = useRef<HTMLSpanElement>(null);
   const hdCardRef  = useRef<HTMLDivElement>(null);
-  const hdDateRef  = useRef<HTMLDivElement>(null);
 
   const [hijriDate, setHijriDate] = useState<{ gregorian: string; hijri: string } | null>(null);
 
-  // Fetch Hijri date on mount and update daily
+  // Fetch Hijri date on mount and refresh daily at midnight
   useEffect(() => {
     const fetchHijriDate = async () => {
       const today = new Date();
-      const day = String(today.getDate()).padStart(2, '0');
+      const day   = String(today.getDate()).padStart(2, '0');
       const month = String(today.getMonth() + 1).padStart(2, '0');
-      const year = today.getFullYear();
+      const year  = today.getFullYear();
       const dateStr = `${day}-${month}-${year}`;
 
       try {
         const res = await fetch(`https://api.aladhan.com/v1/gToH/${dateStr}`);
         if (!res.ok) throw new Error('API error');
         const data = await res.json();
-
-        const gregorianWeekday = today.toLocaleDateString('en-US', { weekday: 'long' });
-        const gregorianDate = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
         const hijri = data.data?.hijri;
-
         if (hijri) {
-          const hijriStr = `${hijri.day} ${hijri.month.en} ${hijri.year}`;
-          setHijriDate({
-            gregorian: `${gregorianWeekday}, ${gregorianDate}`,
-            hijri: hijriStr,
-          });
+          // en-GB gives international order: "13 May 2026" not US "May 13, 2026"
+          const weekday     = today.toLocaleDateString('en-GB', { weekday: 'long' });
+          const gregDate    = today.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+          const hijriStr    = `${hijri.day} ${hijri.month.en} ${hijri.year}`;
+          setHijriDate({ gregorian: `${weekday}, ${gregDate}`, hijri: hijriStr });
         }
       } catch (err) {
         console.error('Hijri date fetch failed:', err);
@@ -314,16 +309,19 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
 
     fetchHijriDate();
 
-    // Refresh at midnight
+    // Schedule refresh at midnight then every 24 h — clean up both timers on unmount
     const now = new Date();
-    const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
-    const timeUntilMidnight = midnight.getTime() - now.getTime();
-    const timer = setTimeout(() => {
+    const msUntilMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1).getTime() - now.getTime();
+    let intervalId: ReturnType<typeof setInterval> | null = null;
+    const timeoutId = setTimeout(() => {
       fetchHijriDate();
-      setInterval(fetchHijriDate, 24 * 60 * 60 * 1000);
-    }, timeUntilMidnight);
+      intervalId = setInterval(fetchHijriDate, 24 * 60 * 60 * 1000);
+    }, msUntilMidnight);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timeoutId);
+      if (intervalId !== null) clearInterval(intervalId);
+    };
   }, []);
 
   // Glow sprite textures
@@ -658,7 +656,7 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
             }}>Islamic Calendar</span>
           </div>
 
-          <div ref={hdDateRef} style={{
+          <div style={{
             display: 'flex', flexDirection: 'column', gap: '10px',
           }}>
             {hijriDate ? (
