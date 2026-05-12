@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import ScrollReveal from '@/components/ScrollReveal';
 import connectToDatabase from '@/lib/mongodb';
 import Business from '@/models/Business';
 import { MapPin, Briefcase, Phone } from 'lucide-react';
@@ -72,6 +73,7 @@ export default async function BusinessDirectory() {
       <div className="container">
 
         {/* Header */}
+        <ScrollReveal variant="blur">
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -106,6 +108,7 @@ export default async function BusinessDirectory() {
             List Your Business
           </Link>
         </div>
+        </ScrollReveal>
 
         {businesses.length === 0 ? (
           <div className="glass-panel--warm" style={{
@@ -153,10 +156,9 @@ export default async function BusinessDirectory() {
             {businesses.map((biz, i) => {
               const catStyle = categoryStyle(biz.category);
               return (
+                <ScrollReveal key={biz._id.toString()} variant="up" delay={i * 150}>
                 <div
-                  key={biz._id.toString()}
                   role="listitem"
-                  className={`animate-card stagger-${Math.min(i + 1, 6)}`}
                   style={{
                     display: 'grid',
                     gridTemplateColumns: '80px 1fr auto',
@@ -258,6 +260,7 @@ export default async function BusinessDirectory() {
                   {/* Placeholder action */}
                   <div style={{ flexShrink: 0 }} />
                 </div>
+                </ScrollReveal>
               );
             })}
           </div>

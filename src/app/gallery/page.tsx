@@ -25,7 +25,7 @@ export default function GalleryPage() {
       <div className="container">
 
         {/* Header */}
-        <ScrollReveal variant="blur">
+        <ScrollReveal variant="blur" delay={0}>
           <header className={styles.header}>
             <span className="text-gold-label">Community Moments</span>
             <h1 className={styles.title}>Gallery</h1>
@@ -33,7 +33,7 @@ export default function GalleryPage() {
         </ScrollReveal>
 
         {/* Phone mockup */}
-        <ScrollReveal variant="scale">
+        <ScrollReveal variant="scale" delay={150}>
         <div className={styles.phoneStage} aria-label="App screenshot slideshow">
           {/* Floating gold accent dots */}
           <span className={styles.dot + ' ' + styles.dot1} aria-hidden="true" />
@@ -80,7 +80,7 @@ export default function GalleryPage() {
         </ScrollReveal>
 
         {/* Video section */}
-        <ScrollReveal variant="up">
+        <ScrollReveal variant="up" delay={300}>
         <section className={styles.videoSection} aria-labelledby="video-title">
           <div className={styles.videoHeader}>
             <span className="text-gold-label">Watch & Explore</span>
@@ -98,7 +98,7 @@ export default function GalleryPage() {
         </ScrollReveal>
 
         {/* CTA */}
-        <ScrollReveal variant="fade">
+        <ScrollReveal variant="fade" delay={450}>
         <div className={styles.cta}>
           <p className={styles.ctaText}>Experience it yourself. Download the app today.</p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>

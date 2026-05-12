@@ -81,34 +81,41 @@ export default function Home() {
 
             <HeroReveal />
 
-            <p className={styles.heroSub}>
-              Mihrab connects Muslims with accurate prayer times, every local masjid, and the pulse of the community — all in one place.
-            </p>
+            <ScrollReveal variant="up" delay={150}>
+              <p className={styles.heroSub}>
+                Mihrab connects Muslims with accurate prayer times, every local masjid, and the pulse of the community — all in one place.
+              </p>
+            </ScrollReveal>
 
-            <div className={styles.ctaGroup}>
-              <Link
-                href="https://play.google.com/store/apps/details?id=in.mihrab.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-primary"
-              >
-                Google Play
-              </Link>
-              <Link
-                href="https://apps.apple.com/app/mihrab/id6630381320"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-primary"
-              >
-                App Store
-              </Link>
-              <Link href="/features" className="btn btn-secondary">
-                Explore Features
-              </Link>
-            </div>
+            <ScrollReveal variant="up" delay={300}>
+              <div className={styles.ctaGroup}>
+                <Link
+                  href="https://play.google.com/store/apps/details?id=in.mihrab.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-primary"
+                >
+                  Google Play
+                </Link>
+                <Link
+                  href="https://apps.apple.com/app/mihrab/id6630381320"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-primary"
+                >
+                  App Store
+                </Link>
+                <Link href="/features" className="btn btn-secondary">
+                  Explore Features
+                </Link>
+              </div>
+            </ScrollReveal>
 
-            <PrayerCountdown />
+            <ScrollReveal variant="fade" delay={450}>
+              <PrayerCountdown />
+            </ScrollReveal>
 
+            <ScrollReveal variant="up" delay={600}>
             <div className={styles.statsStrip} aria-label="Platform statistics">
               <div className={styles.statItem}>
                 <span className={styles.statNumber}><AnimatedCounter target={12} /></span>
@@ -125,6 +132,7 @@ export default function Home() {
                 <span className={styles.statLabel}>Downloads</span>
               </div>
             </div>
+            </ScrollReveal>
 
           </div>
         </div>
