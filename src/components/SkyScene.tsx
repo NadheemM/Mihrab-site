@@ -337,10 +337,19 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
   const arcGeo  = useMemo(() => new THREE.TubeGeometry(arcCurve, 80, 0.04, 8, false), []);
   const arcGGeo = useMemo(() => new THREE.TubeGeometry(arcCurve, 80, 0.12, 8, false), []);
 
-  // Inject label fade-in keyframes once
+  // Inject label fade-in keyframes once (respects prefers-reduced-motion)
   useEffect(() => {
     const el = document.createElement('style');
-    el.textContent = `@keyframes skyLabelIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}@keyframes npPulse{0%,100%{box-shadow:0 0 0 0 rgba(0,207,207,0.35)}50%{box-shadow:0 0 0 6px rgba(0,207,207,0)}}`;
+    el.textContent = `
+      @media (prefers-reduced-motion: no-preference) {
+        @keyframes skyLabelIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes npPulse{0%,100%{box-shadow:0 0 0 0 rgba(0,207,207,0.35)}50%{box-shadow:0 0 0 6px rgba(0,207,207,0)}}
+      }
+      @media (prefers-reduced-motion: reduce) {
+        @keyframes skyLabelIn{from{opacity:1}to{opacity:1}}
+        @keyframes npPulse{from{box-shadow:none}to{box-shadow:none}}
+      }
+    `;
     document.head.appendChild(el);
     return () => { document.head.removeChild(el); };
   }, []);
