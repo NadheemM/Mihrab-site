@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useMemo, useEffect } from 'react';
+import { useRef, useMemo, useEffect, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
@@ -277,6 +277,54 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
   const cwNameRef  = useRef<HTMLSpanElement>(null);
   const cwTimeRef  = useRef<HTMLSpanElement>(null);
   const cwNextRef  = useRef<HTMLSpanElement>(null);
+  const hdCardRef  = useRef<HTMLDivElement>(null);
+  const hdDateRef  = useRef<HTMLDivElement>(null);
+
+  const [hijriDate, setHijriDate] = useState<{ gregorian: string; hijri: string } | null>(null);
+
+  // Fetch Hijri date on mount and update daily
+  useEffect(() => {
+    const fetchHijriDate = async () => {
+      const today = new Date();
+      const day = String(today.getDate()).padStart(2, '0');
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const year = today.getFullYear();
+      const dateStr = `${day}-${month}-${year}`;
+
+      try {
+        const res = await fetch(`https://api.aladhan.com/v1/gToH/${dateStr}`);
+        if (!res.ok) throw new Error('API error');
+        const data = await res.json();
+
+        const gregorianWeekday = today.toLocaleDateString('en-US', { weekday: 'long' });
+        const gregorianDate = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        const hijri = data.data?.hijri;
+
+        if (hijri) {
+          const hijriStr = `${hijri.day} ${hijri.month.en} ${hijri.year}`;
+          setHijriDate({
+            gregorian: `${gregorianWeekday}, ${gregorianDate}`,
+            hijri: hijriStr,
+          });
+        }
+      } catch (err) {
+        console.error('Hijri date fetch failed:', err);
+      }
+    };
+
+    fetchHijriDate();
+
+    // Refresh at midnight
+    const now = new Date();
+    const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
+    const timeUntilMidnight = midnight.getTime() - now.getTime();
+    const timer = setTimeout(() => {
+      fetchHijriDate();
+      setInterval(fetchHijriDate, 24 * 60 * 60 * 1000);
+    }, timeUntilMidnight);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Glow sprite textures
   const sCoreT   = useMemo(() => makeGlowTexture('rgba(255,255,230,1)',   'rgba(255,220,100,0.8)', 'rgba(255,180,50,0.18)'),  []);
@@ -375,6 +423,7 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
     if (ssCardRef.current) ssCardRef.current.style.background = cardBg;
     if (npTimelineRef.current) npTimelineRef.current.style.background = cardBg;
     if (cwCardRef.current)     cwCardRef.current.style.background     = cardBg;
+    if (hdCardRef.current)     hdCardRef.current.style.background     = cardBg;
 
     // Highlight upcoming prayer in timeline
     if (prayer) {
@@ -563,6 +612,70 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
               fontSize: '11px', letterSpacing: '0.04em',
               color: 'rgba(0,207,207,0.85)', whiteSpace: 'nowrap',
             }}>Next: —</span>
+          </div>
+        </div>
+      </Html>
+
+      {/* Hijri date card — top right */}
+      <Html center position={[12, 2.5, -12]}>
+        <div
+          ref={hdCardRef}
+          aria-hidden="true"
+          style={{
+            pointerEvents:        'none',
+            userSelect:           'none',
+            background:           'rgba(6, 12, 38, 0.52)',
+            backdropFilter:       'blur(20px) saturate(140%)',
+            WebkitBackdropFilter: 'blur(20px) saturate(140%)',
+            borderRadius:         '14px',
+            padding:              '13px 18px 14px',
+            border:               '1px solid rgba(255,255,255,0.10)',
+            boxShadow:            '0 4px 28px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06)',
+            minWidth:             '220px',
+            animation:            'skyLabelIn 1.4s ease-out forwards',
+          }}
+        >
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '7px',
+          }}>
+            <span style={{
+              width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
+              background: '#C9922A', boxShadow: '0 0 7px rgba(201,146,42,0.9)',
+              display: 'inline-block',
+            }} />
+            <span style={{
+              fontSize: '9px', letterSpacing: '0.18em', textTransform: 'uppercase',
+              fontFamily: 'DM Sans, sans-serif', color: 'rgba(201,146,42,0.9)',
+            }}>Islamic Calendar</span>
+          </div>
+
+          <div ref={hdDateRef} style={{
+            display: 'flex', flexDirection: 'column', gap: '10px',
+          }}>
+            {hijriDate ? (
+              <>
+                <span style={{
+                  fontFamily: 'DM Sans, sans-serif',
+                  fontSize: '11px', color: 'rgba(255,255,255,0.65)',
+                  letterSpacing: '0.03em', lineHeight: 1.3,
+                }}>
+                  {hijriDate.gregorian}
+                </span>
+                <div style={{ borderTop: '1px solid rgba(255,255,255,0.09)', paddingTop: '8px' }}>
+                  <span style={{
+                    fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: '16px',
+                    fontWeight: 600, color: '#FFFFFF', lineHeight: 1.2, display: 'block',
+                  }}>
+                    {hijriDate.hijri}
+                  </span>
+                </div>
+              </>
+            ) : (
+              <span style={{
+                fontFamily: 'DM Sans, sans-serif',
+                fontSize: '11px', color: 'rgba(255,255,255,0.48)',
+              }}>—</span>
+            )}
           </div>
         </div>
       </Html>
