@@ -12,11 +12,13 @@ export default function TransitionProvider({ children }: { children: ReactNode }
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
         key={pathname}
-        initial={{ opacity: 0, y: 28 }}
+        // y: -16 starts content slightly above natural position (hidden behind fixed navbar).
+        // No gap below navbar, no body-background flash on dark pages.
+        initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -18, transition: { duration: 0.22, ease: EASE_IN } }}
         transition={{
-          opacity: { duration: 0.18, ease: 'easeOut' },
+          opacity: { duration: 0.05, ease: 'linear' },
           y: { duration: 0.52, ease: EASE_Y },
         }}
       >
