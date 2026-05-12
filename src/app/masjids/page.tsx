@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { Star, ClipboardList, Search, MapPin, ArrowRight, Navigation, Smartphone } from 'lucide-react';
+import { Star, Search, MapPin, ArrowRight, Navigation, Smartphone } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import GlowCard from '@/components/GlowCard';
 import ScrollReveal from '@/components/ScrollReveal';
@@ -141,15 +141,21 @@ export default function MasjidsPage() {
     m.address.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const masjidsWithCoords = masjids.filter(m => m.lat !== 0 || m.lng !== 0);
+
   const nearbyList: MasjidEntry[] | null = nearbyToggle && userCoords
-    ? [...masjids]
-        .filter(m => m.lat !== 0 || m.lng !== 0)
-        .map(m => ({ ...m, dist: haversineKm(userCoords.lat, userCoords.lng, m.lat, m.lng) }))
-        .sort((a, b) => (a.dist ?? 0) - (b.dist ?? 0))
-        .slice(0, 5)
+    ? masjidsWithCoords.length > 0
+      ? [...masjidsWithCoords]
+          .map(m => ({ ...m, dist: haversineKm(userCoords.lat, userCoords.lng, m.lat, m.lng) }))
+          .sort((a, b) => (a.dist ?? 0) - (b.dist ?? 0))
+          .slice(0, 10)
+      : null
     : null;
 
-  const displayList: MasjidEntry[] = nearbyList ?? filtered;
+  const noCoords = nearbyToggle && userCoords !== null && masjidsWithCoords.length === 0;
+
+  // Search always takes priority; nearby only applies when search is empty
+  const displayList: MasjidEntry[] = searchQuery ? filtered : (nearbyList ?? filtered);
 
   return (
     <div style={{ backgroundColor: 'var(--surface-cream)', minHeight: '100vh', padding: '4rem 0 5rem' }}>
@@ -173,26 +179,6 @@ export default function MasjidsPage() {
             <div className="divider-arabesque" aria-hidden="true">
               <span className="divider-arabesque-icon" />
             </div>
-          </div>
-        </ScrollReveal>
-
-        {/* Action chips */}
-        <ScrollReveal variant="up" delay={150}>
-          <div style={{ display: 'flex', gap: '0.6rem', marginBottom: '1.75rem', flexWrap: 'wrap' }}>
-            <button className="btn btn-primary" style={{ fontSize: '0.8125rem', padding: '0.5rem 1.1rem' }}>
-              <Star size={14} fill="currentColor" aria-hidden="true" />
-              Favourites
-            </button>
-            <button className="btn" style={{
-              fontSize: '0.8125rem', padding: '0.5rem 1.1rem',
-              background: 'var(--surface-warm-white)',
-              border: 'var(--border-warm)',
-              color: 'var(--text-body)',
-              boxShadow: 'var(--shadow-sm)',
-            }}>
-              <ClipboardList size={14} aria-hidden="true" />
-              Notice Board
-            </button>
           </div>
         </ScrollReveal>
 
@@ -317,10 +303,10 @@ export default function MasjidsPage() {
             color: 'var(--text-headline)',
             margin: 0,
           }}>
-            {nearbyToggle && userCoords
-              ? 'Nearby Masjids'
-              : searchQuery
+            {searchQuery
               ? `Results for "${searchQuery}"`
+              : nearbyToggle && userCoords
+              ? 'Nearby Masjids'
               : 'All Masjids'}
           </h2>
           <button
@@ -353,6 +339,26 @@ export default function MasjidsPage() {
           </button>
         </div>
 
+        {/* No-coords notice — shown when nearby toggle is on but masjids lack GPS data */}
+        {noCoords && (
+          <div role="status" style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            background: 'rgba(201,146,42,0.07)',
+            border: '1px solid rgba(201,146,42,0.28)',
+            borderRadius: 'var(--radius-lg)',
+            padding: '0.875rem 1.25rem',
+            marginBottom: '1.25rem',
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: '0.875rem',
+            color: 'var(--brand-gold)',
+          }}>
+            <MapPin size={15} aria-hidden="true" />
+            GPS coordinates not yet available for these masjids — showing all masjids.
+          </div>
+        )}
+
         {/* List */}
         <div role="list" aria-label="Masjid listings" aria-busy={loading}>
 
@@ -364,10 +370,10 @@ export default function MasjidsPage() {
               fontFamily: "'DM Sans', sans-serif",
               color: 'var(--text-muted)', fontSize: '0.9375rem',
             }}>
-              {nearbyToggle
-                ? 'No masjids found near your location.'
-                : searchQuery
+              {searchQuery
                 ? `No masjids match "${searchQuery}".`
+                : nearbyToggle
+                ? 'No masjids found near your location.'
                 : 'No masjids found.'}
             </div>
           )}
