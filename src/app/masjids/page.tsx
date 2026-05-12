@@ -1,13 +1,13 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Star, Search, MapPin, ArrowRight, Navigation, Smartphone } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import GlowCard from '@/components/GlowCard';
 import ScrollReveal from '@/components/ScrollReveal';
 
-// Replace with your published app store URLs
-const IOS_APP_URL     = 'https://apps.apple.com/app/mihrab';
-const ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.mihrab';
+const IOS_APP_URL     = 'https://apps.apple.com/app/mihrab/id6630381320';
+const ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=in.mihrab.app';
 
 interface Masjid {
   _id: string;
@@ -30,13 +30,6 @@ function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): nu
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-function getAppStoreUrl(): string {
-  if (typeof window === 'undefined') return 'https://app.mihrab.in';
-  const ua = navigator.userAgent;
-  if (/iPad|iPhone|iPod/.test(ua)) return IOS_APP_URL;
-  if (/Android/.test(ua)) return ANDROID_APP_URL;
-  return 'https://app.mihrab.in';
-}
 
 function SkeletonCard() {
   return (
@@ -80,21 +73,26 @@ const AVATAR_TEXT_COLORS = [
 ];
 
 export default function MasjidsPage() {
-  const [masjids, setMasjids]         = useState<Masjid[]>([]);
-  const [loading, setLoading]         = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [masjids, setMasjids]           = useState<Masjid[]>([]);
+  const [loading, setLoading]           = useState(true);
+  const [apiError, setApiError]         = useState(false);
+  const [searchQuery, setSearchQuery]   = useState('');
   const [nearbyToggle, setNearbyToggle] = useState(false);
-  const [userCoords, setUserCoords]   = useState<{ lat: number; lng: number } | null>(null);
-  const [locStatus, setLocStatus]     = useState<'idle' | 'requesting' | 'denied'>('idle');
+  const [userCoords, setUserCoords]     = useState<{ lat: number; lng: number } | null>(null);
+  const [locStatus, setLocStatus]       = useState<'idle' | 'requesting' | 'denied'>('idle');
   const [locPromptSeen, setLocPromptSeen] = useState(false);
-  const [favorites, setFavorites]     = useState<Record<string, boolean>>({});
+  const [favorites, setFavorites]       = useState<Record<string, boolean>>({});
   const router = useRouter();
 
   useEffect(() => {
     fetch('/api/masjids')
       .then(r => r.json())
-      .then(data => { if (Array.isArray(data)) setMasjids(data); setLoading(false); })
-      .catch(() => setLoading(false));
+      .then(data => {
+        if (Array.isArray(data)) { setMasjids(data); }
+        else { setApiError(true); }
+        setLoading(false);
+      })
+      .catch(() => { setApiError(true); setLoading(false); });
 
     try {
       const saved = localStorage.getItem('masjidFavorites');
@@ -148,11 +146,12 @@ export default function MasjidsPage() {
       ? [...masjidsWithCoords]
           .map(m => ({ ...m, dist: haversineKm(userCoords.lat, userCoords.lng, m.lat, m.lng) }))
           .sort((a, b) => (a.dist ?? 0) - (b.dist ?? 0))
-          .slice(0, 10)
+          .slice(0, 5)
       : null
     : null;
 
-  const noCoords = nearbyToggle && userCoords !== null && masjidsWithCoords.length === 0;
+  // Only flag no-coords when masjids actually loaded — avoids false banner when API fails
+  const noCoords = nearbyToggle && userCoords !== null && masjids.length > 0 && masjidsWithCoords.length === 0;
 
   // Search always takes priority; nearby only applies when search is empty
   const displayList: MasjidEntry[] = searchQuery ? filtered : (nearbyList ?? filtered);
@@ -164,7 +163,6 @@ export default function MasjidsPage() {
         {/* Header */}
         <ScrollReveal variant="up">
           <div style={{ marginBottom: '2.25rem' }}>
-            <span className="text-gold-label" style={{ marginBottom: '0.5rem' }}>Masjid Directory</span>
             <h1 style={{
               fontFamily: "'Cormorant Garamond', Georgia, serif",
               fontSize: 'clamp(2rem, 5vw, 3rem)',
@@ -364,7 +362,28 @@ export default function MasjidsPage() {
 
           {loading && Array.from({ length: 5 }).map((_, i) => <SkeletonCard key={i} />)}
 
-          {!loading && displayList.length === 0 && (
+          {/* API error state */}
+          {!loading && apiError && (
+            <div style={{
+              textAlign: 'center', padding: '2.5rem 1.5rem',
+              background: 'var(--surface-warm-white)',
+              borderRadius: 'var(--radius-lg)',
+              border: 'var(--border-warm)',
+              marginBottom: '1rem',
+            }}>
+              <p style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontSize: '1.2rem', fontWeight: 600,
+                color: 'var(--text-headline)', margin: '0 0 0.5rem',
+              }}>Unable to load masjids</p>
+              <p style={{
+                fontFamily: "'DM Sans', sans-serif", fontSize: '0.875rem',
+                color: 'var(--text-muted)', margin: 0,
+              }}>The masjid directory is temporarily unavailable. Please try again shortly.</p>
+            </div>
+          )}
+
+          {!loading && !apiError && displayList.length === 0 && (
             <div style={{
               textAlign: 'center', padding: '3rem 1rem',
               fontFamily: "'DM Sans', sans-serif",
@@ -372,13 +391,11 @@ export default function MasjidsPage() {
             }}>
               {searchQuery
                 ? `No masjids match "${searchQuery}".`
-                : nearbyToggle
-                ? 'No masjids found near your location.'
                 : 'No masjids found.'}
             </div>
           )}
 
-          {!loading && displayList.map((masjid, i) => {
+          {!loading && !apiError && displayList.map((masjid, i) => {
             const avatarBg   = AVATAR_GRADIENTS[i % AVATAR_GRADIENTS.length];
             const avatarText = AVATAR_TEXT_COLORS[i % AVATAR_TEXT_COLORS.length];
             const isFav      = !!favorites[masjid._id];
@@ -474,50 +491,65 @@ export default function MasjidsPage() {
             );
           })}
 
-          {/* App store CTA — shown after the 5 nearby results */}
-          {!loading && nearbyList && (
-            <div style={{
-              textAlign: 'center',
-              padding: '1.75rem 1.25rem',
-              background: 'var(--surface-warm-white)',
-              borderRadius: 'var(--radius-lg)',
-              border: '1px solid rgba(0,207,207,0.18)',
-              borderTop: '3px solid var(--brand-teal)',
-              marginTop: '0.5rem',
-            }}>
-              <Smartphone
-                size={28}
-                color="var(--brand-teal)"
-                aria-hidden="true"
-                style={{ marginBottom: '0.75rem' }}
-              />
-              <p style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontSize: '1.2rem', fontWeight: 600,
-                color: 'var(--text-headline)',
-                margin: '0 0 0.4rem',
+          {/* App CTA — always shown at the bottom */}
+          {!loading && (
+            <ScrollReveal variant="up" delay={displayList.length * 150}>
+              <div style={{
+                textAlign: 'center',
+                padding: '2rem 1.5rem',
+                background: 'var(--surface-warm-white)',
+                borderRadius: 'var(--radius-lg)',
+                border: '1px solid rgba(0,207,207,0.18)',
+                borderTop: '3px solid var(--brand-teal)',
+                marginTop: '1rem',
               }}>
-                Discover More Masjids
-              </p>
-              <p style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: '0.875rem',
-                color: 'var(--text-muted)',
-                margin: '0 0 1.25rem',
-              }}>
-                Get the full Mihrab app for live prayer alerts, all masjids, and community news.
-              </p>
-              <a
-                href={getAppStoreUrl()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-primary"
-                style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
-              >
-                <Smartphone size={15} aria-hidden="true" />
-                See More — Get the App
-              </a>
-            </div>
+                <div style={{
+                  width: 48, height: 48, borderRadius: 'var(--radius-md)',
+                  background: 'rgba(0,207,207,0.08)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  margin: '0 auto 1rem',
+                }}>
+                  <Smartphone size={24} color="var(--brand-teal)" aria-hidden="true" />
+                </div>
+                <p style={{
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontSize: '1.3rem', fontWeight: 600,
+                  color: 'var(--text-headline)',
+                  margin: '0 0 0.4rem',
+                }}>
+                  Discover Every Masjid
+                </p>
+                <p style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: '0.875rem',
+                  color: 'var(--text-muted)',
+                  margin: '0 0 1.5rem',
+                  lineHeight: 1.6,
+                }}>
+                  Get live prayer alerts, full masjid directory, Qibla, and community updates — all in the Mihrab app.
+                </p>
+                <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <Link
+                    href={ANDROID_APP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-primary"
+                    style={{ textDecoration: 'none' }}
+                  >
+                    Google Play
+                  </Link>
+                  <Link
+                    href={IOS_APP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-primary"
+                    style={{ textDecoration: 'none' }}
+                  >
+                    App Store
+                  </Link>
+                </div>
+              </div>
+            </ScrollReveal>
           )}
 
         </div>
