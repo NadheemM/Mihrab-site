@@ -279,7 +279,12 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
   const cwNextRef  = useRef<HTMLSpanElement>(null);
   const hdCardRef  = useRef<HTMLDivElement>(null);
 
-  const [hijriDate, setHijriDate] = useState<{ gregorian: string; hijri: string } | null>(null);
+  const [hijriDate, setHijriDate] = useState<{
+    gregorian: string;
+    hijriDateLine: string;
+    hijriYear: string;
+  } | null>(null);
+  const [userLocation, setUserLocation] = useState<string>('');
 
   // Fetch Hijri date on mount and refresh daily at midnight
   useEffect(() => {
@@ -289,18 +294,19 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
       const month = String(today.getMonth() + 1).padStart(2, '0');
       const year  = today.getFullYear();
       const dateStr = `${day}-${month}-${year}`;
-
       try {
         const res = await fetch(`https://api.aladhan.com/v1/gToH/${dateStr}`);
         if (!res.ok) throw new Error('API error');
         const data = await res.json();
         const hijri = data.data?.hijri;
         if (hijri) {
-          // en-GB gives international order: "13 May 2026" not US "May 13, 2026"
-          const weekday     = today.toLocaleDateString('en-GB', { weekday: 'long' });
-          const gregDate    = today.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-          const hijriStr    = `${hijri.day} ${hijri.month.en} ${hijri.year}`;
-          setHijriDate({ gregorian: `${weekday}, ${gregDate}`, hijri: hijriStr });
+          const weekday  = today.toLocaleDateString('en-GB', { weekday: 'long' });
+          const gregDate = today.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+          setHijriDate({
+            gregorian:    `${weekday}, ${gregDate}`,
+            hijriDateLine: `${hijri.day} ${hijri.month.en}`,
+            hijriYear:     hijri.year,
+          });
         }
       } catch (err) {
         console.error('Hijri date fetch failed:', err);
@@ -309,7 +315,6 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
 
     fetchHijriDate();
 
-    // Schedule refresh at midnight then every 24 h — clean up both timers on unmount
     const now = new Date();
     const msUntilMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1).getTime() - now.getTime();
     let intervalId: ReturnType<typeof setInterval> | null = null;
@@ -322,6 +327,27 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
       clearTimeout(timeoutId);
       if (intervalId !== null) clearInterval(intervalId);
     };
+  }, []);
+
+  // Reverse-geocode the user's position for the location chip (BigDataCloud, no key required)
+  useEffect(() => {
+    if (typeof navigator === 'undefined' || !navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(
+      async ({ coords: { latitude, longitude } }) => {
+        try {
+          const res = await fetch(
+            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+          );
+          if (!res.ok) return;
+          const d = await res.json();
+          const city    = d.city || d.locality || d.principalSubdivision || '';
+          const country = d.countryName || '';
+          setUserLocation(city && country ? `${city}, ${country}` : country || city);
+        } catch { /* silent — location chip simply stays hidden */ }
+      },
+      () => { /* permission denied — hide location chip */ },
+      { timeout: 8000 }
+    );
   }, []);
 
   // Glow sprite textures
@@ -631,58 +657,113 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
           style={{
             pointerEvents:        'none',
             userSelect:           'none',
-            background:           'rgba(6, 12, 38, 0.52)',
-            backdropFilter:       'blur(20px) saturate(140%)',
-            WebkitBackdropFilter: 'blur(20px) saturate(140%)',
-            borderRadius:         '14px',
-            padding:              '13px 18px 14px',
-            border:               '1px solid rgba(255,255,255,0.10)',
-            boxShadow:            '0 4px 28px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06)',
-            minWidth:             '220px',
+            background:           'rgba(6, 12, 38, 0.72)',
+            backdropFilter:       'blur(24px) saturate(160%)',
+            WebkitBackdropFilter: 'blur(24px) saturate(160%)',
+            borderRadius:         '18px',
+            padding:              '16px 20px 18px',
+            border:               '1px solid rgba(255,255,255,0.11)',
+            boxShadow:            '0 6px 36px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.07)',
+            minWidth:             '310px',
             animation:            'skyLabelIn 1.4s ease-out forwards',
+            overflow:             'hidden',
           }}
         >
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '7px',
-          }}>
+          {/* Header — gem icon + label */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '14px' }}>
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+              <path d="M7 0.5L9 3H12.5L13.5 6L10.5 10L7 13.5L3.5 10L0.5 6L1.5 3H5L7 0.5Z" fill="#C9922A"/>
+            </svg>
             <span style={{
-              width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
-              background: '#C9922A', boxShadow: '0 0 7px rgba(201,146,42,0.9)',
-              display: 'inline-block',
-            }} />
-            <span style={{
-              fontSize: '9px', letterSpacing: '0.18em', textTransform: 'uppercase',
-              fontFamily: 'DM Sans, sans-serif', color: 'rgba(201,146,42,0.9)',
+              fontSize: '9px', letterSpacing: '0.22em', textTransform: 'uppercase',
+              fontFamily: 'DM Sans, sans-serif', color: '#C9922A', fontWeight: 700,
             }}>Islamic Calendar</span>
           </div>
 
+          {/* Date + location row */}
           <div style={{
-            display: 'flex', flexDirection: 'column', gap: '10px',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            gap: '10px', marginBottom: '13px', flexWrap: 'wrap', rowGap: '8px',
           }}>
-            {hijriDate ? (
-              <>
-                <span style={{
-                  fontFamily: 'DM Sans, sans-serif',
-                  fontSize: '11px', color: 'rgba(255,255,255,0.85)',
-                  letterSpacing: '0.03em', lineHeight: 1.3,
-                }}>
-                  {hijriDate.gregorian}
-                </span>
-                <div style={{ borderTop: '1px solid rgba(255,255,255,0.09)', paddingTop: '8px' }}>
-                  <span style={{
-                    fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: '16px',
-                    fontWeight: 600, color: '#FFFFFF', lineHeight: 1.2, display: 'block',
-                  }}>
-                    {hijriDate.hijri}
-                  </span>
-                </div>
-              </>
-            ) : (
+            {/* Gregorian date */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.55)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                <path d="M16 2v4M8 2v4M3 10h18"/>
+                <circle cx="12" cy="16" r="1.2" fill="rgba(255,255,255,0.55)" stroke="none"/>
+              </svg>
               <span style={{
-                fontFamily: 'DM Sans, sans-serif',
-                fontSize: '11px', color: 'rgba(255,255,255,0.48)',
-              }}>—</span>
+                fontFamily: 'DM Sans, sans-serif', fontSize: '12px', fontWeight: 500,
+                color: 'rgba(255,255,255,0.9)', whiteSpace: 'nowrap',
+              }}>
+                {hijriDate?.gregorian ?? '—'}
+              </span>
+            </div>
+
+            {/* Location chip — only shown when we have a location */}
+            {userLocation && (
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: '5px',
+                background: 'rgba(201,146,42,0.13)',
+                border: '1px solid rgba(201,146,42,0.32)',
+                borderRadius: '20px', padding: '4px 10px',
+                flexShrink: 0,
+              }}>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#C9922A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2C8.686 2 6 4.686 6 8c0 4.418 6 12 6 12s6-7.582 6-12c0-3.314-2.686-6-6-6z"/>
+                  <circle cx="12" cy="8" r="2.5"/>
+                </svg>
+                <span style={{
+                  fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 600,
+                  color: '#C9922A', whiteSpace: 'nowrap',
+                }}>
+                  {userLocation}
+                </span>
+              </div>
             )}
+          </div>
+
+          {/* Divider */}
+          <div style={{ height: '1px', background: 'rgba(255,255,255,0.09)', marginBottom: '14px' }} />
+
+          {/* Hijri date + crescent moon */}
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: '8px' }}>
+            <div style={{ flex: 1 }}>
+              <span style={{
+                fontFamily: 'Cormorant Garamond, Georgia, serif',
+                fontSize: '27px', fontWeight: 700, color: '#FFFFFF',
+                lineHeight: 1.15, display: 'block',
+              }}>
+                {hijriDate?.hijriDateLine ?? '—'}
+              </span>
+              <span style={{
+                fontFamily: 'Cormorant Garamond, Georgia, serif',
+                fontSize: '27px', fontWeight: 700, color: '#FFFFFF',
+                lineHeight: 1.15, display: 'block',
+              }}>
+                {hijriDate?.hijriYear ?? ''}
+              </span>
+            </div>
+
+            {/* Crescent moon — CSS-only, no emoji */}
+            <svg width="62" height="62" viewBox="0 0 62 62" fill="none" style={{ flexShrink: 0, marginBottom: '2px' }}>
+              <defs>
+                <radialGradient id="mgA" cx="38%" cy="52%" r="65%">
+                  <stop offset="0%" stopColor="#FFE49A"/>
+                  <stop offset="55%" stopColor="#D4971E"/>
+                  <stop offset="100%" stopColor="#7B4E00"/>
+                </radialGradient>
+              </defs>
+              {/* Outer glow */}
+              <circle cx="33" cy="31" r="23" fill="rgba(201,146,42,0.10)"/>
+              {/* Full circle */}
+              <circle cx="33" cy="31" r="17" fill="url(#mgA)"/>
+              {/* Overlay to carve crescent */}
+              <circle cx="43" cy="29" r="16" fill="rgba(5,9,28,0.95)"/>
+              {/* Cloud wisp at bottom */}
+              <ellipse cx="40" cy="48" rx="13" ry="4" fill="rgba(18,28,65,0.65)"/>
+              <ellipse cx="32" cy="51" rx="9"  ry="3" fill="rgba(18,28,65,0.45)"/>
+            </svg>
           </div>
         </div>
       </Html>
