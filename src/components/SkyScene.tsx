@@ -724,47 +724,16 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
           </div>
 
           {/* Divider */}
-          <div style={{ height: '1px', background: 'rgba(255,255,255,0.09)', marginBottom: '14px' }} />
+          <div style={{ height: '1px', background: 'rgba(255,255,255,0.09)', marginBottom: '10px' }} />
 
-          {/* Hijri date + crescent moon */}
-          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: '8px' }}>
-            <div style={{ flex: 1 }}>
-              <span style={{
-                fontFamily: 'Cormorant Garamond, Georgia, serif',
-                fontSize: '27px', fontWeight: 700, color: '#FFFFFF',
-                lineHeight: 1.15, display: 'block',
-              }}>
-                {hijriDate?.hijriDateLine ?? '—'}
-              </span>
-              <span style={{
-                fontFamily: 'Cormorant Garamond, Georgia, serif',
-                fontSize: '27px', fontWeight: 700, color: '#FFFFFF',
-                lineHeight: 1.15, display: 'block',
-              }}>
-                {hijriDate?.hijriYear ?? ''}
-              </span>
-            </div>
-
-            {/* Crescent moon — CSS-only, no emoji */}
-            <svg width="62" height="62" viewBox="0 0 62 62" fill="none" style={{ flexShrink: 0, marginBottom: '2px' }}>
-              <defs>
-                <radialGradient id="mgA" cx="38%" cy="52%" r="65%">
-                  <stop offset="0%" stopColor="#FFE49A"/>
-                  <stop offset="55%" stopColor="#D4971E"/>
-                  <stop offset="100%" stopColor="#7B4E00"/>
-                </radialGradient>
-              </defs>
-              {/* Outer glow */}
-              <circle cx="33" cy="31" r="23" fill="rgba(201,146,42,0.10)"/>
-              {/* Full circle */}
-              <circle cx="33" cy="31" r="17" fill="url(#mgA)"/>
-              {/* Overlay to carve crescent */}
-              <circle cx="43" cy="29" r="16" fill="rgba(5,9,28,0.95)"/>
-              {/* Cloud wisp at bottom */}
-              <ellipse cx="40" cy="48" rx="13" ry="4" fill="rgba(18,28,65,0.65)"/>
-              <ellipse cx="32" cy="51" rx="9"  ry="3" fill="rgba(18,28,65,0.45)"/>
-            </svg>
-          </div>
+          {/* Hijri date — original compact style */}
+          <span style={{
+            fontFamily: 'Cormorant Garamond, Georgia, serif',
+            fontSize: '16px', fontWeight: 600,
+            color: '#FFFFFF', lineHeight: 1.25, display: 'block',
+          }}>
+            {hijriDate ? `${hijriDate.hijriDateLine} ${hijriDate.hijriYear}` : '—'}
+          </span>
         </div>
       </Html>
 
