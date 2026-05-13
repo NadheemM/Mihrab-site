@@ -8,8 +8,9 @@ import { useState, useEffect, useRef } from 'react';
 import styles from './Navbar.module.css';
 
 const ORG_LINKS = [
-  { name: 'About',   href: '/about' },
-  { name: 'Contact', href: '/contact' },
+  { name: 'About',    href: '/about' },
+  { name: 'Team Up',  href: '/team-up' },
+  { name: 'Contact',  href: '/contact' },
 ];
 
 const MAIN_LINKS = [
