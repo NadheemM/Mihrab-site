@@ -523,7 +523,7 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
       </sprite>
 
       {/* Prayer timeline — horizontal band, bottom center */}
-      <Html center position={[0, -5.0, -12]}>
+      <Html center position={[0, -6.5, -12]}>
         <div
           ref={npTimelineRef}
           aria-hidden="true"
@@ -669,17 +669,6 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
             overflow:             'hidden',
           }}
         >
-          {/* Header — gem icon + label */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '14px' }}>
-            <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
-              <path d="M7 0.5L9 3H12.5L13.5 6L10.5 10L7 13.5L3.5 10L0.5 6L1.5 3H5L7 0.5Z" fill="#C9922A"/>
-            </svg>
-            <span style={{
-              fontSize: '9px', letterSpacing: '0.22em', textTransform: 'uppercase',
-              fontFamily: 'DM Sans, sans-serif', color: '#C9922A', fontWeight: 700,
-            }}>Islamic Calendar</span>
-          </div>
-
           {/* Date + location row */}
           <div style={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
