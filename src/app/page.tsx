@@ -5,7 +5,6 @@ import type { Variants } from 'framer-motion';
 import { Clock, MapPin, BookOpen, Compass, Radio, Building2 } from 'lucide-react';
 import SkySceneClient from '@/components/SkySceneClient';
 import styles from './page.module.css';
-import PrayerCountdown from '@/components/PrayerCountdown';
 import AnimatedCounter from '@/components/AnimatedCounter';
 import ScrollReveal from '@/components/ScrollReveal';
 import GlowCard from '@/components/GlowCard';
@@ -109,10 +108,6 @@ export default function Home() {
                   Explore Features
                 </Link>
               </div>
-            </ScrollReveal>
-
-            <ScrollReveal variant="fade" delay={450}>
-              <PrayerCountdown />
             </ScrollReveal>
 
             <ScrollReveal variant="up" delay={600}>
