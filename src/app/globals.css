@@ -232,15 +232,31 @@ img, video {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  border: solid transparent;
-  border-width: 0 0 4px;
-  border-radius: 16px;
+  background: transparent;
+  border-radius: 25px;
   padding: 0.75rem 2rem;
   box-sizing: border-box;
-  transform: translateZ(0);
-  transition: filter 0.2s;
+  overflow: hidden;
+  transition: color 0.3s 0.1s ease-out;
   vertical-align: middle;
   outline: none;
+}
+
+/* Liquid fill circle — sits behind text */
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border-radius: 50%;
+  display: block;
+  width: 20em;
+  height: 20em;
+  left: -5em;
+  transition: box-shadow 0.5s ease-out;
+  z-index: -1;
 }
 
 .btn:focus-visible {
@@ -249,129 +265,95 @@ img, video {
 }
 
 .btn:active {
-  border-width: 4px 0 0;
-  background: none;
+  filter: brightness(0.9);
 }
 
 /* ── Primary — teal ───────────────────────────────────────── */
 .btn-primary {
-  background-color: #009999;
-  color: #ffffff;
-}
-
-.btn-primary::after {
-  content: "";
-  position: absolute;
-  background-color: #00CFCF;
-  background-clip: padding-box;
-  border: solid transparent;
-  border-radius: 16px;
-  border-width: 0 0 4px;
-  inset: 0;
-  bottom: -4px;
-  z-index: -1;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--brand-teal);
+  color: var(--brand-teal);
 }
 
 .btn-primary:hover:not(:disabled) {
-  filter: brightness(1.1);
+  color: #ffffff;
 }
 
-.btn-primary:active {
-  background: none;
-  border-width: 4px 0 0;
+.btn-primary:hover:not(:disabled)::before {
+  box-shadow: inset 0 0 0 10em var(--brand-teal);
 }
 
 .btn-primary:focus-visible {
-  outline: 3px solid #00CFCF;
+  outline: 3px solid var(--brand-teal);
   outline-offset: 3px;
 }
 
 /* ── Secondary — outline ──────────────────────────────────── */
 .btn-secondary {
-  background-color: transparent;
-  color: #0F1A30;
-  border: 2px solid #00CFCF;
-  border-width: 2px 2px 4px;
-}
-
-.btn-secondary::after {
-  content: "";
-  position: absolute;
-  background-color: rgba(0, 207, 207, 0.06);
-  background-clip: padding-box;
-  border: solid transparent;
-  border-radius: 16px;
-  border-width: 0 0 4px;
-  inset: 0;
-  bottom: -4px;
-  z-index: -1;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--brand-teal);
+  color: var(--brand-teal);
 }
 
 .btn-secondary:hover:not(:disabled) {
-  filter: brightness(0.92);
-  background-color: rgba(0, 207, 207, 0.1);
-}
-
-.btn-secondary:active {
-  border-width: 4px 2px 2px;
-  background: none;
-}
-
-/* ── Secondary dark ───────────────────────────────────────── */
-.btn-secondary--dark {
-  background-color: transparent;
   color: #ffffff;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  border-width: 2px 2px 4px;
+}
+
+.btn-secondary:hover:not(:disabled)::before {
+  box-shadow: inset 0 0 0 10em var(--brand-teal-dark);
+}
+
+/* ── Secondary dark (used on dark/image backgrounds) ─────── */
+.btn-secondary--dark {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  color: #ffffff;
 }
 
 .btn-secondary--dark:hover:not(:disabled) {
-  filter: brightness(1.15);
-  background-color: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
 }
 
-.btn-secondary--dark:active {
-  border-width: 4px 2px 2px;
-  background: none;
+.btn-secondary--dark:hover:not(:disabled)::before {
+  box-shadow: inset 0 0 0 10em rgba(255, 255, 255, 0.18);
 }
 
 /* ── Gold ─────────────────────────────────────────────────── */
 .btn-gold {
-  background-color: #A87620;
-  color: #ffffff;
-}
-
-.btn-gold::after {
-  content: "";
-  position: absolute;
-  background-color: #C9922A;
-  background-clip: padding-box;
-  border: solid transparent;
-  border-radius: 16px;
-  border-width: 0 0 4px;
-  inset: 0;
-  bottom: -4px;
-  z-index: -1;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--brand-gold);
+  color: var(--brand-gold);
 }
 
 .btn-gold:hover:not(:disabled) {
-  filter: brightness(1.1);
+  color: #ffffff;
 }
 
-.btn-gold:active {
-  background: none;
-  border-width: 4px 0 0;
+.btn-gold:hover:not(:disabled)::before {
+  box-shadow: inset 0 0 0 10em var(--brand-gold);
 }
 
 .btn-gold:focus-visible {
-  outline: 3px solid #C9922A;
+  outline: 3px solid var(--brand-gold);
   outline-offset: 3px;
 }
 
-/* disabled state for all variants */
+/* ── Disabled state ───────────────────────────────────────── */
 .btn:disabled {
   cursor: not-allowed;
-  opacity: 0.55;
+  opacity: 0.45;
+}
+
+/* ── Reduced motion ───────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn::before {
+    transition: none;
+  }
 }
 
 /* ============================================================

@@ -109,7 +109,7 @@ export default function AdminDashboard({ initialBusinesses, initialContacts }: {
             <input type="text" placeholder="Slug (e.g. fast-ramadan-tips)" value={blogData.slug} onChange={e => setBlogData({...blogData, slug: e.target.value})} required style={{ padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border-color)', background: 'var(--background)' }} />
             <input type="text" placeholder="Excerpt" value={blogData.excerpt} onChange={e => setBlogData({...blogData, excerpt: e.target.value})} required style={{ padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border-color)', background: 'var(--background)' }} />
             <textarea placeholder="HTML Content (You can write raw text or html tags like <b>)" value={blogData.content} onChange={e => setBlogData({...blogData, content: e.target.value})} required rows={10} style={{ padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border-color)', background: 'var(--background)', resize: 'vertical' }}></textarea>
-            <button type="submit" className="btn-primary">Publish Post</button>
+            <button type="submit" className="btn btn-primary">Publish Post</button>
           </form>
         </div>
       )}

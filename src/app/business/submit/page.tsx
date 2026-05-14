@@ -131,7 +131,7 @@ export default function SubmitBusinessPage() {
             />
           </div>
 
-          <button type="submit" className="btn-primary" style={{ marginTop: '1rem', width: '100%' }} disabled={status.type === 'loading'}>
+          <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem', width: '100%' }} disabled={status.type === 'loading'}>
             {status.type === 'loading' ? 'Submitting...' : 'Submit Business Listing'}
           </button>
         </form>
