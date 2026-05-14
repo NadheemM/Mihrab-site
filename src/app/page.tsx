@@ -252,24 +252,6 @@ export default function Home() {
             </div>
           </ScrollReveal>
           <ScreenshotCarousel />
-          <div className={styles.carouselCta}>
-            <Link
-              href="https://play.google.com/store/apps/details?id=in.mihrab.app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-primary"
-            >
-              Google Play
-            </Link>
-            <Link
-              href="https://apps.apple.com/app/mihrab/id6630381320"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-primary"
-            >
-              App Store
-            </Link>
-          </div>
         </div>
       </section>
 
