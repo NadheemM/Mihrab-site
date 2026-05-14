@@ -3,17 +3,9 @@
   margin-top: auto;
 }
 
-/* 4px gradient top strip */
-.footerWrapper::before {
-  content: '';
-  display: block;
-  height: 4px;
-  background: linear-gradient(90deg, var(--brand-gold, #C9922A), var(--brand-teal, #41C2DC), var(--brand-gold, #C9922A));
-}
-
 .footer {
-  background-color: var(--surface-dark, #1A2744);
-  border-top: 1px solid rgba(201, 146, 42, 0.2);
+  background-color: #ffffff;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
   padding: 4rem 0 0 0;
 }
 
@@ -30,13 +22,10 @@
   }
 }
 
-/* Logo pill — white card so the logo reads cleanly on the dark footer */
+/* Logo — no pill needed on white background */
 .logoPill {
   display: inline-flex;
   align-items: center;
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 6px 14px;
 }
 
 .logoImg {
@@ -56,7 +45,7 @@
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-style: italic;
   font-size: 1.05rem;
-  color: var(--brand-gold-light, #F5D78E);
+  color: var(--brand-gold, #C9922A);
   line-height: 1.5;
   max-width: 320px;
 }
@@ -64,7 +53,7 @@
 .brandDesc {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.9rem;
-  color: rgba(250, 246, 238, 0.55);
+  color: var(--text-body, #2D3748);
   line-height: 1.7;
   max-width: 300px;
 }
@@ -92,16 +81,16 @@
 .linksSection a {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.9375rem;
-  color: rgba(250, 246, 238, 0.62);
+  color: var(--text-muted, #718096);
   transition: color var(--duration-fast, 150ms) ease;
 }
 
 .linksSection a:hover {
-  color: var(--surface-cream, #FAF6EE);
+  color: var(--text-headline, #0F1A30);
 }
 
 .linksSection a:focus-visible {
-  outline: 2px solid var(--brand-teal, #41C2DC);
+  outline: 2px solid var(--brand-teal, #00CFCF);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -118,14 +107,14 @@
 }
 
 .socialIcons a {
-  color: rgba(250, 246, 238, 0.48);
+  color: rgba(15, 26, 48, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 1px solid rgba(250, 246, 238, 0.15);
+  border: 1px solid rgba(15, 26, 48, 0.15);
   transition:
     color var(--duration-base, 250ms) ease,
     border-color var(--duration-base, 250ms) ease,
@@ -139,13 +128,13 @@
 }
 
 .socialIcons a:focus-visible {
-  outline: 2px solid var(--brand-teal, #41C2DC);
+  outline: 2px solid var(--brand-teal, #00CFCF);
   outline-offset: 3px;
 }
 
 /* Bottom bar */
 .copyright {
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
   padding: 1.25rem var(--space-5, 24px);
   display: flex;
   align-items: center;
@@ -156,7 +145,7 @@
 .copyrightText {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.8125rem;
-  color: rgba(250, 246, 238, 0.38);
+  color: var(--text-muted, #718096);
 }
 
 .copyrightDiamond {
