@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Raw Django admin exports (large, not for version control)
+/public/IslamicInstitution-*.json
+
 # dependencies
 /node_modules
 /.pnp

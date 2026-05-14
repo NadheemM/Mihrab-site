@@ -1,6 +1,8 @@
 import { getMosques } from '@/lib/mihrab-api';
+import staticMasjids from '@/data/masjids-static.json';
 
 export async function GET() {
+  // Try live API first
   try {
     const data = await getMosques();
     const mapped = data.results.map(m => ({
@@ -10,9 +12,19 @@ export async function GET() {
       lat:     parseFloat(m.latitude) || 0,
       lng:     parseFloat(m.longitude) || 0,
     }));
-    return Response.json(mapped);
-  } catch (err) {
-    console.error('[masjids GET]', err);
-    return Response.json({ error: 'Failed to fetch mosques' }, { status: 502 });
+    if (mapped.length > 0) return Response.json(mapped);
+  } catch {
+    // API is down — fall through to static data
   }
+
+  // Fallback: static export from Django admin (74k verified masjids with real GPS)
+  const mapped = (staticMasjids as { id: number; name: string; latitude: number; longitude: number; address: string }[])
+    .map(m => ({
+      _id:     String(m.id),
+      name:    m.name,
+      address: m.address,
+      lat:     m.latitude,
+      lng:     m.longitude,
+    }));
+  return Response.json(mapped);
 }
