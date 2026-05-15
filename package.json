@@ -15,6 +15,7 @@
     "@splinetool/react-spline": "^4.1.0",
     "@splinetool/runtime": "^1.12.88",
     "framer-motion": "^12.38.0",
+    "google-play-scraper": "^10.1.2",
     "gsap": "^3.15.0",
     "lucide-react": "^1.8.0",
     "mongoose": "^9.4.1",

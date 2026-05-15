@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { Clock, MapPin, BookOpen, Compass, Radio, Building2 } from 'lucide-react';
 import SkySceneClient from '@/components/SkySceneClient';
 import styles from './page.module.css';
@@ -32,6 +33,15 @@ const revealUp: Variants = {
 
 
 export default function Home() {
+  const [appStats, setAppStats] = useState({ rating: '4.8', downloads: '50K+', reviews: '2K+' });
+
+  useEffect(() => {
+    fetch('/api/app-stats')
+      .then(r => r.json())
+      .then(d => { if (d.rating) setAppStats(d); })
+      .catch(() => {});
+  }, []);
+
   return (
     <div className={styles.home}>
 
@@ -118,13 +128,13 @@ export default function Home() {
               </div>
               <span className={styles.statSep} aria-hidden="true" />
               <div className={styles.statItem}>
-                <span className={styles.statNumber}>5</span>
-                <span className={styles.statLabel}>Daily Prayers</span>
+                <span className={styles.statNumber}>{appStats.downloads}</span>
+                <span className={styles.statLabel}>Downloads</span>
               </div>
               <span className={styles.statSep} aria-hidden="true" />
               <div className={styles.statItem}>
-                <span className={styles.statNumber}><AnimatedCounter target={10} suffix="k+" /></span>
-                <span className={styles.statLabel}>Downloads</span>
+                <span className={styles.statNumber}>{appStats.rating}★</span>
+                <span className={styles.statLabel}>Rating</span>
               </div>
             </div>
             </ScrollReveal>
@@ -276,20 +286,13 @@ export default function Home() {
             </motion.div>
             <span className="stat-divider" aria-hidden="true" />
             <motion.div className="stat-box" variants={revealCard}>
-              <span className="stat-box__number">5</span>
-              <span className="stat-box__label">Daily Prayers</span>
-            </motion.div>
-            <span className="stat-divider" aria-hidden="true" />
-            <motion.div className="stat-box" variants={revealCard}>
-              <span className="stat-box__number">
-                <AnimatedCounter target={10} suffix="k+" />
-              </span>
+              <span className="stat-box__number">{appStats.downloads}</span>
               <span className="stat-box__label">Downloads</span>
             </motion.div>
             <span className="stat-divider" aria-hidden="true" />
             <motion.div className="stat-box" variants={revealCard}>
-              <span className="stat-box__number">1</span>
-              <span className="stat-box__label">Community</span>
+              <span className="stat-box__number">{appStats.rating}★</span>
+              <span className="stat-box__label">Play Store Rating</span>
             </motion.div>
           </motion.div>
         </div>
