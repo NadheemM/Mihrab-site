@@ -33,7 +33,7 @@ const revealUp: Variants = {
 
 
 export default function Home() {
-  const [appStats, setAppStats] = useState({ rating: '4.8', downloads: '50K+', reviews: '2K+' });
+  const [appStats, setAppStats] = useState({ masjids: '74170+', rating: '4.8', downloads: '50K+', reviews: '2K+' });
 
   useEffect(() => {
     fetch('/api/app-stats')
@@ -123,7 +123,7 @@ export default function Home() {
             <ScrollReveal variant="up" delay={600}>
             <div className={styles.statsStrip} aria-label="Platform statistics">
               <div className={styles.statItem}>
-                <span className={styles.statNumber}><AnimatedCounter target={12} /></span>
+                <span className={styles.statNumber}>{appStats.masjids}</span>
                 <span className={styles.statLabel}>Masjids</span>
               </div>
               <span className={styles.statSep} aria-hidden="true" />
@@ -279,9 +279,7 @@ export default function Home() {
             viewport={{ once: true, amount: 0.3 }}
           >
             <motion.div className="stat-box" variants={revealCard}>
-              <span className="stat-box__number">
-                <AnimatedCounter target={12} />
-              </span>
+              <span className="stat-box__number">{appStats.masjids}</span>
               <span className="stat-box__label">Masjids Listed</span>
             </motion.div>
             <span className="stat-divider" aria-hidden="true" />
