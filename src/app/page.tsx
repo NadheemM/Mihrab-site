@@ -148,7 +148,7 @@ export default function Home() {
         <div className="container">
 
           <ScrollReveal className={styles.bentoHeader}>
-            <span className="text-gold-label">Why Mihrab</span>
+            <span className="text-teal-label">Why Mihrab</span>
             <h2 id="features-heading" className={styles.bentoTitle}>
               Essential tools for every Muslim
             </h2>
@@ -252,7 +252,7 @@ export default function Home() {
         <div className={styles.carouselInner}>
           <ScrollReveal variant="fade">
             <div className={styles.carouselHeader}>
-              <span className="text-gold-label">Inside the App</span>
+              <span className="text-teal-label">Inside the App</span>
               <h2 id="screenshots-heading" className={styles.sectionTitle}>
                 See Mihrab in action
               </h2>

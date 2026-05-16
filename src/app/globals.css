@@ -479,13 +479,13 @@ img, video {
   content: '';
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(201, 146, 42, 0.45), transparent);
+  background: linear-gradient(90deg, transparent, rgba(65, 194, 220, 0.45), transparent);
 }
 
 .divider-arabesque-icon {
   width: 8px;
   height: 8px;
-  background: var(--brand-gold);
+  background: var(--brand-teal);
   transform: rotate(45deg);
   flex-shrink: 0;
 }

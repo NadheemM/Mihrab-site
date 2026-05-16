@@ -51,7 +51,7 @@ export default function TestimonialsSection() {
       <div className="container">
         <ScrollReveal variant="fade">
           <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <span className="text-gold-label">Community Love</span>
+            <span className="text-teal-label">Community Love</span>
             <h2
               id="testimonials-heading"
               style={{
