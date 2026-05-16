@@ -9,7 +9,7 @@ import styles from './Navbar.module.css';
 
 const ORG_LINKS = [
   { name: 'About',    href: '/about' },
-  { name: 'Team Up',  href: '/team-up' },
+  { name: 'Collaborate', href: '/team-up' },
   { name: 'Contact',  href: '/contact' },
   { name: 'Feedback', href: '/contact' },
 ];
