@@ -12,7 +12,6 @@ export default function TeamUpPage() {
           {/* Left — text content */}
           <div className={styles.content}>
             <ScrollReveal variant="up" delay={0}>
-              <span className="text-gold-label">Collaboration</span>
               <h1 className={styles.heading}>
                 <span className={styles.headingLight}>{"Let's"}</span>
                 <br />
