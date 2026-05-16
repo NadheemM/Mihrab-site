@@ -306,7 +306,7 @@ export default function Home() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.25 }}
           >
-            <motion.span className="text-gold-label" variants={revealUp}>
+            <motion.span className="text-teal-label" variants={revealUp}>
               Get Started
             </motion.span>
             <motion.h2 className={styles.ctaHeading} variants={revealCard}>
@@ -323,7 +323,7 @@ export default function Home() {
                 href="https://play.google.com/store/apps/details?id=in.mihrab.app"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-gold"
+                className="btn btn-primary"
                 style={{ fontSize: '1rem', padding: '0.9rem 2.5rem' }}
               >
                 Google Play
@@ -332,7 +332,7 @@ export default function Home() {
                 href="https://apps.apple.com/app/mihrab/id6630381320"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-gold"
+                className="btn btn-primary"
                 style={{ fontSize: '1rem', padding: '0.9rem 2.5rem' }}
               >
                 App Store
