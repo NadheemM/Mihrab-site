@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import TransitionProvider from '@/components/TransitionProvider';
 
 export const metadata: Metadata = {
-  title: 'Mihrab — Where the Adhan Meets the Digital Age',
+  title: 'Mihrab — Connect with Masjids & Grow in Faith',
   description: 'Mihrab connects the Ummah with accurate prayer times, masjid directories, community news, and local business listings.',
 };
 
