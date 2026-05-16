@@ -1,6 +1,7 @@
 'use client';
 import { useRef, useState } from 'react';
 import Image from 'next/image';
+import { useIsMobile } from '@/lib/useIsMobile';
 
 const screens = [
   { src: '/2.jpeg', label: 'Home Screen' },
@@ -12,7 +13,8 @@ const screens = [
 
 export default function ScreenshotCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(2);
+  const [active, setActive] = useState(0);
+  const isMobile = useIsMobile();
 
   function scrollTo(i: number) {
     setActive(i);
@@ -32,11 +34,13 @@ export default function ScreenshotCarousel() {
           gap: '1.5rem',
           overflowX: 'auto',
           scrollSnapType: 'x mandatory',
-          padding: '2rem 2rem 1.5rem',
+          // Mobile: pad each side so the first/last slide can snap to center.
+          // Desktop: center all phones (no overflow, justifyContent centers them).
+          padding: isMobile ? '2rem calc(50% - 90px) 1.5rem' : '2rem 2rem 1.5rem',
           scrollbarWidth: 'none',
           WebkitOverflowScrolling: 'touch',
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: isMobile ? 'flex-start' : 'center',
         }}
         onScroll={(e) => {
           const el = e.currentTarget;

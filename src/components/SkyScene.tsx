@@ -256,6 +256,7 @@ const PRAYER_SVG_ICONS = [
 
 // ── Celestial bodies + arc + labels ──────────────────────────────────────
 function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes> }) {
+  const isMobile  = useIsMobile();
   const sunCore   = useRef<THREE.Sprite>(null);
   const sunCorona = useRef<THREE.Sprite>(null);
   const sunBloom  = useRef<THREE.Sprite>(null);
@@ -538,31 +539,34 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
             backdropFilter: 'blur(20px) saturate(140%)',
             WebkitBackdropFilter: 'blur(20px) saturate(140%)',
             borderRadius: '16px',
-            padding: '12px 18px',
+            padding: isMobile ? '8px 10px' : '12px 18px',
             border: '1px solid rgba(255,255,255,0.10)',
             boxShadow: '0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)',
-            width: 'min(640px, 90vw)',
+            width: isMobile ? 'calc(100vw - 32px)' : 'min(640px, 90vw)',
+            maxWidth: '640px',
             animation: 'skyLabelIn 1.4s ease-out forwards',
             pointerEvents: 'none',
             userSelect: 'none',
           }}
         >
-          {/* Left label */}
-          <div style={{
-            flexShrink: 0, paddingRight: '16px', marginRight: '16px',
-            borderRight: '1px solid rgba(255,255,255,0.12)',
-          }}>
-            <span style={{
-              display: 'block', fontSize: '9px', letterSpacing: '0.18em',
-              textTransform: 'uppercase', fontFamily: 'DM Sans, sans-serif',
-              color: 'rgba(65,194,220,0.9)', marginBottom: '4px',
-            }}>Upcoming Waqth</span>
-            <span style={{
-              display: 'block', fontSize: '15px', fontWeight: 700,
-              fontFamily: 'Cormorant Garamond, Georgia, serif', color: '#FFFFFF',
-              whiteSpace: 'nowrap',
-            }}>The Path of Light</span>
-          </div>
+          {/* Left label — hidden on mobile to save space */}
+          {!isMobile && (
+            <div style={{
+              flexShrink: 0, paddingRight: '16px', marginRight: '16px',
+              borderRight: '1px solid rgba(255,255,255,0.12)',
+            }}>
+              <span style={{
+                display: 'block', fontSize: '9px', letterSpacing: '0.18em',
+                textTransform: 'uppercase', fontFamily: 'DM Sans, sans-serif',
+                color: 'rgba(65,194,220,0.9)', marginBottom: '4px',
+              }}>Upcoming Waqth</span>
+              <span style={{
+                display: 'block', fontSize: '15px', fontWeight: 700,
+                fontFamily: 'Cormorant Garamond, Georgia, serif', color: '#FFFFFF',
+                whiteSpace: 'nowrap',
+              }}>The Path of Light</span>
+            </div>
+          )}
           {/* Prayer items */}
           <div style={{ display: 'flex', flex: 1, justifyContent: 'space-around', alignItems: 'center' }}>
             {PRAYER_KEYS.map(([name, key], i) => {
@@ -573,20 +577,22 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
                   ref={npItems[i]}
                   style={{
                     display: 'flex', flexDirection: 'column', alignItems: 'center',
-                    gap: '3px', padding: '8px 12px', borderRadius: '10px',
+                    gap: isMobile ? '2px' : '3px',
+                    padding: isMobile ? '5px 6px' : '8px 12px',
+                    borderRadius: '10px',
                     border: '1px solid rgba(255,255,255,0.08)', background: 'transparent',
                     transition: 'transform 350ms ease, background 350ms ease, box-shadow 350ms ease, border-color 350ms ease',
                   }}
                 >
-                  <span style={{ color: 'rgba(255,255,255,0.7)', display: 'flex', lineHeight: '1' }}>
+                  <span style={{ color: 'rgba(255,255,255,0.7)', display: 'flex', lineHeight: '1', transform: isMobile ? 'scale(0.78)' : undefined, transformOrigin: 'center' }}>
                     {PRAYER_SVG_ICONS[i]}
                   </span>
                   <span style={{
-                    fontFamily: 'DM Sans, sans-serif', fontSize: '11px',
+                    fontFamily: 'DM Sans, sans-serif', fontSize: isMobile ? '9px' : '11px',
                     fontWeight: 500, color: 'rgba(255,255,255,0.65)', letterSpacing: '0.06em',
                   }}>{name}</span>
                   <span style={{
-                    fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: '14px',
+                    fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: isMobile ? '11px' : '14px',
                     fontWeight: 600, color: '#FFFFFF', whiteSpace: 'nowrap',
                   }}>{raw ? fmt12(raw) : '—'}</span>
                 </div>
