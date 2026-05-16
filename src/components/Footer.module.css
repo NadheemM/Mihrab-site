@@ -149,7 +149,7 @@
 }
 
 .copyrightDiamond {
-  color: var(--brand-gold, #C9922A);
+  color: var(--brand-teal, #41C2DC);
   font-size: 0.5rem;
   opacity: 0.6;
 }

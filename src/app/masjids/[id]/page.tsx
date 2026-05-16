@@ -221,7 +221,7 @@ export default function MasjidDetailsPage({ params }: { params: { id: string } |
                           fontFamily: "'DM Sans', sans-serif",
                           fontSize: '0.6rem', fontWeight: 700,
                           letterSpacing: '0.08em', textTransform: 'uppercase',
-                          color: 'var(--brand-gold)', verticalAlign: 'middle',
+                          color: 'var(--brand-teal)', verticalAlign: 'middle',
                         }}>
                           Now
                         </span>

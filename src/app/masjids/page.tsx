@@ -344,13 +344,13 @@ export default function MasjidsPage() {
             alignItems: 'center',
             gap: '0.5rem',
             background: 'rgba(201,146,42,0.07)',
-            border: '1px solid rgba(201,146,42,0.28)',
+            border: '1px solid rgba(65,194,220,0.28)',
             borderRadius: 'var(--radius-lg)',
             padding: '0.875rem 1.25rem',
             marginBottom: '1.25rem',
             fontFamily: "'DM Sans', sans-serif",
             fontSize: '0.875rem',
-            color: 'var(--brand-gold)',
+            color: 'var(--brand-teal)',
           }}>
             <MapPin size={15} aria-hidden="true" />
             GPS coordinates not yet available for these masjids — showing all masjids.

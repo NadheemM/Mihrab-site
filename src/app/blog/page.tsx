@@ -96,9 +96,9 @@ export default async function BlogPage() {
                     fontWeight: 600,
                     letterSpacing: '0.08em',
                     textTransform: 'uppercase',
-                    color: 'var(--brand-gold)',
-                    background: 'rgba(201,146,42,0.12)',
-                    border: '1px solid rgba(201,146,42,0.25)',
+                    color: 'var(--brand-teal)',
+                    background: 'rgba(65,194,220,0.12)',
+                    border: '1px solid rgba(65,194,220,0.25)',
                     borderRadius: 'var(--radius-pill)',
                     padding: '0.25rem 0.625rem',
                   }}>
