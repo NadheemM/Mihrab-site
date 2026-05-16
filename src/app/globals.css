@@ -1,19 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap');
 
 /* ============================================================
    DESIGN TOKENS
    ============================================================ */
 :root {
   /* Brand — cyan primary matching mihrab.app */
-  --brand-cyan:        #00CFCF;
-  --brand-cyan-dark:   #009999;
+  --brand-cyan:        #41C2DC;
+  --brand-cyan-dark:   #2B9AB5;
   --brand-cyan-light:  #B3F0F0;
   --brand-gold:        #C9922A;
   --brand-gold-light:  #F5D78E;
 
   /* Backwards-compat aliases used throughout codebase */
-  --brand-teal:        #00CFCF;
-  --brand-teal-dark:   #009999;
+  --brand-teal:        #41C2DC;
+  --brand-teal-dark:   #2B9AB5;
   --brand-teal-light:  #B3F0F0;
 
   /* Surfaces — white-first */
@@ -44,14 +44,14 @@
   --isha-color:    #4A4880;
 
   /* Legacy aliases */
-  --primary:       #00CFCF;
+  --primary:       #41C2DC;
   --primary-light: #B3F0F0;
-  --primary-dark:  #009999;
+  --primary-dark:  #2B9AB5;
   --background:    #FFFFFF;
   --foreground:    #0F1A30;
   --card-bg:       #FFFFFF;
   --nav-bg:        rgba(255, 255, 255, 0.95);
-  --glass-border:  rgba(0, 207, 207, 0.25);
+  --glass-border:  rgba(65, 194, 220, 0.25);
   --border-color:  #D4EEEE;
 
   /* Spacing */
@@ -72,14 +72,14 @@
   --radius-lg:   16px;
   --radius-xl:   24px;
   --radius-pill: 999px;
-  --border-thin: 1px solid rgba(0, 207, 207, 0.2);
-  --border-warm: 1px solid rgba(0, 207, 207, 0.12);
+  --border-thin: 1px solid rgba(65, 194, 220, 0.2);
+  --border-warm: 1px solid rgba(65, 194, 220, 0.12);
 
   /* Shadows */
-  --shadow-sm:   0 2px 8px rgba(0, 207, 207, 0.06);
-  --shadow-md:   0 8px 24px rgba(0, 207, 207, 0.10);
-  --shadow-lg:   0 16px 48px rgba(0, 150, 150, 0.14);
-  --shadow-glow: 0 8px 32px rgba(0, 207, 207, 0.22);
+  --shadow-sm:   0 2px 8px rgba(65, 194, 220, 0.06);
+  --shadow-md:   0 8px 24px rgba(65, 194, 220, 0.10);
+  --shadow-lg:   0 16px 48px rgba(43, 154, 181, 0.14);
+  --shadow-glow: 0 8px 32px rgba(65, 194, 220, 0.22);
   --shadow-gold: 0 4px 20px rgba(201, 146, 42, 0.25);
 
   /* Animation */
@@ -737,7 +737,7 @@ img, video {
   inset: 0;
   background: radial-gradient(
     circle at var(--gx, 50%) var(--gy, 50%),
-    rgba(0, 207, 207, 0.12) 0%,
+    rgba(65, 194, 220, 0.12) 0%,
     rgba(201, 146, 42, 0.05) 40%,
     transparent 70%
   );
@@ -753,8 +753,8 @@ img, video {
 
 .glow-card:hover {
   transform: translateY(-5px) scale(1.005);
-  box-shadow: 0 16px 48px rgba(0, 207, 207, 0.15);
-  border-color: rgba(0, 207, 207, 0.3);
+  box-shadow: 0 16px 48px rgba(65, 194, 220, 0.15);
+  border-color: rgba(65, 194, 220, 0.3);
 }
 
 .glow-card > * {

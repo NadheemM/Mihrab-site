@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState, useEffect } from 'react';
 import { Star, Search, MapPin, ArrowRight, Navigation, Smartphone } from 'lucide-react';
 import Link from 'next/link';
@@ -225,8 +225,8 @@ export default function MasjidsPage() {
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: '0.75rem',
-            background: 'rgba(0,207,207,0.05)',
-            border: '1px solid rgba(0,207,207,0.22)',
+            background: 'rgba(65,194,220,0.05)',
+            border: '1px solid rgba(65,194,220,0.22)',
             borderRadius: 'var(--radius-lg)',
             padding: '0.875rem 1.25rem',
             marginBottom: '1.25rem',
@@ -258,8 +258,8 @@ export default function MasjidsPage() {
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
-            background: 'rgba(0,207,207,0.05)',
-            border: '1px solid rgba(0,207,207,0.22)',
+            background: 'rgba(65,194,220,0.05)',
+            border: '1px solid rgba(65,194,220,0.22)',
             borderRadius: 'var(--radius-lg)',
             padding: '0.875rem 1.25rem',
             marginBottom: '1.25rem',
@@ -499,13 +499,13 @@ export default function MasjidsPage() {
                 padding: '2rem 1.5rem',
                 background: 'var(--surface-warm-white)',
                 borderRadius: 'var(--radius-lg)',
-                border: '1px solid rgba(0,207,207,0.18)',
+                border: '1px solid rgba(65,194,220,0.18)',
                 borderTop: '3px solid var(--brand-teal)',
                 marginTop: '1rem',
               }}>
                 <div style={{
                   width: 48, height: 48, borderRadius: 'var(--radius-md)',
-                  background: 'rgba(0,207,207,0.08)',
+                  background: 'rgba(65,194,220,0.08)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   margin: '0 auto 1rem',
                 }}>

@@ -1,4 +1,4 @@
-.footerWrapper {
+﻿.footerWrapper {
   position: relative;
   margin-top: auto;
 }
@@ -90,7 +90,7 @@
 }
 
 .linksSection a:focus-visible {
-  outline: 2px solid var(--brand-teal, #00CFCF);
+  outline: 2px solid var(--brand-teal, #41C2DC);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -128,7 +128,7 @@
 }
 
 .socialIcons a:focus-visible {
-  outline: 2px solid var(--brand-teal, #00CFCF);
+  outline: 2px solid var(--brand-teal, #41C2DC);
   outline-offset: 3px;
 }
 

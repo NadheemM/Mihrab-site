@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useRef, useMemo, useEffect, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
@@ -367,7 +367,7 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
     el.textContent = `
       @media (prefers-reduced-motion: no-preference) {
         @keyframes skyLabelIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes npPulse{0%,100%{box-shadow:0 0 0 0 rgba(0,207,207,0.35)}50%{box-shadow:0 0 0 6px rgba(0,207,207,0)}}
+        @keyframes npPulse{0%,100%{box-shadow:0 0 0 0 rgba(65,194,220,0.35)}50%{box-shadow:0 0 0 6px rgba(65,194,220,0)}}
       }
       @media (prefers-reduced-motion: reduce) {
         @keyframes skyLabelIn{from{opacity:1}to{opacity:1}}
@@ -468,10 +468,10 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
         [npItem0, npItem1, npItem2, npItem3, npItem4].forEach((ref, i) => {
           if (!ref.current) return;
           const on = i === activeIdx;
-          ref.current.style.background  = on ? 'rgba(0,207,207,0.13)'  : 'transparent';
-          ref.current.style.borderColor = on ? 'rgba(0,207,207,0.45)'  : 'rgba(255,255,255,0.08)';
+          ref.current.style.background  = on ? 'rgba(65,194,220,0.13)'  : 'transparent';
+          ref.current.style.borderColor = on ? 'rgba(65,194,220,0.45)'  : 'rgba(255,255,255,0.08)';
           ref.current.style.transform   = on ? 'translateY(-5px)'       : 'translateY(0)';
-          ref.current.style.boxShadow   = on ? '0 0 16px rgba(0,207,207,0.2), 0 6px 16px rgba(0,0,0,0.4)' : 'none';
+          ref.current.style.boxShadow   = on ? '0 0 16px rgba(65,194,220,0.2), 0 6px 16px rgba(0,0,0,0.4)' : 'none';
           ref.current.style.animation   = on ? 'npPulse 2.5s ease-in-out infinite' : 'none';
         });
         // Current Waqth card text
@@ -550,7 +550,7 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
             <span style={{
               display: 'block', fontSize: '9px', letterSpacing: '0.18em',
               textTransform: 'uppercase', fontFamily: 'DM Sans, sans-serif',
-              color: 'rgba(0,207,207,0.9)', marginBottom: '4px',
+              color: 'rgba(65,194,220,0.9)', marginBottom: '4px',
             }}>Upcoming Waqth</span>
             <span style={{
               display: 'block', fontSize: '15px', fontWeight: 700,
@@ -619,7 +619,7 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
             }} />
             <span style={{
               fontSize: '9px', letterSpacing: '0.18em', textTransform: 'uppercase',
-              fontFamily: 'DM Sans, sans-serif', color: 'rgba(0,207,207,0.9)',
+              fontFamily: 'DM Sans, sans-serif', color: 'rgba(65,194,220,0.9)',
             }}>Current Waqth</span>
           </div>
 
@@ -643,7 +643,7 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
             <span ref={cwNextRef} style={{
               display: 'block', fontFamily: 'DM Sans, sans-serif',
               fontSize: '11px', letterSpacing: '0.04em',
-              color: 'rgba(0,207,207,0.85)', whiteSpace: 'nowrap',
+              color: 'rgba(65,194,220,0.85)', whiteSpace: 'nowrap',
             }}>Next: —</span>
           </div>
         </div>

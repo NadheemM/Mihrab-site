@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useRef, useState } from 'react';
 import Image from 'next/image';
 
@@ -62,7 +62,7 @@ export default function ScreenshotCarousel() {
               borderRadius: 28,
               border: '8px solid #0F1A30',
               overflow: 'hidden',
-              boxShadow: '0 20px 50px rgba(0,207,207,0.15)',
+              boxShadow: '0 20px 50px rgba(65,194,220,0.15)',
               scrollSnapAlign: 'center',
               position: 'relative',
               transform: 'perspective(600px) rotateY(-6deg)',
@@ -71,11 +71,11 @@ export default function ScreenshotCarousel() {
             }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLDivElement).style.transform = 'perspective(600px) rotateY(0deg) translateY(-6px)';
-              (e.currentTarget as HTMLDivElement).style.boxShadow = '0 32px 64px rgba(0,207,207,0.25)';
+              (e.currentTarget as HTMLDivElement).style.boxShadow = '0 32px 64px rgba(65,194,220,0.25)';
             }}
             onMouseLeave={(e) => {
               (e.currentTarget as HTMLDivElement).style.transform = 'perspective(600px) rotateY(-6deg)';
-              (e.currentTarget as HTMLDivElement).style.boxShadow = '0 20px 50px rgba(0,207,207,0.15)';
+              (e.currentTarget as HTMLDivElement).style.boxShadow = '0 20px 50px rgba(65,194,220,0.15)';
             }}
             role="img"
             aria-label={`${s.label} app screenshot`}
@@ -110,7 +110,7 @@ export default function ScreenshotCarousel() {
               width: active === i ? 20 : 8,
               height: 8,
               borderRadius: 4,
-              background: active === i ? '#00CFCF' : 'rgba(0,207,207,0.25)',
+              background: active === i ? '#41C2DC' : 'rgba(65,194,220,0.25)',
               border: 'none',
               cursor: 'pointer',
               padding: 0,

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 interface SplineHeroProps {
   className?: string;
@@ -31,8 +31,8 @@ export default function SplineHero({ className }: SplineHeroProps) {
           50%       { transform: perspective(900px) rotateY(-18deg) rotateX(6deg) translateY(-14px); }
         }
         @keyframes glowPulse {
-          0%, 100% { box-shadow: 0 32px 80px rgba(0,207,207,0.22), 0 0 0 1px rgba(0,207,207,0.12); }
-          50%       { box-shadow: 0 40px 100px rgba(0,207,207,0.35), 0 0 0 1px rgba(0,207,207,0.2); }
+          0%, 100% { box-shadow: 0 32px 80px rgba(65,194,220,0.22), 0 0 0 1px rgba(65,194,220,0.12); }
+          50%       { box-shadow: 0 40px 100px rgba(65,194,220,0.35), 0 0 0 1px rgba(65,194,220,0.2); }
         }
       `}</style>
 
@@ -42,7 +42,7 @@ export default function SplineHero({ className }: SplineHeroProps) {
         width: 260,
         height: 500,
         borderRadius: 44,
-        background: 'radial-gradient(ellipse, rgba(0,207,207,0.12) 0%, transparent 70%)',
+        background: 'radial-gradient(ellipse, rgba(65,194,220,0.12) 0%, transparent 70%)',
         transform: 'perspective(900px) rotateY(-18deg) rotateX(6deg)',
         animation: 'phoneFloat 4s ease-in-out infinite',
         pointerEvents: 'none',
@@ -69,7 +69,7 @@ export default function SplineHero({ className }: SplineHeroProps) {
 
         {/* Status bar */}
         <div style={{
-          background: '#00CFCF',
+          background: '#41C2DC',
           height: 52,
           display: 'flex',
           alignItems: 'flex-end',
@@ -112,14 +112,14 @@ export default function SplineHero({ className }: SplineHeroProps) {
           {/* Prayer rows */}
           {PRAYER_ROWS.map((p) => (
             <div key={p.name} style={{
-              background: p.active ? 'rgba(0,207,207,0.1)' : '#F4FAFA',
+              background: p.active ? 'rgba(65,194,220,0.1)' : '#F4FAFA',
               borderRadius: 7,
               height: 34,
               display: 'flex',
               alignItems: 'center',
               padding: '0 10px',
               justifyContent: 'space-between',
-              borderLeft: p.active ? '3px solid #00CFCF' : '3px solid transparent',
+              borderLeft: p.active ? '3px solid #41C2DC' : '3px solid transparent',
             }}>
               <span style={{
                 fontFamily: 'system-ui, sans-serif',
@@ -154,7 +154,7 @@ export default function SplineHero({ className }: SplineHeroProps) {
             {/* Grid lines */}
             <div style={{
               position: 'absolute', inset: 0,
-              backgroundImage: 'linear-gradient(rgba(0,207,207,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(0,207,207,0.12) 1px, transparent 1px)',
+              backgroundImage: 'linear-gradient(rgba(65,194,220,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(65,194,220,0.12) 1px, transparent 1px)',
               backgroundSize: '18px 18px',
             }} />
             {/* Location pin */}
@@ -162,9 +162,9 @@ export default function SplineHero({ className }: SplineHeroProps) {
               position: 'absolute', top: '45%', left: '50%',
               transform: 'translate(-50%,-50%)',
               width: 22, height: 22, borderRadius: '50%',
-              background: '#00CFCF',
+              background: '#41C2DC',
               border: '3px solid #FFFFFF',
-              boxShadow: '0 0 0 4px rgba(0,207,207,0.25)',
+              boxShadow: '0 0 0 4px rgba(65,194,220,0.25)',
               zIndex: 1,
             }} />
             {/* Pulse ring */}
@@ -172,7 +172,7 @@ export default function SplineHero({ className }: SplineHeroProps) {
               position: 'absolute', top: '45%', left: '50%',
               transform: 'translate(-50%,-50%)',
               width: 44, height: 44, borderRadius: '50%',
-              border: '1.5px solid rgba(0,207,207,0.4)',
+              border: '1.5px solid rgba(65,194,220,0.4)',
             }} />
             <p style={{
               position: 'absolute', bottom: 6, left: 0, right: 0,
@@ -199,7 +199,7 @@ export default function SplineHero({ className }: SplineHeroProps) {
             {['⏱', '🕌', '📖', '🧭'].map((icon, i) => (
               <div key={i} style={{
                 width: 28, height: 28, borderRadius: 8,
-                background: i === 0 ? '#00CFCF' : 'transparent',
+                background: i === 0 ? '#41C2DC' : 'transparent',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: 11,
               }}>

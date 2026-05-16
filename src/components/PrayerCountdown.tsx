@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState, useEffect } from 'react';
 
 interface PrayerEntry { name: string; h: number; m: number; }
@@ -68,10 +68,10 @@ export default function PrayerCountdown() {
         display: 'inline-flex',
         alignItems: 'center',
         gap: '0.875rem',
-        background: 'rgba(0,207,207,0.06)',
+        background: 'rgba(65,194,220,0.06)',
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
-        border: '1px solid rgba(0,207,207,0.2)',
+        border: '1px solid rgba(65,194,220,0.2)',
         borderRadius: 'var(--radius-pill)',
         padding: '0.55rem 1.25rem 0.55rem 0.875rem',
       }}
@@ -91,7 +91,7 @@ export default function PrayerCountdown() {
         letterSpacing: '0.03em',
       }}>
         Next:&nbsp;
-        <span style={{ color: '#00CFCF', fontWeight: 600 }}>{cd.name}</span>
+        <span style={{ color: '#41C2DC', fontWeight: 600 }}>{cd.name}</span>
       </span>
 
       <span style={{

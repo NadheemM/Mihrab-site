@@ -141,7 +141,7 @@ export default function MasjidDetailsPage({ params }: { params: { id: string } |
           alignItems: 'center',
           gap: '1rem',
           flexWrap: 'wrap',
-          border: '1px solid rgba(0,207,207,0.18)',
+          border: '1px solid rgba(65,194,220,0.18)',
           borderLeft: '4px solid var(--brand-teal)',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'var(--brand-teal-dark)', flexShrink: 0 }}>

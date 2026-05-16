@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import ScrollReveal from './ScrollReveal';
 import TiltCard from './TiltCard';
 
@@ -32,7 +32,7 @@ function Stars({ count }: { count: number }) {
           width="14"
           height="14"
           viewBox="0 0 24 24"
-          fill={i < count ? '#00CFCF' : '#D4EEEE'}
+          fill={i < count ? '#41C2DC' : '#D4EEEE'}
           aria-hidden="true"
         >
           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -80,10 +80,10 @@ export default function TestimonialsSection() {
               <TiltCard
                 style={{
                   background: '#FFFFFF',
-                  border: '1px solid rgba(0,207,207,0.15)',
+                  border: '1px solid rgba(65,194,220,0.15)',
                   borderRadius: 16,
                   padding: '1.75rem',
-                  boxShadow: '0 4px 20px rgba(0,207,207,0.07)',
+                  boxShadow: '0 4px 20px rgba(65,194,220,0.07)',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '1rem',
@@ -109,7 +109,7 @@ export default function TestimonialsSection() {
                     width: 36,
                     height: 36,
                     borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #00CFCF 0%, #009999 100%)',
+                    background: 'linear-gradient(135deg, #41C2DC 0%, #2B9AB5 100%)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',

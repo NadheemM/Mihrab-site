@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState, useEffect } from 'react';
 
 const PRAYERS = [
@@ -39,9 +39,9 @@ export default function PrayerTimesWidget() {
     <div
       style={{
         background: '#FFFFFF',
-        border: '1px solid rgba(0,207,207,0.18)',
+        border: '1px solid rgba(65,194,220,0.18)',
         borderRadius: 20,
-        boxShadow: '0 8px 40px rgba(0,207,207,0.10)',
+        boxShadow: '0 8px 40px rgba(65,194,220,0.10)',
         overflow: 'hidden',
         maxWidth: 600,
         margin: '0 auto',
@@ -51,7 +51,7 @@ export default function PrayerTimesWidget() {
     >
       {/* Header */}
       <div style={{
-        background: 'linear-gradient(135deg, #00CFCF 0%, #009999 100%)',
+        background: 'linear-gradient(135deg, #41C2DC 0%, #2B9AB5 100%)',
         padding: '1.25rem 1.75rem',
         display: 'flex',
         alignItems: 'center',
@@ -86,9 +86,9 @@ export default function PrayerTimesWidget() {
                 display: 'flex',
                 alignItems: 'center',
                 padding: '0.85rem 1.75rem',
-                background: isActive ? 'rgba(0,207,207,0.06)' : 'transparent',
-                borderLeft: isActive ? '3px solid #00CFCF' : '3px solid transparent',
-                borderBottom: i < PRAYERS.length - 1 ? '1px solid rgba(0,207,207,0.08)' : 'none',
+                background: isActive ? 'rgba(65,194,220,0.06)' : 'transparent',
+                borderLeft: isActive ? '3px solid #41C2DC' : '3px solid transparent',
+                borderBottom: i < PRAYERS.length - 1 ? '1px solid rgba(65,194,220,0.08)' : 'none',
                 transition: 'background 0.2s ease',
               }}
               aria-current={isActive ? 'true' : undefined}
@@ -117,7 +117,7 @@ export default function PrayerTimesWidget() {
               {isActive && (
                 <span style={{
                   marginLeft: '0.75rem',
-                  background: '#00CFCF',
+                  background: '#41C2DC',
                   color: '#0F1A30',
                   fontSize: '0.625rem',
                   fontFamily: "'DM Sans', sans-serif",

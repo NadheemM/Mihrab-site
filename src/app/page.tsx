@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
@@ -164,7 +164,7 @@ export default function Home() {
               <MotionLift>
                 <GlowCard className={`${styles.bentoCard} ${styles.accentTeal}`} style={{ position: 'relative', overflow: 'hidden' }}>
                   <span className={styles.cardNum}>01</span>
-                  <div className={styles.bentoIconWrap} style={{ background: 'rgba(0,207,207,0.12)', color: 'var(--brand-teal-dark)' }}>
+                  <div className={styles.bentoIconWrap} style={{ background: 'rgba(65,194,220,0.12)', color: 'var(--brand-teal-dark)' }}>
                     <Clock size={24} aria-hidden="true" />
                   </div>
                   <h3 className={styles.bentoCardTitle}>Prayer Times &amp; Reminders</h3>
@@ -234,7 +234,7 @@ export default function Home() {
               <MotionLift>
                 <GlowCard className={`${styles.bentoCard} ${styles.accentTeal}`} style={{ position: 'relative', overflow: 'hidden' }}>
                   <span className={styles.cardNum}>06</span>
-                  <div className={styles.bentoIconWrap} style={{ background: 'rgba(0,207,207,0.1)', color: 'var(--brand-teal-dark)' }}>
+                  <div className={styles.bentoIconWrap} style={{ background: 'rgba(65,194,220,0.1)', color: 'var(--brand-teal-dark)' }}>
                     <Building2 size={24} aria-hidden="true" />
                   </div>
                   <h3 className={styles.bentoCardTitle}>Business Listings</h3>
