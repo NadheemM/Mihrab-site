@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { useState, useEffect } from 'react';
 import { Star, Search, MapPin, ArrowRight, Navigation, Smartphone } from 'lucide-react';
 import Link from 'next/link';

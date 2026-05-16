@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import ScrollReveal from './ScrollReveal';
 import TiltCard from './TiltCard';
 
