@@ -475,13 +475,13 @@ export default function MasjidsPage() {
                         style={{
                           background: 'none', border: 'none', cursor: 'pointer',
                           padding: '0.2rem',
-                          color: isFav ? 'var(--brand-gold)' : 'var(--text-muted)',
+                          color: isFav ? 'var(--brand-teal)' : 'var(--text-muted)',
                           transition: 'color var(--duration-base) ease, transform var(--duration-fast) ease',
                         }}
                         onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.2)')}
                         onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
                       >
-                        <Star size={20} fill={isFav ? 'var(--brand-gold)' : 'transparent'} aria-hidden="true" />
+                        <Star size={20} fill={isFav ? 'var(--brand-teal)' : 'transparent'} aria-hidden="true" />
                       </button>
                       <ArrowRight size={14} color="var(--text-muted)" aria-hidden="true" />
                     </div>
