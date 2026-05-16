@@ -693,18 +693,18 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
             {userLocation && (
               <div style={{
                 display: 'flex', alignItems: 'center', gap: '5px',
-                background: 'rgba(201,146,42,0.13)',
-                border: '1px solid rgba(201,146,42,0.32)',
+                background: 'rgba(65,194,220,0.13)',
+                border: '1px solid rgba(65,194,220,0.32)',
                 borderRadius: '20px', padding: '4px 10px',
                 flexShrink: 0,
               }}>
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#C9922A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#41C2DC" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 2C8.686 2 6 4.686 6 8c0 4.418 6 12 6 12s6-7.582 6-12c0-3.314-2.686-6-6-6z"/>
                   <circle cx="12" cy="8" r="2.5"/>
                 </svg>
                 <span style={{
                   fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 600,
-                  color: '#C9922A', whiteSpace: 'nowrap',
+                  color: '#41C2DC', whiteSpace: 'nowrap',
                 }}>
                   {userLocation}
                 </span>
