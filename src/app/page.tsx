@@ -178,7 +178,7 @@ export default function Home() {
               <MotionLift>
                 <GlowCard className={`${styles.bentoCard} ${styles.accentGold}`} style={{ position: 'relative', overflow: 'hidden' }}>
                   <span className={styles.cardNum}>02</span>
-                  <div className={styles.bentoIconWrap} style={{ background: 'rgba(201,146,42,0.12)', color: 'var(--brand-gold)' }}>
+                  <div className={styles.bentoIconWrap} style={{ background: 'rgba(65,194,220,0.12)', color: 'var(--brand-teal-dark)' }}>
                     <MapPin size={24} aria-hidden="true" />
                   </div>
                   <h3 className={styles.bentoCardTitle}>Mosque Locator</h3>
@@ -192,7 +192,7 @@ export default function Home() {
               <MotionLift>
                 <GlowCard className={`${styles.bentoCard} ${styles.accentFajr}`} style={{ position: 'relative', overflow: 'hidden' }}>
                   <span className={styles.cardNum}>03</span>
-                  <div className={styles.bentoIconWrap} style={{ background: 'rgba(107,140,174,0.15)', color: 'var(--fajr-color)' }}>
+                  <div className={styles.bentoIconWrap} style={{ background: 'rgba(65,194,220,0.12)', color: 'var(--brand-teal-dark)' }}>
                     <Compass size={24} aria-hidden="true" />
                   </div>
                   <h3 className={styles.bentoCardTitle}>Qibla Direction</h3>
@@ -206,7 +206,7 @@ export default function Home() {
               <MotionLift>
                 <GlowCard className={`${styles.bentoCard} ${styles.accentAsr}`} style={{ position: 'relative', overflow: 'hidden' }}>
                   <span className={styles.cardNum}>04</span>
-                  <div className={styles.bentoIconWrap} style={{ background: 'rgba(224,123,57,0.12)', color: 'var(--asr-color)' }}>
+                  <div className={styles.bentoIconWrap} style={{ background: 'rgba(65,194,220,0.12)', color: 'var(--brand-teal-dark)' }}>
                     <BookOpen size={24} aria-hidden="true" />
                   </div>
                   <h3 className={styles.bentoCardTitle}>Quran &amp; Authentic Hadith</h3>
@@ -220,7 +220,7 @@ export default function Home() {
               <MotionLift>
                 <GlowCard className={`${styles.bentoCard} ${styles.accentIsha}`} style={{ position: 'relative', overflow: 'hidden' }}>
                   <span className={styles.cardNum}>05</span>
-                  <div className={styles.bentoIconWrap} style={{ background: 'rgba(74,72,128,0.12)', color: 'var(--isha-color)' }}>
+                  <div className={styles.bentoIconWrap} style={{ background: 'rgba(65,194,220,0.12)', color: 'var(--brand-teal-dark)' }}>
                     <Radio size={24} aria-hidden="true" />
                   </div>
                   <h3 className={styles.bentoCardTitle}>Mihrab FM &amp; Duas</h3>

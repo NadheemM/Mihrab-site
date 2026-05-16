@@ -434,11 +434,11 @@
 }
 
 /* Accent strip at top */
-.accentTeal::after  { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #41C2DC; }
-.accentGold::after  { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--brand-gold); }
-.accentFajr::after  { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--fajr-color); }
-.accentAsr::after   { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--asr-color); }
-.accentIsha::after  { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--isha-color); }
+.accentTeal::after,
+.accentGold::after,
+.accentFajr::after,
+.accentAsr::after,
+.accentIsha::after  { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #41C2DC; }
 
 /* ============================================================
    PRAYER TIMES WIDGET SECTION
