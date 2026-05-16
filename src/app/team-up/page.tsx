@@ -38,7 +38,7 @@ export default function TeamUpPage() {
           {/* Right — illustration */}
           <ScrollReveal variant="scale" delay={150} className={styles.illustrationWrap}>
             <Image
-              src="/1311537_615.jpg"
+              src="/team-up.jpg"
               alt="Two people fitting puzzle pieces together — representing partnership and collaboration"
               width={520}
               height={400}
