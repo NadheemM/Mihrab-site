@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaYoutube } from 'react-icons/fa';
 import styles from './Footer.module.css';
 
 export default function Footer() {
@@ -45,14 +45,14 @@ export default function Footer() {
           <div className={styles.socialSection}>
             <span className={styles.sectionHeading}>Follow Us</span>
             <div className={styles.socialIcons}>
-              <a href="#" aria-label="Follow Mihrab on Facebook">
+              <a href="https://www.instagram.com/mihrab.app/" target="_blank" rel="noopener noreferrer" aria-label="Follow Mihrab on Instagram">
+                <FaInstagram size={18} aria-hidden="true" />
+              </a>
+              <a href="https://www.facebook.com/people/Mihrab-Global/61582239911157/" target="_blank" rel="noopener noreferrer" aria-label="Follow Mihrab on Facebook">
                 <FaFacebook size={18} aria-hidden="true" />
               </a>
-              <a href="#" aria-label="Follow Mihrab on Twitter">
-                <FaTwitter size={18} aria-hidden="true" />
-              </a>
-              <a href="#" aria-label="Follow Mihrab on Instagram">
-                <FaInstagram size={18} aria-hidden="true" />
+              <a href="https://www.youtube.com/channel/UCE04iw7YfSebz1Rkg9e7Low" target="_blank" rel="noopener noreferrer" aria-label="Follow Mihrab on YouTube">
+                <FaYoutube size={18} aria-hidden="true" />
               </a>
             </div>
           </div>
