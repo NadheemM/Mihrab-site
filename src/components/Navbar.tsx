@@ -11,6 +11,7 @@ const ORG_LINKS = [
   { name: 'About',    href: '/about' },
   { name: 'Team Up',  href: '/team-up' },
   { name: 'Contact',  href: '/contact' },
+  { name: 'Feedback', href: '/contact' },
 ];
 
 const MAIN_LINKS = [
