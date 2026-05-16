@@ -45,7 +45,7 @@
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-style: italic;
   font-size: 1.05rem;
-  color: var(--brand-gold, #C9922A);
+  color: var(--brand-teal, #41C2DC);
   line-height: 1.5;
   max-width: 320px;
 }
@@ -65,7 +65,7 @@
   font-weight: 600;
   letter-spacing: 0.10em;
   text-transform: uppercase;
-  color: var(--brand-gold, #C9922A);
+  color: var(--brand-teal, #41C2DC);
   margin-bottom: 1.25rem;
   display: block;
 }
@@ -122,8 +122,8 @@
 }
 
 .socialIcons a:hover {
-  color: var(--brand-gold, #C9922A);
-  border-color: rgba(201, 146, 42, 0.4);
+  color: var(--brand-teal, #41C2DC);
+  border-color: rgba(65, 194, 220, 0.4);
   transform: translateY(-3px);
 }
 
