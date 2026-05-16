@@ -11,7 +11,7 @@ const ORG_LINKS = [
   { name: 'About',    href: '/about' },
   { name: 'Collaborate', href: '/team-up' },
   { name: 'Contact',  href: '/contact' },
-  { name: 'Feedback', href: '/contact' },
+  { name: 'Feedback', href: 'https://chat.whatsapp.com/BziYMJFezhcF74rl7lqqnd', external: true },
 ];
 
 const MAIN_LINKS = [
@@ -114,17 +114,31 @@ export default function Navbar() {
               className={`${styles.dropdownMenu} ${orgOpen ? styles.dropdownVisible : ''}`}
               role="menu"
             >
-              {ORG_LINKS.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  role="menuitem"
-                  className={`${styles.dropdownItem} ${pathname === link.href ? styles.dropdownItemActive : ''}`}
-                  onClick={() => { setOrgOpen(false); setIsOpen(false); }}
-                >
-                  {link.name}
-                </Link>
-              ))}
+              {ORG_LINKS.map((link) =>
+                link.external ? (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    role="menuitem"
+                    className={styles.dropdownItem}
+                    onClick={() => { setOrgOpen(false); setIsOpen(false); }}
+                  >
+                    {link.name}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    role="menuitem"
+                    className={`${styles.dropdownItem} ${pathname === link.href ? styles.dropdownItemActive : ''}`}
+                    onClick={() => { setOrgOpen(false); setIsOpen(false); }}
+                  >
+                    {link.name}
+                  </Link>
+                )
+              )}
             </div>
           </div>
         </div>

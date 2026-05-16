@@ -37,7 +37,7 @@ export default function Footer() {
               <li><Link href="/features">Features</Link></li>
               <li><Link href="/masjids">Masjids</Link></li>
               <li><Link href="/contact">Contact</Link></li>
-              <li><Link href="/contact">Feedback</Link></li>
+              <li><a href="https://chat.whatsapp.com/BziYMJFezhcF74rl7lqqnd" target="_blank" rel="noopener noreferrer">Feedback</a></li>
             </ul>
           </div>
 
