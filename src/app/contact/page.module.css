@@ -224,3 +224,15 @@
     padding: 2rem 1.5rem;
   }
 }
+
+@media (max-width: 480px) {
+  .page {
+    padding: 3.5rem 0 4rem;
+  }
+  .infoCard {
+    padding: 1.75rem 1.25rem;
+  }
+  .formPanel {
+    padding: 1.5rem 1.1rem;
+  }
+}

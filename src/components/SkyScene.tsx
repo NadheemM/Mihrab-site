@@ -6,6 +6,7 @@ import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import CameraParallax from '@/components/CameraParallax';
 import { usePrayerTimes } from '@/lib/usePrayerTimes';
+import { useIsMobile } from '@/lib/useIsMobile';
 
 // ── Arc: east horizon → zenith → west horizon ─────────────────────────────
 const arcCurve = new THREE.QuadraticBezierCurve3(
@@ -132,6 +133,7 @@ function StarField() {
   const m1Ref    = useRef<THREE.PointsMaterial>(null);
   const m2Ref    = useRef<THREE.PointsMaterial>(null);
   const m3Ref    = useRef<THREE.PointsMaterial>(null);
+  const isMobile = useIsMobile();
 
   const { g1, g2, g3 } = useMemo(() => {
     const R = 110;
@@ -157,10 +159,13 @@ function StarField() {
       geo.setAttribute('color',    new THREE.BufferAttribute(col, 3));
       return geo;
     };
-    return { g1: make(4800), g2: make(2400), g3: make(800) };
-  }, []);
+    return isMobile
+      ? { g1: make(2000), g2: make(1000), g3: make(350) }
+      : { g1: make(4800), g2: make(2400), g3: make(800) };
+  }, [isMobile]);
 
   useFrame(() => {
+    if (typeof document !== 'undefined' && document.visibilityState === 'hidden') return;
     if (!groupRef.current) return;
     groupRef.current.rotation.y += 0.000015;
     const h           = new Date().getHours() + new Date().getMinutes() / 60;
@@ -792,9 +797,12 @@ function CloudCluster({
   def: typeof CLOUDS[0]; tex: THREE.CanvasTexture;
 }) {
   const gRef     = useRef<THREE.Group>(null);
-  const baseOps  = useMemo(() => OFFSETS.map(([,,,sr]) => def.op * (0.5 + sr * 0.5)), [def.op]);
+  const isMobile = useIsMobile();
+  const offsets  = useMemo(() => isMobile ? OFFSETS.slice(0, 3) : OFFSETS, [isMobile]);
+  const baseOps  = useMemo(() => offsets.map(([,,,sr]) => def.op * (0.5 + sr * 0.5)), [def.op, offsets]);
 
   useFrame(() => {
+    if (typeof document !== 'undefined' && document.visibilityState === 'hidden') return;
     if (!gRef.current) return;
     // Slow horizontal drift + wrap
     gRef.current.position.x += def.speed * 0.0008;
@@ -815,7 +823,7 @@ function CloudCluster({
 
   return (
     <group ref={gRef} position={[def.pos[0], def.pos[1], def.pos[2]]}>
-      {OFFSETS.map(([dx, dy, dz, sr], i) => (
+      {offsets.map(([dx, dy, dz, sr], i) => (
         <sprite
           key={i}
           userData={{ baseOpacity: baseOps[i] }}
@@ -837,9 +845,11 @@ function CloudCluster({
 
 function VolumetricClouds() {
   const tex = useMemo(() => makeCloudTexture(), []);
+  const isMobile = useIsMobile();
+  const clouds = isMobile ? CLOUDS.slice(0, 10) : CLOUDS;
   return (
     <>
-      {CLOUDS.map((def, i) => <CloudCluster key={i} def={def} tex={tex} />)}
+      {clouds.map((def, i) => <CloudCluster key={i} def={def} tex={tex} />)}
     </>
   );
 }
@@ -870,10 +880,11 @@ function SceneContents() {
 
 // ── Canvas ─────────────────────────────────────────────────────────────────
 export default function SkyScene() {
+  const isMobile = useIsMobile();
   return (
     <Canvas
       camera={{ position: [0, 1, 5], fov: 60 }}
-      dpr={[1, 1.5]}
+      dpr={isMobile ? [1, 1] : [1, 1.5]}
       style={{ width: '100%', height: '100%' }}
     >
       <SceneContents />

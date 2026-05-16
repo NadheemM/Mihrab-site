@@ -622,3 +622,23 @@
     text-align: center;
   }
 }
+
+@media (max-width: 480px) {
+  .ctaGroup a,
+  .ctaGroup button {
+    min-height: 44px;
+    padding: 0.85rem 1.25rem;
+  }
+
+  .statItem {
+    padding: 0.55rem 0.6rem;
+  }
+
+  .statNumber {
+    font-size: 1.05rem;
+  }
+
+  .statLabel {
+    font-size: 0.65rem;
+  }
+}

@@ -217,4 +217,16 @@
   .stats {
     grid-template-columns: 1fr;
   }
+
+  .pullQuoteText {
+    font-size: 1.25rem;
+  }
+
+  .panel {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .statNumber {
+    font-size: 2.25rem;
+  }
 }

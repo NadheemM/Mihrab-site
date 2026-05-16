@@ -159,6 +159,7 @@ export default async function BusinessDirectory() {
                 <ScrollReveal key={biz._id.toString()} variant="up" delay={i * 150}>
                 <div
                   role="listitem"
+                  className="business-row"
                   style={{
                     display: 'grid',
                     gridTemplateColumns: '80px 1fr auto',

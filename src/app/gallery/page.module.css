@@ -187,11 +187,18 @@
 /* ── Responsive ── */
 @media (max-width: 560px) {
   .phoneOuter {
-    width: 240px;
-    height: 480px;
+    width: min(240px, 70vw);
+    height: auto;
+    aspect-ratio: 1 / 2;
   }
 
   .dot1, .dot2, .dot3, .dot4 {
     display: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .phoneOuter {
+    width: 200px;
   }
 }

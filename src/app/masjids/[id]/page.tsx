@@ -170,6 +170,7 @@ export default function MasjidDetailsPage({ params }: { params: { id: string } |
           </div>
 
           <table
+            className="prayer-times-table"
             style={{ width: '100%', borderCollapse: 'collapse' }}
             aria-label={`Prayer times for ${masjid.name}`}
           >

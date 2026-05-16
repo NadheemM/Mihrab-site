@@ -474,7 +474,9 @@ export default function MasjidsPage() {
                         aria-label={isFav ? `Remove ${masjid.name} from favourites` : `Add ${masjid.name} to favourites`}
                         style={{
                           background: 'none', border: 'none', cursor: 'pointer',
-                          padding: '0.2rem',
+                          padding: '0.7rem',
+                          minWidth: '44px', minHeight: '44px',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
                           color: isFav ? 'var(--brand-teal)' : 'var(--text-muted)',
                           transition: 'color var(--duration-base) ease, transform var(--duration-fast) ease',
                         }}

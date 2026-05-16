@@ -79,10 +79,22 @@
   }
 
   .illustration {
-    max-width: 320px;
+    max-width: min(320px, 80vw);
   }
 
   .body {
     max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 3rem 0 4rem;
+  }
+  .heading {
+    font-size: clamp(2rem, 9vw, 3rem);
+  }
+  .body {
+    font-size: 0.9375rem;
   }
 }

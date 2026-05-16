@@ -283,7 +283,11 @@
   color: #0F1A30;
   background: none;
   border: none;
-  padding: var(--space-2, 8px);
+  padding: var(--space-3, 12px);
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
   border-radius: var(--radius-sm, 6px);
   transition: color var(--duration-fast, 150ms) ease;
 }
