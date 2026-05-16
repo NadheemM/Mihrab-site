@@ -29,7 +29,7 @@ export default function AboutPage() {
                   <blockquote className={styles.pullQuoteText}>
                     "Empowering Muslims with accessible, accurate, and ad-free Islamic tools."
                   </blockquote>
-                  <p className={styles.pullQuoteAttr}>— Supported by Digital Dawah Center</p>
+                  <p className={styles.pullQuoteAttr}>— Supported by MeritLife Technologies</p>
                 </aside>
               </ScrollReveal>
 
