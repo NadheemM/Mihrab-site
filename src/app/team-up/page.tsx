@@ -12,11 +12,11 @@ export default function TeamUpPage() {
           {/* Left — text content */}
           <div className={styles.content}>
             <ScrollReveal variant="up" delay={0}>
-              <span className="text-gold-label">Partnership</span>
+              <span className="text-gold-label">Collaboration</span>
               <h1 className={styles.heading}>
                 <span className={styles.headingLight}>{"Let's"}</span>
                 <br />
-                <span className={styles.headingAccent}>Team-Up</span>
+                <span className={styles.headingAccent}>Collaborate</span>
               </h1>
             </ScrollReveal>
 
@@ -30,7 +30,7 @@ export default function TeamUpPage() {
 
             <ScrollReveal variant="up" delay={300}>
               <Link href="/contact" className="btn btn-primary" style={{ display: 'inline-block' }}>
-                Team Up with Us
+                Collaborate with Us
               </Link>
             </ScrollReveal>
           </div>
@@ -39,7 +39,7 @@ export default function TeamUpPage() {
           <ScrollReveal variant="scale" delay={150} className={styles.illustrationWrap}>
             <Image
               src="/team-up.jpg"
-              alt="Two people fitting puzzle pieces together — representing partnership and collaboration"
+              alt="Collaboration illustration"
               width={520}
               height={400}
               className={styles.illustration}
