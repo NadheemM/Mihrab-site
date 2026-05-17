@@ -3,10 +3,29 @@ import Image from 'next/image';
 import ScrollReveal from '@/components/ScrollReveal';
 import styles from './page.module.css';
 
+const PARTNERS = [
+  {
+    id: 'gtaf',
+    name: 'GTAF',
+    description: 'Global Taaleem & Awqaf Foundation — supporting Islamic education and community welfare worldwide.',
+    href: 'https://gtaf.org/',
+    initial: 'G',
+  },
+  {
+    id: 'meritlife',
+    name: 'MeritLife Technologies',
+    description: 'Building purpose-driven technology that empowers communities and drives meaningful social impact.',
+    href: 'https://www.meritlife.tech/',
+    initial: 'M',
+  },
+];
+
 export default function TeamUpPage() {
   return (
     <div className={styles.page}>
       <div className="container">
+
+        {/* Hero grid */}
         <div className={styles.grid}>
 
           {/* Left — text content */}
@@ -47,6 +66,66 @@ export default function TeamUpPage() {
           </ScrollReveal>
 
         </div>
+
+        {/* Divider */}
+        <ScrollReveal variant="up" delay={0}>
+          <div className="divider-arabesque" aria-hidden="true" style={{ margin: '4rem 0' }}>
+            <span className="divider-arabesque-icon" />
+          </div>
+        </ScrollReveal>
+
+        {/* Partners section */}
+        <section className={styles.partnersSection} aria-labelledby="partners-heading">
+
+          <ScrollReveal variant="blur">
+            <div className={styles.partnersHeader}>
+              <span className="text-teal-label" style={{ marginBottom: '0.5rem' }}>Since 2023</span>
+              <h2 id="partners-heading" className={styles.partnersTitle}>
+                Our <span className={styles.headingAccent}>Partners</span>
+              </h2>
+              <p className={styles.partnersSubtitle}>
+                Many organisations and individuals have supported our journey in various ways.
+                We appreciate their contributions. May Allah reward them all.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          <div className={styles.partnersGrid} role="list">
+            {PARTNERS.map((p, i) => (
+              <ScrollReveal key={p.id} variant="up" delay={i * 150}>
+                <a
+                  href={p.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.partnerCard}
+                  role="listitem"
+                  aria-label={`${p.name} — opens partner website`}
+                >
+                  {/* Logo area */}
+                  <div className={styles.partnerLogo} aria-hidden="true">
+                    <span className={styles.partnerInitial}>{p.initial}</span>
+                  </div>
+
+                  {/* Text */}
+                  <div className={styles.partnerInfo}>
+                    <h3 className={styles.partnerName}>{p.name}</h3>
+                    <p className={styles.partnerDesc}>{p.description}</p>
+                  </div>
+
+                  {/* Arrow */}
+                  <div className={styles.partnerArrow} aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12"/>
+                      <polyline points="12 5 19 12 12 19"/>
+                    </svg>
+                  </div>
+                </a>
+              </ScrollReveal>
+            ))}
+          </div>
+
+        </section>
+
       </div>
     </div>
   );
