@@ -9,7 +9,7 @@ const PARTNERS = [
     name: 'GTAF',
     description: 'Global Taaleem & Awqaf Foundation — supporting Islamic education and community welfare worldwide.',
     href: 'https://gtaf.org/',
-    logo: null,
+    logo: '/gtaf-logo.svg',
     initial: 'G',
   },
   {
