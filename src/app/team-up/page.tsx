@@ -56,8 +56,8 @@ export default function TeamUpPage() {
           {/* Right — illustration */}
           <ScrollReveal variant="scale" delay={150} className={styles.illustrationWrap}>
             <Image
-              src="/team-up.jpg"
-              alt="Collaboration illustration"
+              src="/image.png"
+              alt="Two people shaking hands in front of puzzle pieces, representing collaboration"
               width={520}
               height={400}
               className={styles.illustration}
