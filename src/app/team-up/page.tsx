@@ -9,6 +9,7 @@ const PARTNERS = [
     name: 'GTAF',
     description: 'Global Taaleem & Awqaf Foundation — supporting Islamic education and community welfare worldwide.',
     href: 'https://gtaf.org/',
+    logo: null,
     initial: 'G',
   },
   {
@@ -16,6 +17,7 @@ const PARTNERS = [
     name: 'MeritLife Technologies',
     description: 'Building purpose-driven technology that empowers communities and drives meaningful social impact.',
     href: 'https://www.meritlife.tech/',
+    logo: '/meritlife-logo.png',
     initial: 'M',
   },
 ];
@@ -103,7 +105,17 @@ export default function TeamUpPage() {
                 >
                   {/* Logo area */}
                   <div className={styles.partnerLogo} aria-hidden="true">
-                    <span className={styles.partnerInitial}>{p.initial}</span>
+                    {p.logo ? (
+                      <Image
+                        src={p.logo}
+                        alt={`${p.name} logo`}
+                        width={140}
+                        height={48}
+                        style={{ objectFit: 'contain', width: '100%', height: '100%' }}
+                      />
+                    ) : (
+                      <span className={styles.partnerInitial}>{p.initial}</span>
+                    )}
                   </div>
 
                   {/* Text */}
