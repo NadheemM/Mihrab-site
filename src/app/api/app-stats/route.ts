@@ -1,10 +1,9 @@
 import gplay from 'google-play-scraper';
-import staticMasjids from '@/data/masjids-static.json';
 
 export const runtime = 'nodejs';
 export const revalidate = 86400; // re-fetch once per day
 
-const MASJID_COUNT = `${(staticMasjids as unknown[]).length}+`; // "74170+"
+const MASJID_COUNT = '74170+';
 
 function formatDownloads(n: number): string {
   if (n >= 1_000_000) return `${Math.floor(n / 1_000_000)}M+`;

@@ -1,30 +1,18 @@
-import { getMosques } from '@/lib/mihrab-api';
-import staticMasjids from '@/data/masjids-static.json';
+import { getNearbyInstitutions } from '@/lib/mihrab-api';
 
 export async function GET() {
-  // Try live API first
   try {
-    const data = await getMosques();
+    // Broad query centered on Dhaka — returns 100 masjids sorted by proximity
+    const data = await getNearbyInstitutions(23.8, 90.4, 20_000_000, 100);
     const mapped = data.results.map(m => ({
       _id:     String(m.id),
       name:    m.name,
       address: m.address || m.location_name || '',
-      lat:     parseFloat(m.latitude) || 0,
-      lng:     parseFloat(m.longitude) || 0,
-    }));
-    if (mapped.length > 0) return Response.json(mapped);
-  } catch {
-    // API is down — fall through to static data
-  }
-
-  // Fallback: static export from Django admin (74k verified masjids with real GPS)
-  const mapped = (staticMasjids as { id: number; name: string; latitude: number; longitude: number; address: string }[])
-    .map(m => ({
-      _id:     String(m.id),
-      name:    m.name,
-      address: m.address,
       lat:     m.latitude,
       lng:     m.longitude,
     }));
-  return Response.json(mapped);
+    return Response.json(mapped);
+  } catch {
+    return Response.json([]);
+  }
 }
