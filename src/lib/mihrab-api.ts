@@ -1,4 +1,4 @@
-import type { MihrabMosque, MihrabPrayerTime, MihrabPaginatedResponse } from '@/types/mihrab';
+import type { MihrabMosque, MihrabInstitution, MihrabPrayerTime, MihrabPaginatedResponse } from '@/types/mihrab';
 
 const BASE = process.env.MIHRAB_API_BASE ?? 'https://app.mihrab.in';
 
@@ -13,6 +13,12 @@ async function apiFetch<T>(path: string): Promise<T> {
 
 export function getMosques(limit = 100) {
   return apiFetch<MihrabPaginatedResponse<MihrabMosque>>(`/api/mosques/?limit=${limit}`);
+}
+
+export function getNearbyInstitutions(lat: number, lng: number, radius = 50000, limit = 20) {
+  return apiFetch<MihrabPaginatedResponse<MihrabInstitution>>(
+    `/api/institutions/nearby/?type=mosque&latitude=${lat}&longitude=${lng}&radius=${radius}&limit=${limit}&offset=0`,
+  );
 }
 
 export function getMosque(id: number) {

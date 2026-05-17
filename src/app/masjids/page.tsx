@@ -82,6 +82,8 @@ export default function MasjidsPage() {
   const [locStatus, setLocStatus]       = useState<'idle' | 'requesting' | 'denied'>('idle');
   const [locPromptSeen, setLocPromptSeen] = useState(false);
   const [favorites, setFavorites]       = useState<Record<string, boolean>>({});
+  const [nearbyResults, setNearbyResults] = useState<MasjidEntry[] | null>(null);
+  const [nearbyLoading, setNearbyLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -113,6 +115,7 @@ export default function MasjidsPage() {
       setNearbyToggle(false);
       setUserCoords(null);
       setLocStatus('idle');
+      setNearbyResults(null);
       return;
     }
     if (!navigator?.geolocation) {
@@ -121,10 +124,34 @@ export default function MasjidsPage() {
     }
     setLocStatus('requesting');
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setUserCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+      async (pos) => {
+        const { latitude, longitude } = pos.coords;
+        setUserCoords({ lat: latitude, lng: longitude });
         setNearbyToggle(true);
         setLocStatus('idle');
+
+        // Fetch live nearby masjids from Mihrab API
+        setNearbyLoading(true);
+        try {
+          const res = await fetch(
+            `/api/masjids/nearby?lat=${latitude}&lng=${longitude}&radius=50000&limit=20`,
+          );
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            setNearbyResults(
+              data.map((m: Masjid) => ({
+                ...m,
+                dist: haversineKm(latitude, longitude, m.lat, m.lng),
+              })),
+            );
+          } else {
+            setNearbyResults([]);
+          }
+        } catch {
+          setNearbyResults(null);
+        } finally {
+          setNearbyLoading(false);
+        }
       },
       () => {
         setLocStatus('denied');
@@ -139,22 +166,12 @@ export default function MasjidsPage() {
     m.address.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const masjidsWithCoords = masjids.filter(m => m.lat !== 0 || m.lng !== 0);
-
-  const nearbyList: MasjidEntry[] | null = nearbyToggle && userCoords
-    ? masjidsWithCoords.length > 0
-      ? [...masjidsWithCoords]
-          .map(m => ({ ...m, dist: haversineKm(userCoords.lat, userCoords.lng, m.lat, m.lng) }))
-          .sort((a, b) => (a.dist ?? 0) - (b.dist ?? 0))
-          .slice(0, 5)
-      : null
-    : null;
-
-  // Only flag no-coords when masjids actually loaded — avoids false banner when API fails
-  const noCoords = nearbyToggle && userCoords !== null && masjids.length > 0 && masjidsWithCoords.length === 0;
-
-  // Search always takes priority; nearby only applies when search is empty
-  const displayList: MasjidEntry[] = searchQuery ? filtered : (nearbyList ?? filtered);
+  // Search takes priority; nearby shows live API results; fallback to full static list
+  const displayList: MasjidEntry[] = searchQuery
+    ? filtered
+    : (nearbyToggle && nearbyResults !== null)
+      ? nearbyResults
+      : filtered;
 
   return (
     <div style={{ backgroundColor: 'var(--surface-cream)', minHeight: '100vh', padding: '4rem 0 5rem' }}>
@@ -337,30 +354,30 @@ export default function MasjidsPage() {
           </button>
         </div>
 
-        {/* No-coords notice — shown when nearby toggle is on but masjids lack GPS data */}
-        {noCoords && (
-          <div role="status" style={{
+        {/* Nearby fetch in progress */}
+        {nearbyLoading && (
+          <div role="status" aria-live="polite" style={{
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
-            background: 'rgba(201,146,42,0.07)',
-            border: '1px solid rgba(65,194,220,0.28)',
+            background: 'rgba(65,194,220,0.05)',
+            border: '1px solid rgba(65,194,220,0.22)',
             borderRadius: 'var(--radius-lg)',
             padding: '0.875rem 1.25rem',
             marginBottom: '1.25rem',
             fontFamily: "'DM Sans', sans-serif",
             fontSize: '0.875rem',
-            color: 'var(--brand-teal)',
+            color: 'var(--brand-teal-dark)',
           }}>
-            <MapPin size={15} aria-hidden="true" />
-            GPS coordinates not yet available for these masjids — showing all masjids.
+            <Navigation size={15} aria-hidden="true" />
+            Finding masjids near you…
           </div>
         )}
 
         {/* List */}
         <div role="list" aria-label="Masjid listings" aria-busy={loading}>
 
-          {loading && Array.from({ length: 5 }).map((_, i) => <SkeletonCard key={i} />)}
+          {(loading || nearbyLoading) && Array.from({ length: 5 }).map((_, i) => <SkeletonCard key={i} />)}
 
           {/* API error state */}
           {!loading && apiError && (
@@ -383,7 +400,7 @@ export default function MasjidsPage() {
             </div>
           )}
 
-          {!loading && !apiError && displayList.length === 0 && (
+          {!loading && !nearbyLoading && !apiError && displayList.length === 0 && (
             <div style={{
               textAlign: 'center', padding: '3rem 1rem',
               fontFamily: "'DM Sans', sans-serif",
@@ -391,11 +408,13 @@ export default function MasjidsPage() {
             }}>
               {searchQuery
                 ? `No masjids match "${searchQuery}".`
+                : nearbyToggle
+                ? 'No masjids found within 50 km. Try expanding your search.'
                 : 'No masjids found.'}
             </div>
           )}
 
-          {!loading && !apiError && displayList.map((masjid, i) => {
+          {!loading && !nearbyLoading && !apiError && displayList.map((masjid, i) => {
             const avatarBg   = AVATAR_GRADIENTS[i % AVATAR_GRADIENTS.length];
             const avatarText = AVATAR_TEXT_COLORS[i % AVATAR_TEXT_COLORS.length];
             const isFav      = !!favorites[masjid._id];

@@ -22,6 +22,24 @@ export interface MihrabMosque {
   sourced_group?: string;
 }
 
+// Returned by /api/institutions/nearby/ — lat/lng are numbers (unlike MihrabMosque)
+export interface MihrabInstitution {
+  id: number;
+  name: string;
+  description?: string | null;
+  location_name?: string | null;
+  address?: string | null;
+  type: string;
+  image?: string | null;
+  latitude: number;
+  longitude: number;
+  verification_status: 'pending' | 'verified' | 'rejected';
+  phone?: string | null;
+  website?: string | null;
+  sourced_from?: string;
+  sourced_group?: string;
+}
+
 export interface MihrabPrayerTime {
   id: number;
   mosque: number;
