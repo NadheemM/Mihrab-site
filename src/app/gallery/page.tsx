@@ -27,7 +27,7 @@ export default function GalleryPage() {
         {/* Header */}
         <ScrollReveal variant="blur" delay={0}>
           <header className={styles.header}>
-            <span className="text-gold-label">Community Moments</span>
+            <span className="text-teal-label">Community Moments</span>
             <h1 className={styles.title}>Gallery</h1>
           </header>
         </ScrollReveal>
@@ -83,7 +83,7 @@ export default function GalleryPage() {
         <ScrollReveal variant="up" delay={300}>
         <section className={styles.videoSection} aria-labelledby="video-title">
           <div className={styles.videoHeader}>
-            <span className="text-gold-label">Watch & Explore</span>
+            <span className="text-teal-label">Watch & Explore</span>
             <h2 id="video-title" className={styles.videoTitle}>See it in Action</h2>
           </div>
           <div className={styles.videoWrap}>
@@ -106,7 +106,7 @@ export default function GalleryPage() {
               href="https://play.google.com/store/apps/details?id=in.mihrab.app"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-gold"
+              className="btn btn-primary"
             >
               Google Play
             </Link>
@@ -114,7 +114,7 @@ export default function GalleryPage() {
               href="https://apps.apple.com/app/mihrab/id6630381320"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-gold"
+              className="btn btn-primary"
             >
               App Store
             </Link>
