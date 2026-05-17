@@ -21,6 +21,13 @@ export function getNearbyInstitutions(lat: number, lng: number, radius = 50000, 
   );
 }
 
+export function searchInstitutions(query: string, limit = 20) {
+  const q = encodeURIComponent(query.trim());
+  return apiFetch<MihrabPaginatedResponse<MihrabInstitution>>(
+    `/api/institutions/nearby/?type=mosque&latitude=23.8&longitude=90.4&radius=20000000&limit=${limit}&search=${q}`,
+  );
+}
+
 export function getMosque(id: number) {
   return apiFetch<MihrabMosque>(`/api/mosques/${id}/`);
 }

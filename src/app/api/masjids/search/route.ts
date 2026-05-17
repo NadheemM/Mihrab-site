@@ -1,9 +1,12 @@
-import { getNearbyInstitutions } from '@/lib/mihrab-api';
+import { searchInstitutions } from '@/lib/mihrab-api';
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const q = searchParams.get('q') ?? '';
+  if (!q.trim()) return Response.json([]);
+
   try {
-    // Broad query centered on Dhaka — returns 100 masjids sorted by proximity
-    const data = await getNearbyInstitutions(23.8, 90.4, 20_000_000, 12);
+    const data = await searchInstitutions(q, 20);
     const mapped = data.results.map(m => ({
       _id:     String(m.id),
       name:    m.name,
