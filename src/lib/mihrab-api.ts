@@ -47,20 +47,23 @@ export function getPrayerTimes(mosqueId: number) {
   return apiFetch<MihrabPrayerTime[]>(`/api/prayer-times/?mosque=${mosqueId}`);
 }
 
-// Tries ?institution= then ?mosque= and handles both flat-array and paginated responses
+// Tries /api/prayer-times/all/ then /api/prayer-times/ with both institution= and mosque= params
 export async function getPrayerTimesForInstitution(id: number): Promise<MihrabPrayerTime[]> {
   const headers: Record<string, string> = { 'API-KEY': process.env.MIHRAB_API_KEY! };
-  for (const param of ['institution', 'mosque']) {
+  const endpoints = [
+    `/api/prayer-times/all/?institution=${id}&limit=100`,
+    `/api/prayer-times/all/?mosque=${id}&limit=100`,
+    `/api/prayer-times/?institution=${id}&limit=100`,
+    `/api/prayer-times/?mosque=${id}&limit=100`,
+  ];
+  for (const path of endpoints) {
     try {
-      const res = await fetch(`${BASE}/api/prayer-times/?${param}=${id}&limit=100`, {
-        headers,
-        next: { revalidate: 300 },
-      });
+      const res = await fetch(`${BASE}${path}`, { headers, next: { revalidate: 300 } });
       if (!res.ok) continue;
       const data = await res.json();
       const rows: MihrabPrayerTime[] = Array.isArray(data) ? data : (data.results ?? []);
       if (rows.length > 0) return rows;
-    } catch { /* try next param */ }
+    } catch { /* try next */ }
   }
   return [];
 }

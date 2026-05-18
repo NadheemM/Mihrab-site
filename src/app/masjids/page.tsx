@@ -433,8 +433,8 @@ export default function MasjidsPage() {
                 <GlowCard style={{ cursor: 'pointer' }} className="glow-card">
                   <div
                     role="listitem"
-                    onClick={() => router.push(`/masjids/${masjid._id}`)}
-                    onKeyDown={e => e.key === 'Enter' && router.push(`/masjids/${masjid._id}`)}
+                    onClick={() => router.push(`/masjids/${masjid._id}?name=${encodeURIComponent(masjid.name)}&addr=${encodeURIComponent(masjid.address || '')}&lat=${masjid.lat}&lng=${masjid.lng}`)}
+                    onKeyDown={e => e.key === 'Enter' && router.push(`/masjids/${masjid._id}?name=${encodeURIComponent(masjid.name)}&addr=${encodeURIComponent(masjid.address || '')}&lat=${masjid.lat}&lng=${masjid.lng}`)}
                     tabIndex={0}
                     aria-label={`View prayer times for ${masjid.name}${distKm !== null ? `, ${distKm.toFixed(1)} km away` : ''}`}
                     style={{ display: 'grid', gridTemplateColumns: '64px 1fr auto', alignItems: 'center', gap: '1rem', padding: '1.1rem 1.25rem' }}
