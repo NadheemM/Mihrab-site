@@ -1,4 +1,4 @@
-import { getMosque, getPrayerTimes } from '@/lib/mihrab-api';
+import { getInstitution, getMosque, getPrayerTimesForInstitution } from '@/lib/mihrab-api';
 import type { MihrabPrayerTime } from '@/types/mihrab';
 
 const PRAYER_MAP: Record<string, string> = {
@@ -21,8 +21,11 @@ function buildTimings(records: MihrabPrayerTime[]) {
   };
   for (const pt of records) {
     const key = PRAYER_MAP[pt.prayer];
-    if (!key || !pt.time) continue;
-    const time = pt.time.slice(0, 5); // "HH:MM:SS" → "HH:MM"
+    if (!key) continue;
+    // time may be undefined (is_available=false rows)
+    const raw = pt.time;
+    if (!raw) continue;
+    const time = raw.slice(0, 5); // "HH:MM:SS" → "HH:MM"
     if (pt.type === 'azan')   t[key].azaan  = time;
     if (pt.type === 'ikamah') t[key].iqamah = time;
   }
@@ -33,18 +36,22 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   try {
     const { id } = await params;
     const numId = Number(id);
-    const [mosque, prayerTimes] = await Promise.all([
-      getMosque(numId),
-      getPrayerTimes(numId),
+
+    // Fetch institution detail + prayer times in parallel.
+    // Fall back to old mosque endpoint if institution detail fails.
+    const [entity, prayerTimes] = await Promise.all([
+      getInstitution(numId).catch(() => getMosque(numId)),
+      getPrayerTimesForInstitution(numId),
     ]);
+
     const lastUpdated = prayerTimes.length
       ? new Date(Math.max(...prayerTimes.map(p => p.updated_at)) * 1000).toISOString()
       : new Date().toISOString();
 
     return Response.json({
-      _id:         String(mosque.id),
-      name:        mosque.name,
-      address:     mosque.address || mosque.location_name || '',
+      _id:         String(entity.id),
+      name:        entity.name,
+      address:     entity.address || entity.location_name || '',
       timings:     buildTimings(prayerTimes),
       lastUpdated,
     });
