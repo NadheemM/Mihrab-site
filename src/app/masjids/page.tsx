@@ -78,6 +78,7 @@ export default function MasjidsPage() {
   const [nearbyLoading, setNearbyLoading]   = useState(false);
   const [page, setPage]                     = useState(1);
   const listTopRef = useRef<HTMLDivElement>(null);
+  const autoEnableAttempted = useRef(false);
   const router = useRouter();
 
   // Load default masjids + favourites
@@ -120,6 +121,42 @@ export default function MasjidsPage() {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
+  // Auto-enable nearby if location permission is already granted
+  useEffect(() => {
+    if (autoEnableAttempted.current) return;
+    autoEnableAttempted.current = true;
+    try {
+      if (localStorage.getItem('masjidNearbyOff') === '1') { setLocPromptSeen(true); return; }
+    } catch { return; }
+    if (!navigator?.geolocation || !navigator?.permissions) return;
+    navigator.permissions.query({ name: 'geolocation' as PermissionName })
+      .then(result => {
+        if (result.state !== 'granted') return;
+        setLocPromptSeen(true);
+        setNearbyLoading(true);
+        navigator.geolocation.getCurrentPosition(
+          async pos => {
+            const { latitude: lat, longitude: lng } = pos.coords;
+            setUserCoords({ lat, lng });
+            setNearbyToggle(true);
+            try {
+              const res = await fetch(`/api/masjids/nearby?lat=${lat}&lng=${lng}&radius=50000&limit=12`);
+              const data = await res.json();
+              setNearbyResults(
+                Array.isArray(data) && data.length > 0
+                  ? data.map((m: Masjid) => ({ ...m, dist: haversineKm(lat, lng, m.lat, m.lng) }))
+                  : [],
+              );
+            } catch { setNearbyResults(null); }
+            finally { setNearbyLoading(false); }
+          },
+          () => { setNearbyLoading(false); },
+          { timeout: 5000 },
+        );
+      })
+      .catch(() => {});
+  }, []);
+
   // Reset page when nearby / search mode changes
   useEffect(() => { setPage(1); }, [nearbyToggle, nearbyResults]);
 
@@ -142,12 +179,14 @@ export default function MasjidsPage() {
   function handleNearbyToggle() {
     setLocPromptSeen(true);
     if (nearbyToggle) {
+      try { localStorage.setItem('masjidNearbyOff', '1'); } catch { /* ignore */ }
       setNearbyToggle(false);
       setUserCoords(null);
       setLocStatus('idle');
       setNearbyResults(null);
       return;
     }
+    try { localStorage.removeItem('masjidNearbyOff'); } catch { /* ignore */ }
     if (!navigator?.geolocation) { setLocStatus('denied'); return; }
     setLocStatus('requesting');
     navigator.geolocation.getCurrentPosition(
@@ -174,13 +213,23 @@ export default function MasjidsPage() {
   }
 
   // Full list (unpaginated) based on current mode
-  const fullList: MasjidEntry[] = searchQuery
-    ? (searchResults ?? masjids.filter(m =>
-        m.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        m.address.toLowerCase().includes(searchQuery.toLowerCase())))
-    : nearbyToggle && nearbyResults !== null
-      ? nearbyResults.slice(0, 12)
-      : masjids.slice(0, 12);
+  const fullList: MasjidEntry[] = (() => {
+    if (!searchQuery) {
+      return nearbyToggle && nearbyResults !== null
+        ? nearbyResults.slice(0, 12)
+        : masjids.slice(0, 12);
+    }
+    const q = searchQuery.toLowerCase();
+    const match = (m: MasjidEntry) =>
+      m.name.toLowerCase().includes(q) || m.address.toLowerCase().includes(q);
+    // Filter from already-loaded data (nearby or default) — this always contains the correct local results
+    const base = nearbyToggle && nearbyResults ? nearbyResults : masjids;
+    const local = base.filter(match);
+    // Supplement with API results that pass the name filter (deduped)
+    const seen = new Set(local.map(m => m._id));
+    const apiExtra = (searchResults ?? []).filter(m => match(m) && !seen.has(m._id));
+    return [...local, ...apiExtra];
+  })();
 
   const totalPages  = Math.max(1, Math.ceil(fullList.length / ITEMS_PER_PAGE));
   const displayList = fullList.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
