@@ -1,6 +1,7 @@
 import { searchInstitutions, searchInstitutionsNearby } from '@/lib/mihrab-api';
+import type { MihrabInstitution } from '@/types/mihrab';
 
-function mapResults(results: Awaited<ReturnType<typeof searchInstitutions>>['results']) {
+function mapResults(results: MihrabInstitution[]) {
   return results.map(m => ({
     _id:     String(m.id),
     name:    m.name,
@@ -10,21 +11,28 @@ function mapResults(results: Awaited<ReturnType<typeof searchInstitutions>>['res
   }));
 }
 
+function extractResults(data: unknown): MihrabInstitution[] {
+  if (Array.isArray(data)) return data as MihrabInstitution[];
+  const d = data as { results?: MihrabInstitution[] };
+  return Array.isArray(d?.results) ? d.results : [];
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const q = searchParams.get('q') ?? '';
   if (!q.trim()) return Response.json([]);
 
-  // Try database-wide search first; fall back to proximity-sorted search
+  // Try dedicated search endpoint first; fall back to proximity search
   try {
-    const data = await searchInstitutions(q, 30);
-    return Response.json(mapResults(data.results));
+    const data = await searchInstitutions(q);
+    const results = extractResults(data);
+    if (results.length > 0) return Response.json(mapResults(results));
+  } catch { /* fall through */ }
+
+  try {
+    const data = await searchInstitutionsNearby(q);
+    return Response.json(mapResults(extractResults(data)));
   } catch {
-    try {
-      const data = await searchInstitutionsNearby(q, 30);
-      return Response.json(mapResults(data.results));
-    } catch {
-      return Response.json([]);
-    }
+    return Response.json([]);
   }
 }

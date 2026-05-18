@@ -21,17 +21,15 @@ export function getNearbyInstitutions(lat: number, lng: number, radius = 50000, 
   );
 }
 
-export function searchInstitutions(query: string, limit = 20) {
+export function searchInstitutions(query: string, limit = 30) {
   const q = encodeURIComponent(query.trim());
-  // Database-wide text search (no proximity constraint)
   return apiFetch<MihrabPaginatedResponse<MihrabInstitution>>(
-    `/api/institutions/?type=mosque&limit=${limit}&search=${q}`,
+    `/api/institutions/search/?type=mosque&limit=${limit}&search=${q}`,
   );
 }
 
-export function searchInstitutionsNearby(query: string, limit = 20) {
+export function searchInstitutionsNearby(query: string, limit = 30) {
   const q = encodeURIComponent(query.trim());
-  // Fallback: proximity-sorted search when global endpoint unavailable
   return apiFetch<MihrabPaginatedResponse<MihrabInstitution>>(
     `/api/institutions/nearby/?type=mosque&latitude=23.8&longitude=90.4&radius=20000000&limit=${limit}&search=${q}`,
   );
