@@ -49,39 +49,77 @@ function SkeletonRow({ radiusOverride }: { radiusOverride?: number }) {
   );
 }
 
-// ── App CTA — skeleton rows as visual background ──────────────────────────────
+// ── App CTA — real masjid-card skeletons peek from the top as background ──────
 function AppCTA() {
   return (
     <div style={{
-      position: 'relative', overflow: 'hidden',
-      borderRadius: 'var(--radius-lg)', marginTop: '0.75rem',
-      border: '1px solid rgba(65,194,220,0.18)',
+      position:     'relative',
+      overflow:     'hidden',
+      borderRadius: 'var(--radius-lg)',
+      marginTop:    '0.75rem',
+      border:       '1px solid rgba(65,194,220,0.18)',
+      background:   'var(--surface-cream)',
     }}>
-      {/* Skeleton rows — decorative background */}
-      <div aria-hidden="true" style={{ pointerEvents: 'none', opacity: 0.7 }}>
+      {/* ── Skeleton cards — absolute at top, never push CTA down ── */}
+      <div aria-hidden="true" style={{
+        position:      'absolute',
+        top:           0,
+        left:          0,
+        right:         0,
+        padding:       '0.875rem 0.875rem 0',
+        display:       'flex',
+        flexDirection: 'column',
+        gap:           '0.625rem',
+        pointerEvents: 'none',
+        zIndex:        0,
+      }}>
         {[0, 1, 2].map(i => (
           <div key={i} style={{
-            background: 'var(--surface-warm-white)',
-            borderBottom: i < 2 ? '1px solid rgba(0,0,0,0.05)' : 'none',
+            background:   'var(--surface-warm-white)',
+            borderRadius: 'var(--radius-lg)',
+            border:       'var(--border-warm)',
+            boxShadow:    '0 2px 10px rgba(0,0,0,0.05)',
+            display:      'grid',
+            gridTemplateColumns: '64px 1fr 32px',
+            alignItems:   'center',
+            gap:          '1rem',
+            padding:      '1.1rem 1.25rem',
           }}>
-            <SkeletonRow />
+            {/* Avatar */}
+            <div className="skeleton" style={{ width: 64, height: 64, borderRadius: 16, flexShrink: 0 }} />
+            {/* Text lines */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+              <div className="skeleton" style={{ height: 16, width: `${52 + i * 9}%`, borderRadius: 4 }} />
+              <div className="skeleton" style={{ height: 12, width: `${36 + i * 6}%`, borderRadius: 4 }} />
+              <div className="skeleton" style={{ height: 11, width: '26%', borderRadius: 4 }} />
+            </div>
+            {/* Star + arrow */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.55rem' }}>
+              <div className="skeleton" style={{ width: 20, height: 20, borderRadius: '50%' }} />
+              <div className="skeleton" style={{ width: 14, height: 14, borderRadius: 3 }} />
+            </div>
           </div>
         ))}
       </div>
 
-      {/* Gradient blur overlay */}
+      {/* ── Gradient — transparent at very top, fully opaque ~55 % down ── */}
       <div style={{
-        position: 'absolute', inset: 0,
-        background: 'linear-gradient(to bottom, rgba(250,247,242,0.05) 0%, rgba(250,247,242,0.82) 30%, rgba(250,247,242,0.98) 58%)',
-        backdropFilter: 'blur(2px)',
-        WebkitBackdropFilter: 'blur(2px)',
+        position:      'absolute',
+        inset:         0,
+        background:    'linear-gradient(to bottom, rgba(250,247,242,0) 0%, rgba(250,247,242,0) 18%, rgba(250,247,242,0.55) 38%, rgba(250,247,242,0.93) 52%, rgba(250,247,242,1) 62%)',
+        pointerEvents: 'none',
+        zIndex:        1,
       }} />
 
-      {/* CTA content */}
+      {/* ── CTA content — paddingTop creates the skeleton peek zone ── */}
       <div style={{
-        position: 'relative',
-        textAlign: 'center',
-        padding: '2.5rem 1.5rem 2rem',
+        position:    'relative',
+        zIndex:      2,
+        textAlign:   'center',
+        paddingTop:  '130px',
+        paddingBottom: '2rem',
+        paddingLeft:  '1.5rem',
+        paddingRight: '1.5rem',
       }}>
         <div style={{
           width: 48, height: 48, borderRadius: 'var(--radius-md)',
