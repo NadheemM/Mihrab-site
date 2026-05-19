@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { Star, Search, MapPin, ArrowRight, Navigation, Smartphone, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Star, Search, MapPin, ArrowRight, Navigation, Smartphone } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import GlowCard from '@/components/GlowCard';
@@ -8,7 +8,7 @@ import ScrollReveal from '@/components/ScrollReveal';
 
 const IOS_APP_URL     = 'https://apps.apple.com/app/mihrab/id6630381320';
 const ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=in.mihrab.app';
-const ITEMS_PER_PAGE  = 6;
+const BATCH           = 3;
 
 interface Masjid {
   _id: string;
@@ -31,19 +31,87 @@ function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): nu
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-function SkeletonCard() {
+// ── Skeleton row (reused as both loading state and CTA background) ─────────────
+function SkeletonRow({ radiusOverride }: { radiusOverride?: number }) {
   return (
     <div style={{
       display: 'grid', gridTemplateColumns: '64px 1fr 32px',
-      alignItems: 'center', gap: '1rem', padding: '1.25rem', marginBottom: '0.75rem',
-      background: 'var(--surface-warm-white)', borderRadius: 'var(--radius-lg)', border: 'var(--border-warm)',
+      alignItems: 'center', gap: '1rem', padding: '1.1rem 1.25rem',
     }} aria-hidden="true">
-      <div className="skeleton" style={{ width: 64, height: 64, borderRadius: 'var(--radius-md)' }} />
+      <div className="skeleton" style={{ width: 64, height: 64, borderRadius: radiusOverride ?? 16 }} />
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-        <div className="skeleton" style={{ height: 18, width: '60%', borderRadius: 4 }} />
-        <div className="skeleton" style={{ height: 13, width: '40%', borderRadius: 4 }} />
+        <div className="skeleton" style={{ height: 18, width: '58%', borderRadius: 4 }} />
+        <div className="skeleton" style={{ height: 13, width: '38%', borderRadius: 4 }} />
+        <div className="skeleton" style={{ height: 11, width: '22%', borderRadius: 4 }} />
       </div>
       <div className="skeleton" style={{ width: 22, height: 22, borderRadius: '50%' }} />
+    </div>
+  );
+}
+
+// ── App CTA — skeleton rows as visual background ──────────────────────────────
+function AppCTA() {
+  return (
+    <div style={{
+      position: 'relative', overflow: 'hidden',
+      borderRadius: 'var(--radius-lg)', marginTop: '0.75rem',
+      border: '1px solid rgba(65,194,220,0.18)',
+    }}>
+      {/* Skeleton rows — decorative background */}
+      <div aria-hidden="true" style={{ pointerEvents: 'none', opacity: 0.7 }}>
+        {[0, 1, 2].map(i => (
+          <div key={i} style={{
+            background: 'var(--surface-warm-white)',
+            borderBottom: i < 2 ? '1px solid rgba(0,0,0,0.05)' : 'none',
+          }}>
+            <SkeletonRow />
+          </div>
+        ))}
+      </div>
+
+      {/* Gradient blur overlay */}
+      <div style={{
+        position: 'absolute', inset: 0,
+        background: 'linear-gradient(to bottom, rgba(250,247,242,0.05) 0%, rgba(250,247,242,0.82) 30%, rgba(250,247,242,0.98) 58%)',
+        backdropFilter: 'blur(2px)',
+        WebkitBackdropFilter: 'blur(2px)',
+      }} />
+
+      {/* CTA content */}
+      <div style={{
+        position: 'relative',
+        textAlign: 'center',
+        padding: '2.5rem 1.5rem 2rem',
+      }}>
+        <div style={{
+          width: 48, height: 48, borderRadius: 'var(--radius-md)',
+          background: 'rgba(65,194,220,0.10)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          margin: '0 auto 1rem',
+        }}>
+          <Smartphone size={24} color="var(--brand-teal)" aria-hidden="true" />
+        </div>
+        <p style={{
+          fontFamily: "'Inter', sans-serif", fontSize: '1.2rem',
+          fontWeight: 700, color: 'var(--text-headline)', margin: '0 0 0.4rem',
+        }}>
+          Discover All 74,000+ Masjids
+        </p>
+        <p style={{
+          fontFamily: "'Inter', sans-serif", fontSize: '0.875rem',
+          color: 'var(--text-muted)', margin: '0 0 1.5rem', lineHeight: 1.65,
+        }}>
+          Get live prayer alerts, the full masjid directory, Qibla finder, and community updates in the Mihrab app.
+        </p>
+        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <Link href={ANDROID_APP_URL} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ textDecoration: 'none' }}>
+            Google Play
+          </Link>
+          <Link href={IOS_APP_URL} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ textDecoration: 'none' }}>
+            App Store
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
@@ -63,20 +131,20 @@ const AVATAR_TEXT_COLORS = [
 ];
 
 export default function MasjidsPage() {
-  const [masjids, setMasjids]               = useState<Masjid[]>([]);
-  const [loading, setLoading]               = useState(true);
-  const [apiError, setApiError]             = useState(false);
-  const [searchQuery, setSearchQuery]       = useState('');
-  const [searchResults, setSearchResults]   = useState<MasjidEntry[] | null>(null);
-  const [searchLoading, setSearchLoading]   = useState(false);
-  const [nearbyToggle, setNearbyToggle]     = useState(false);
-  const [userCoords, setUserCoords]         = useState<{ lat: number; lng: number } | null>(null);
-  const [locStatus, setLocStatus]           = useState<'idle' | 'requesting' | 'denied'>('idle');
-  const [locPromptSeen, setLocPromptSeen]   = useState(false);
-  const [favorites, setFavorites]           = useState<Record<string, boolean>>({});
-  const [nearbyResults, setNearbyResults]   = useState<MasjidEntry[] | null>(null);
-  const [nearbyLoading, setNearbyLoading]   = useState(false);
-  const [page, setPage]                     = useState(1);
+  const [masjids, setMasjids]             = useState<Masjid[]>([]);
+  const [loading, setLoading]             = useState(true);
+  const [apiError, setApiError]           = useState(false);
+  const [searchQuery, setSearchQuery]     = useState('');
+  const [searchResults, setSearchResults] = useState<MasjidEntry[] | null>(null);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [nearbyToggle, setNearbyToggle]   = useState(false);
+  const [userCoords, setUserCoords]       = useState<{ lat: number; lng: number } | null>(null);
+  const [locStatus, setLocStatus]         = useState<'idle' | 'requesting' | 'denied'>('idle');
+  const [locPromptSeen, setLocPromptSeen] = useState(false);
+  const [favorites, setFavorites]         = useState<Record<string, boolean>>({});
+  const [nearbyResults, setNearbyResults] = useState<MasjidEntry[] | null>(null);
+  const [nearbyLoading, setNearbyLoading] = useState(false);
+  const [showMore, setShowMore]           = useState(false);
   const listTopRef = useRef<HTMLDivElement>(null);
   const autoEnableAttempted = useRef(false);
   const router = useRouter();
@@ -97,16 +165,11 @@ export default function MasjidsPage() {
 
   // Debounced API search
   useEffect(() => {
-    if (!searchQuery.trim()) {
-      setSearchResults(null);
-      setPage(1);
-      return;
-    }
+    if (!searchQuery.trim()) { setSearchResults(null); setShowMore(false); return; }
     if (searchQuery.length < 2) return;
-
     const timer = setTimeout(async () => {
       setSearchLoading(true);
-      setPage(1);
+      setShowMore(false);
       try {
         const res  = await fetch(`/api/masjids/search?q=${encodeURIComponent(searchQuery)}`);
         const data = await res.json();
@@ -117,11 +180,10 @@ export default function MasjidsPage() {
         setSearchLoading(false);
       }
     }, 350);
-
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Auto-enable nearby if location permission is already granted
+  // Auto-enable nearby if permission already granted
   useEffect(() => {
     if (autoEnableAttempted.current) return;
     autoEnableAttempted.current = true;
@@ -140,7 +202,7 @@ export default function MasjidsPage() {
             setUserCoords({ lat, lng });
             setNearbyToggle(true);
             try {
-              const res = await fetch(`/api/masjids/nearby?lat=${lat}&lng=${lng}&radius=50000&limit=12`);
+              const res  = await fetch(`/api/masjids/nearby?lat=${lat}&lng=${lng}&radius=50000&limit=12`);
               const data = await res.json();
               setNearbyResults(
                 Array.isArray(data) && data.length > 0
@@ -148,7 +210,7 @@ export default function MasjidsPage() {
                   : [],
               );
             } catch { setNearbyResults(null); }
-            finally { setNearbyLoading(false); }
+            finally  { setNearbyLoading(false); }
           },
           () => { setNearbyLoading(false); },
           { timeout: 5000 },
@@ -157,8 +219,9 @@ export default function MasjidsPage() {
       .catch(() => {});
   }, []);
 
-  // Reset page when nearby / search mode changes
-  useEffect(() => { setPage(1); }, [nearbyToggle, nearbyResults]);
+  // Reset showMore when data source changes
+  useEffect(() => { setShowMore(false); }, [nearbyToggle]);
+  useEffect(() => { setShowMore(false); }, [nearbyResults]);
 
   const toggleFavorite = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -166,15 +229,6 @@ export default function MasjidsPage() {
     setFavorites(next);
     localStorage.setItem('masjidFavorites', JSON.stringify(next));
   };
-
-  function scrollToListTop() {
-    listTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  function goToPage(p: number) {
-    setPage(p);
-    scrollToListTop();
-  }
 
   function handleNearbyToggle() {
     setLocPromptSeen(true);
@@ -212,29 +266,26 @@ export default function MasjidsPage() {
     );
   }
 
-  // Full list (unpaginated) based on current mode
+  // Full list based on current mode
   const fullList: MasjidEntry[] = (() => {
     if (!searchQuery) {
       return nearbyToggle && nearbyResults !== null
         ? nearbyResults.slice(0, 12)
         : masjids.slice(0, 12);
     }
-    const q = searchQuery.toLowerCase();
+    const q     = searchQuery.toLowerCase();
     const match = (m: MasjidEntry) =>
       m.name.toLowerCase().includes(q) || m.address.toLowerCase().includes(q);
-    // Filter from already-loaded data (nearby or default) — this always contains the correct local results
-    const base = nearbyToggle && nearbyResults ? nearbyResults : masjids;
-    const local = base.filter(match);
-    // Supplement with API results that pass the name filter (deduped)
-    const seen = new Set(local.map(m => m._id));
+    const base     = nearbyToggle && nearbyResults ? nearbyResults : masjids;
+    const local    = base.filter(match);
+    const seen     = new Set(local.map(m => m._id));
     const apiExtra = (searchResults ?? []).filter(m => match(m) && !seen.has(m._id));
     return [...local, ...apiExtra];
   })();
 
-  const totalPages  = Math.max(1, Math.ceil(fullList.length / ITEMS_PER_PAGE));
-  const displayList = fullList.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
-  const isLastPage  = page >= totalPages;
-  const isBusy      = loading || nearbyLoading || searchLoading;
+  const visibleList  = fullList.slice(0, showMore ? BATCH * 2 : BATCH);
+  const hasViewMore  = !showMore && fullList.length > BATCH;
+  const isBusy       = loading || nearbyLoading || searchLoading;
 
   return (
     <div style={{ backgroundColor: 'var(--surface-cream)', minHeight: '100vh', padding: '4rem 0 5rem' }}>
@@ -283,7 +334,7 @@ export default function MasjidsPage() {
                 borderRadius: 'var(--radius-pill)', border: 'var(--border-warm)',
                 fontSize: '0.9375rem', fontFamily: "'Inter', sans-serif",
                 background: 'var(--surface-warm-white)', color: 'var(--text-body)',
-                outline: 'none', boxShadow: 'var(--shadow-sm)',
+                outline: 'none', boxShadow: 'var(--shadow-sm)', boxSizing: 'border-box',
                 transition: 'border-color var(--duration-base) ease, box-shadow var(--duration-base) ease',
               }}
               onFocus={e => {
@@ -393,12 +444,22 @@ export default function MasjidsPage() {
         {/* List */}
         <div role="list" aria-label="Masjid listings" aria-busy={isBusy}>
 
-          {isBusy && Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)}
+          {/* Loading skeletons */}
+          {isBusy && Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} style={{
+              background: 'var(--surface-warm-white)', borderRadius: 'var(--radius-lg)',
+              border: 'var(--border-warm)', marginBottom: '0.75rem', overflow: 'hidden',
+            }}>
+              <SkeletonRow />
+            </div>
+          ))}
 
+          {/* API error */}
           {!isBusy && apiError && (
             <div style={{
               textAlign: 'center', padding: '2.5rem 1.5rem',
-              background: 'var(--surface-warm-white)', borderRadius: 'var(--radius-lg)', border: 'var(--border-warm)', marginBottom: '1rem',
+              background: 'var(--surface-warm-white)', borderRadius: 'var(--radius-lg)',
+              border: 'var(--border-warm)', marginBottom: '1rem',
             }}>
               <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '1.2rem', fontWeight: 600, color: 'var(--text-headline)', margin: '0 0 0.5rem' }}>
                 Unable to load masjids
@@ -409,6 +470,7 @@ export default function MasjidsPage() {
             </div>
           )}
 
+          {/* Empty state */}
           {!isBusy && !apiError && fullList.length === 0 && (
             <div style={{
               textAlign: 'center', padding: '3rem 1rem',
@@ -422,9 +484,10 @@ export default function MasjidsPage() {
             </div>
           )}
 
-          {!isBusy && !apiError && displayList.map((masjid, i) => {
-            const avatarBg   = AVATAR_GRADIENTS[((page - 1) * ITEMS_PER_PAGE + i) % AVATAR_GRADIENTS.length];
-            const avatarText = AVATAR_TEXT_COLORS[((page - 1) * ITEMS_PER_PAGE + i) % AVATAR_TEXT_COLORS.length];
+          {/* Masjid rows */}
+          {!isBusy && !apiError && visibleList.map((masjid, i) => {
+            const avatarBg   = AVATAR_GRADIENTS[i % AVATAR_GRADIENTS.length];
+            const avatarText = AVATAR_TEXT_COLORS[i % AVATAR_TEXT_COLORS.length];
             const isFav      = !!favorites[masjid._id];
             const distKm     = masjid.dist ?? null;
 
@@ -434,14 +497,17 @@ export default function MasjidsPage() {
                   <div
                     role="listitem"
                     onClick={() => router.push(`/masjids/${masjid._id}?name=${encodeURIComponent(masjid.name)}&addr=${encodeURIComponent(masjid.address || '')}&lat=${masjid.lat}&lng=${masjid.lng}`)}
-                    onKeyDown={e => e.key === 'Enter' && router.push(`/masjids/${masjid._id}?name=${encodeURIComponent(masjid.name)}&addr=${encodeURIComponent(masjid.address || '')}&lat=${masjid.lat}&lng=${masjid.lng}`)}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter') router.push(`/masjids/${masjid._id}?name=${encodeURIComponent(masjid.name)}&addr=${encodeURIComponent(masjid.address || '')}&lat=${masjid.lat}&lng=${masjid.lng}`);
+                    }}
                     tabIndex={0}
-                    aria-label={`View prayer times for ${masjid.name}${distKm !== null ? `, ${distKm.toFixed(1)} km away` : ''}`}
+                    aria-label={`View prayer times for ${masjid.name}${distKm !== null ? `, ${distKm < 1 ? `${(distKm * 1000).toFixed(0)} m` : `${distKm.toFixed(1)} km`} away` : ''}`}
                     style={{ display: 'grid', gridTemplateColumns: '64px 1fr auto', alignItems: 'center', gap: '1rem', padding: '1.1rem 1.25rem' }}
                   >
+                    {/* Avatar — rounded square */}
                     <div aria-hidden="true" style={{
                       width: 64, height: 64, background: avatarBg,
-                      clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
+                      borderRadius: 16,
                       display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                     }}>
                       <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '1.75rem', fontWeight: 700, color: avatarText, lineHeight: 1 }}>
@@ -450,7 +516,7 @@ export default function MasjidsPage() {
                     </div>
 
                     <div>
-                      <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: '1.2rem', fontWeight: 600, color: 'var(--text-headline)', margin: '0 0 0.25rem', lineHeight: 1.2 }}>
+                      <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-headline)', margin: '0 0 0.25rem', lineHeight: 1.25 }}>
                         {masjid.name}
                       </h3>
                       <p style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontFamily: "'Inter', sans-serif", fontSize: '0.8125rem', color: 'var(--text-muted)', margin: 0 }}>
@@ -488,96 +554,44 @@ export default function MasjidsPage() {
             );
           })}
 
-          {/* Pagination */}
-          {!isBusy && !apiError && totalPages > 1 && (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.75rem', margin: '1.5rem 0 1rem' }}>
+          {/* View More button */}
+          {!isBusy && !apiError && hasViewMore && (
+            <ScrollReveal variant="up" delay={100}>
               <button
-                onClick={() => goToPage(page - 1)}
-                disabled={page === 1}
-                aria-label="Previous page"
+                onClick={() => setShowMore(true)}
                 style={{
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  width: 36, height: 36, borderRadius: '50%', border: '1px solid rgba(65,194,220,0.25)',
-                  background: page === 1 ? 'transparent' : 'var(--surface-warm-white)',
-                  color: page === 1 ? 'var(--text-muted)' : 'var(--brand-teal)',
-                  cursor: page === 1 ? 'not-allowed' : 'pointer',
-                  opacity: page === 1 ? 0.4 : 1,
-                  transition: 'background 200ms ease, box-shadow 200ms ease',
+                  width: '100%', marginTop: '0.25rem', marginBottom: '0.75rem',
+                  padding: '0.875rem 1.5rem',
+                  background: 'var(--surface-warm-white)',
+                  border: '1px solid rgba(65,194,220,0.28)',
+                  borderRadius: 'var(--radius-lg)',
+                  fontFamily: "'Inter', sans-serif", fontSize: '0.9375rem',
+                  fontWeight: 600, color: 'var(--brand-teal-dark)',
+                  cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
+                  transition: 'background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = 'rgba(65,194,220,0.06)';
+                  e.currentTarget.style.borderColor = 'rgba(65,194,220,0.55)';
+                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(65,194,220,0.12)';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = 'var(--surface-warm-white)';
+                  e.currentTarget.style.borderColor = 'rgba(65,194,220,0.28)';
+                  e.currentTarget.style.boxShadow = '';
                 }}
               >
-                <ChevronLeft size={18} />
+                <Navigation size={15} aria-hidden="true" />
+                View More Masjids
               </button>
-
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
-                <button
-                  key={p}
-                  onClick={() => goToPage(p)}
-                  aria-label={`Page ${p}`}
-                  aria-current={page === p ? 'page' : undefined}
-                  style={{
-                    width: 36, height: 36, borderRadius: '50%', border: 'none',
-                    background: page === p ? 'var(--brand-teal)' : 'var(--surface-warm-white)',
-                    color: page === p ? '#ffffff' : 'var(--text-muted)',
-                    fontFamily: "'Inter', sans-serif", fontSize: '0.875rem', fontWeight: 600,
-                    cursor: 'pointer', boxShadow: page === p ? '0 4px 12px rgba(65,194,220,0.35)' : 'var(--shadow-sm)',
-                    transition: 'background 200ms ease, color 200ms ease',
-                  }}
-                >
-                  {p}
-                </button>
-              ))}
-
-              <button
-                onClick={() => goToPage(page + 1)}
-                disabled={page === totalPages}
-                aria-label="Next page"
-                style={{
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  width: 36, height: 36, borderRadius: '50%', border: '1px solid rgba(65,194,220,0.25)',
-                  background: page === totalPages ? 'transparent' : 'var(--surface-warm-white)',
-                  color: page === totalPages ? 'var(--text-muted)' : 'var(--brand-teal)',
-                  cursor: page === totalPages ? 'not-allowed' : 'pointer',
-                  opacity: page === totalPages ? 0.4 : 1,
-                  transition: 'background 200ms ease, box-shadow 200ms ease',
-                }}
-              >
-                <ChevronRight size={18} />
-              </button>
-            </div>
+            </ScrollReveal>
           )}
 
-          {/* App CTA — shown after last page */}
-          {!isBusy && !apiError && isLastPage && (
-            <ScrollReveal variant="up" delay={200}>
-              <div style={{
-                textAlign: 'center', padding: '2rem 1.5rem',
-                background: 'var(--surface-warm-white)', borderRadius: 'var(--radius-lg)',
-                border: '1px solid rgba(65,194,220,0.18)', borderTop: '3px solid var(--brand-teal)',
-                marginTop: '1rem',
-              }}>
-                <div style={{
-                  width: 48, height: 48, borderRadius: 'var(--radius-md)',
-                  background: 'rgba(65,194,220,0.08)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  margin: '0 auto 1rem',
-                }}>
-                  <Smartphone size={24} color="var(--brand-teal)" aria-hidden="true" />
-                </div>
-                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '1.3rem', fontWeight: 600, color: 'var(--text-headline)', margin: '0 0 0.4rem' }}>
-                  Discover All 74,000+ Masjids
-                </p>
-                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.875rem', color: 'var(--text-muted)', margin: '0 0 1.5rem', lineHeight: 1.6 }}>
-                  Get live prayer alerts, the full masjid directory, Qibla finder, and community updates — all in the Mihrab app.
-                </p>
-                <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                  <Link href={ANDROID_APP_URL} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ textDecoration: 'none' }}>
-                    Google Play
-                  </Link>
-                  <Link href={IOS_APP_URL} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ textDecoration: 'none' }}>
-                    App Store
-                  </Link>
-                </div>
-              </div>
+          {/* Download App CTA — shown after View More */}
+          {!isBusy && !apiError && showMore && (
+            <ScrollReveal variant="up" delay={visibleList.length * 80 + 100}>
+              <AppCTA />
             </ScrollReveal>
           )}
 
