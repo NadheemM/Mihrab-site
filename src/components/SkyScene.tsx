@@ -230,12 +230,13 @@ const CARD: React.CSSProperties = {
 };
 const CAP: React.CSSProperties = {
   display: 'block', fontSize: '10px', letterSpacing: '0.18em',
-  textTransform: 'uppercase', fontFamily: 'DM Sans, sans-serif',
+  textTransform: 'uppercase', fontFamily: 'Inter, sans-serif',
   marginBottom: '5px', color: 'rgba(255,255,255,0.55)',
 };
 const TIME: React.CSSProperties = {
   display: 'block', fontSize: '22px', fontWeight: 700,
-  fontFamily: 'Cormorant Garamond, Georgia, serif',
+  fontFamily: 'Inter, sans-serif',
+  fontVariantNumeric: 'tabular-nums',
   letterSpacing: '0.03em', color: '#FFFFFF',
   whiteSpace: 'nowrap',
 };
@@ -557,12 +558,12 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
             }}>
               <span style={{
                 display: 'block', fontSize: '9px', letterSpacing: '0.18em',
-                textTransform: 'uppercase', fontFamily: 'DM Sans, sans-serif',
+                textTransform: 'uppercase', fontFamily: 'Inter, sans-serif',
                 color: 'rgba(65,194,220,0.9)', marginBottom: '4px',
               }}>Upcoming Waqth</span>
               <span style={{
                 display: 'block', fontSize: '15px', fontWeight: 700,
-                fontFamily: 'Cormorant Garamond, Georgia, serif', color: '#FFFFFF',
+                fontFamily: 'Inter, sans-serif', color: '#FFFFFF',
                 whiteSpace: 'nowrap',
               }}>The Path of Light</span>
             </div>
@@ -588,11 +589,12 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
                     {PRAYER_SVG_ICONS[i]}
                   </span>
                   <span style={{
-                    fontFamily: 'DM Sans, sans-serif', fontSize: isMobile ? '9px' : '11px',
+                    fontFamily: 'Inter, sans-serif', fontSize: isMobile ? '9px' : '11px',
                     fontWeight: 500, color: 'rgba(255,255,255,0.65)', letterSpacing: '0.06em',
                   }}>{name}</span>
                   <span style={{
-                    fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: isMobile ? '11px' : '14px',
+                    fontFamily: 'Inter, sans-serif', fontVariantNumeric: 'tabular-nums',
+                    fontSize: isMobile ? '11px' : '14px',
                     fontWeight: 600, color: '#FFFFFF', whiteSpace: 'nowrap',
                   }}>{raw ? fmt12(raw) : '—'}</span>
                 </div>
@@ -630,21 +632,22 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
             }} />
             <span style={{
               fontSize: '9px', letterSpacing: '0.18em', textTransform: 'uppercase',
-              fontFamily: 'DM Sans, sans-serif', color: 'rgba(65,194,220,0.9)',
+              fontFamily: 'Inter, sans-serif', color: 'rgba(65,194,220,0.9)',
             }}>Current Waqth</span>
           </div>
 
           {/* Prayer name — big */}
           <span ref={cwNameRef} style={{
             display: 'block', fontSize: '26px', fontWeight: 700,
-            fontFamily: 'Cormorant Garamond, Georgia, serif',
+            fontFamily: 'Inter, sans-serif',
             letterSpacing: '0.02em', color: '#FFFFFF',
             whiteSpace: 'nowrap', lineHeight: 1.1, marginBottom: '3px',
           }}>—</span>
 
           {/* Prayer start time — muted */}
           <span ref={cwTimeRef} style={{
-            display: 'block', fontFamily: 'DM Sans, sans-serif',
+            display: 'block', fontFamily: 'Inter, sans-serif',
+            fontVariantNumeric: 'tabular-nums',
             fontSize: '12px', color: 'rgba(255,255,255,0.48)',
             letterSpacing: '0.03em', marginBottom: '10px',
           }}>—</span>
@@ -652,7 +655,8 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
           {/* Next prayer */}
           <div style={{ borderTop: '1px solid rgba(255,255,255,0.09)', paddingTop: '8px' }}>
             <span ref={cwNextRef} style={{
-              display: 'block', fontFamily: 'DM Sans, sans-serif',
+              display: 'block', fontFamily: 'Inter, sans-serif',
+              fontVariantNumeric: 'tabular-nums',
               fontSize: '11px', letterSpacing: '0.04em',
               color: 'rgba(65,194,220,0.85)', whiteSpace: 'nowrap',
             }}>Next: —</span>
@@ -693,7 +697,7 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
                 <circle cx="12" cy="16" r="1.2" fill="rgba(255,255,255,0.55)" stroke="none"/>
               </svg>
               <span style={{
-                fontFamily: 'DM Sans, sans-serif', fontSize: '12px', fontWeight: 500,
+                fontFamily: 'Inter, sans-serif', fontSize: '12px', fontWeight: 500,
                 color: 'rgba(255,255,255,0.9)', whiteSpace: 'nowrap',
               }}>
                 {hijriDate?.gregorian ?? '—'}
@@ -714,7 +718,7 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
                   <circle cx="12" cy="8" r="2.5"/>
                 </svg>
                 <span style={{
-                  fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 600,
+                  fontFamily: 'Inter, sans-serif', fontSize: '11px', fontWeight: 600,
                   color: '#41C2DC', whiteSpace: 'nowrap',
                 }}>
                   {userLocation}
@@ -728,7 +732,8 @@ function CelestialBodies({ prayer }: { prayer: ReturnType<typeof usePrayerTimes>
 
           {/* Hijri date — original compact style */}
           <span style={{
-            fontFamily: 'Cormorant Garamond, Georgia, serif',
+            fontFamily: 'Inter, sans-serif',
+            fontVariantNumeric: 'tabular-nums',
             fontSize: '16px', fontWeight: 600,
             color: '#FFFFFF', lineHeight: 1.25, display: 'block',
           }}>
