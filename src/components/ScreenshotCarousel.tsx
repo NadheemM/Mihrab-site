@@ -4,11 +4,12 @@ import Image from 'next/image';
 import { useIsMobile } from '@/lib/useIsMobile';
 
 const screens = [
-  { src: '/first.png', label: 'Home Screen' },
-  { src: '/3.jpeg', label: 'App Features' },
-  { src: '/4.jpeg', label: 'Daily Content' },
-  { src: '/5.jpeg', label: 'Hadith & Dua' },
-  { src: '/6.jpeg', label: 'Quran' },
+  { src: '/first.png',  label: 'Home Screen' },
+  { src: '/second.jpg', label: 'App Features' },
+  { src: '/third.jpg',  label: 'Daily Content' },
+  { src: '/fourth.jpg', label: 'Hadith & Dua' },
+  { src: '/fifth.jpg',  label: 'Quran' },
+  { src: '/sixth.jpg',  label: 'More Features' },
 ];
 
 export default function ScreenshotCarousel() {
