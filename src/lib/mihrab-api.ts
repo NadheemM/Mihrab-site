@@ -47,13 +47,11 @@ export function getPrayerTimes(mosqueId: number) {
   return apiFetch<MihrabPrayerTime[]>(`/api/prayer-times/?mosque=${mosqueId}`);
 }
 
-// Tries /api/prayer-times/all/ then /api/prayer-times/ with both institution= and mosque= params
+// /api/prayer-times/all/ requires ?mosque= parameter (confirmed from DRF browser)
 export async function getPrayerTimesForInstitution(id: number): Promise<MihrabPrayerTime[]> {
   const headers: Record<string, string> = { 'API-KEY': process.env.MIHRAB_API_KEY! };
   const endpoints = [
-    `/api/prayer-times/all/?institution=${id}&limit=100`,
     `/api/prayer-times/all/?mosque=${id}&limit=100`,
-    `/api/prayer-times/?institution=${id}&limit=100`,
     `/api/prayer-times/?mosque=${id}&limit=100`,
   ];
   for (const path of endpoints) {
