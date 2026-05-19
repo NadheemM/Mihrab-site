@@ -1,7 +1,5 @@
 'use client';
-import { useState, useCallback } from 'react';
 import Image from 'next/image';
-import { useIsMobile } from '@/lib/useIsMobile';
 
 const screens = [
   { src: '/first.png',  label: 'Home Screen' },
@@ -12,193 +10,95 @@ const screens = [
   { src: '/sixth.jpg',  label: 'More Features' },
 ];
 
-const N = screens.length;
-function mod(n: number, m: number) { return ((n % m) + m) % m; }
+// Duplicate once for seamless infinite loop — when set A scrolls off-screen
+// set B is already in place; the container resets to 0 invisibly.
+const track = [...screens, ...screens];
 
-// Shadow per depth layer — center casts outward on both sides,
-// each side layer casts further outward toward its outer neighbour
-function buildShadow(off: number): string {
-  const abs = Math.abs(off);
-  if (abs === 0) {
-    return [
-      '0 40px 80px rgba(0,0,0,0.42)',
-      '-28px 8px 48px rgba(0,0,0,0.14)',
-      ' 28px 8px 48px rgba(0,0,0,0.14)',
-    ].join(',');
-  }
-  const dir = off > 0 ? 1 : -1;
-  return [
-    `${dir * abs * 22}px ${abs * 10}px ${abs * 38}px rgba(0,0,0,0.32)`,
-    `${dir * abs *  6}px  0px ${abs * 16}px rgba(0,0,0,0.18)`,
-  ].join(',');
-}
+// Each slide fills the phone screen height exactly so the snap is clean.
+const PHONE_W  = 265;
+const PHONE_H  = 535;
+const SLIDE_H  = PHONE_H;
+// Total track height = 12 slides × SLIDE_H. Animation moves exactly 50% (one set).
+// Duration = slides * seconds-per-slide for a comfortable viewing pace.
+const DURATION = `${screens.length * 4}s`; // 4 s per image = 24 s per full pass
 
 export default function ScreenshotCarousel() {
-  const [active, setActive] = useState(0);
-  const isMobile = useIsMobile();
-
-  const prev = useCallback(() => setActive(a => mod(a - 1, N)), []);
-  const next = useCallback(() => setActive(a => mod(a + 1, N)), []);
-
-  const PW   = isMobile ? 150 : 205;   // phone width
-  const PH   = isMobile ? 300 : 415;   // phone height
-  const STEP = isMobile ? 172 : 248;   // centre-to-centre spacing
-  const SIDE = isMobile ? 1   : 2;     // visible phones each side
-
   return (
-    <div style={{ width: '100%' }}>
+    <div style={{ display: 'flex', justifyContent: 'center', padding: '2.5rem 0 1rem' }}>
 
-      {/* ── Track ── */}
-      <div style={{
-        position: 'relative',
-        height: PH + 80,
-        overflow: 'hidden',
-      }}>
-        {screens.map((s, i) => {
-          // Shortest circular distance from active
-          let off = i - active;
-          if (off >  N / 2) off -= N;
-          if (off < -N / 2) off += N;
-          const abs = Math.abs(off);
+      {/* ── Phone shell ── */}
+      <div
+        role="img"
+        aria-label="Mihrab app screenshots cycling through a phone mockup"
+        style={{
+          position:     'relative',
+          width:        PHONE_W,
+          height:       PHONE_H,
+          borderRadius: 44,
+          border:       '10px solid #0e1828',
+          background:   '#0e1828',
+          boxShadow: [
+            '0 50px 100px rgba(0,0,0,0.50)',
+            '0 20px  48px rgba(0,0,0,0.30)',
+            'inset 0 0 0 1px rgba(255,255,255,0.05)',
+          ].join(', '),
+          overflow: 'hidden',
+        }}
+      >
+        {/* Dynamic island */}
+        <div aria-hidden="true" style={{
+          position: 'absolute', top: 10, left: '50%',
+          transform: 'translateX(-50%)',
+          width: 82, height: 22, borderRadius: 14,
+          background: '#0e1828', zIndex: 10,
+        }} />
 
-          // Hide phones beyond the visible side slots
-          if (abs > SIDE + 0.6) return null;
+        {/* Volume / power buttons — purely decorative */}
+        <div aria-hidden="true" style={{ position:'absolute', left:-12, top: 88, width:4, height:30, borderRadius:2, background:'#1c2e4a' }} />
+        <div aria-hidden="true" style={{ position:'absolute', left:-12, top:126, width:4, height:30, borderRadius:2, background:'#1c2e4a' }} />
+        <div aria-hidden="true" style={{ position:'absolute', left:-12, top:162, width:4, height:54, borderRadius:2, background:'#1c2e4a' }} />
+        <div aria-hidden="true" style={{ position:'absolute', right:-12, top:100, width:4, height:42, borderRadius:2, background:'#1c2e4a' }} />
 
-          const scale   = 1 - abs * 0.115;
-          const tx      = off * STEP;
-          const ty      = abs * 16;           // side phones drop slightly
-          const opacity = 1 - abs * 0.22;
-          const zIndex  = 20 - abs;
-          const isCenter = abs === 0;
-
-          return (
-            <div
-              key={i}
-              onClick={() => !isCenter && setActive(i)}
-              role={isCenter ? undefined : 'button'}
-              aria-label={isCenter ? undefined : `View ${s.label}`}
-              tabIndex={isCenter ? undefined : 0}
-              onKeyDown={e => { if (!isCenter && (e.key === 'Enter' || e.key === ' ')) setActive(i); }}
-              style={{
-                position:  'absolute',
-                left:      `calc(50% - ${PW / 2}px)`,
-                top:       `calc(50% - ${PH / 2}px)`,
-                width:     PW,
-                height:    PH,
-                borderRadius: 30,
-                border:    `${isCenter ? 10 : 8}px solid #0F1A30`,
-                background: '#0F1A30',
-                overflow:  'hidden',
-                zIndex,
-                opacity,
-                cursor:    isCenter ? 'default' : 'pointer',
-                boxShadow: buildShadow(off),
-                transform: `translateX(${tx}px) translateY(${ty}px) scale(${scale})`,
-                transition: [
-                  'transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94)',
-                  'opacity   0.55s ease',
-                  'box-shadow 0.45s ease',
-                ].join(', '),
-                willChange: 'transform, opacity',
-              }}
-            >
-              {/* Notch */}
-              <div style={{
-                position: 'absolute', top: 5, left: '50%',
-                transform: 'translateX(-50%)',
-                width: 52, height: 11, borderRadius: 6,
-                background: '#0F1A30', zIndex: 2,
-              }} aria-hidden="true" />
-
+        {/* ── Infinite scrolling strip ── */}
+        <div className="phone-scroll-track" style={{ position:'absolute', top:0, left:0, width:'100%' }}>
+          {track.map((s, i) => (
+            <div key={i} style={{ position:'relative', width:'100%', height: SLIDE_H, flexShrink:0 }}>
               <Image
                 src={s.src}
-                alt={s.label}
+                alt={i < screens.length ? s.label : ''}
+                aria-hidden={i >= screens.length}
                 fill
-                sizes={`${PW * 2}px`}
-                style={{ objectFit: 'cover', objectPosition: 'top' }}
-                priority={abs === 0}
+                sizes={`${PHONE_W * 2}px`}
+                style={{ objectFit:'cover', objectPosition:'top' }}
+                priority={i < 2}
               />
             </div>
-          );
-        })}
-      </div>
-
-      {/* ── Controls: prev · dots · next ── */}
-      <div style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        gap: '1.25rem', marginTop: '2rem',
-      }}>
-
-        <button
-          onClick={prev}
-          aria-label="Previous screenshot"
-          style={{
-            width: 40, height: 40, borderRadius: '50%', flexShrink: 0,
-            border: '1.5px solid rgba(65,194,220,0.35)',
-            background: 'rgba(65,194,220,0.08)',
-            color: '#41C2DC', cursor: 'pointer',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            transition: 'background 0.2s ease, border-color 0.2s ease',
-          }}
-          onMouseEnter={e => {
-            e.currentTarget.style.background = 'rgba(65,194,220,0.20)';
-            e.currentTarget.style.borderColor = 'rgba(65,194,220,0.7)';
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.background = 'rgba(65,194,220,0.08)';
-            e.currentTarget.style.borderColor = 'rgba(65,194,220,0.35)';
-          }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <polyline points="15 18 9 12 15 6"/>
-          </svg>
-        </button>
-
-        <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
-          {screens.map((s, i) => (
-            <button
-              key={i}
-              onClick={() => setActive(i)}
-              aria-label={`Go to ${s.label}`}
-              aria-pressed={active === i}
-              style={{
-                width:  active === i ? 24 : 8,
-                height: 8,
-                borderRadius: 4,
-                background: active === i ? '#41C2DC' : 'rgba(65,194,220,0.28)',
-                border: 'none', cursor: 'pointer', padding: 0,
-                transition: 'width 0.25s ease, background 0.25s ease',
-              }}
-            />
           ))}
         </div>
 
-        <button
-          onClick={next}
-          aria-label="Next screenshot"
-          style={{
-            width: 40, height: 40, borderRadius: '50%', flexShrink: 0,
-            border: '1.5px solid rgba(65,194,220,0.35)',
-            background: 'rgba(65,194,220,0.08)',
-            color: '#41C2DC', cursor: 'pointer',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            transition: 'background 0.2s ease, border-color 0.2s ease',
-          }}
-          onMouseEnter={e => {
-            e.currentTarget.style.background = 'rgba(65,194,220,0.20)';
-            e.currentTarget.style.borderColor = 'rgba(65,194,220,0.7)';
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.background = 'rgba(65,194,220,0.08)';
-            e.currentTarget.style.borderColor = 'rgba(65,194,220,0.35)';
-          }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <polyline points="9 18 15 12 9 6"/>
-          </svg>
-        </button>
-
+        {/* Glare highlight — top-left sheen */}
+        <div aria-hidden="true" style={{
+          position:'absolute', inset:0, borderRadius:34,
+          background:'linear-gradient(140deg, rgba(255,255,255,0.05) 0%, transparent 55%)',
+          pointerEvents:'none', zIndex:8,
+        }} />
       </div>
+
+      {/* ── CSS animation + reduced-motion override ── */}
+      <style>{`
+        .phone-scroll-track {
+          animation: phoneScrollUp ${DURATION} linear infinite;
+        }
+        @keyframes phoneScrollUp {
+          from { transform: translateY(0); }
+          to   { transform: translateY(-50%); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .phone-scroll-track {
+            animation: none;
+          }
+        }
+      `}</style>
     </div>
   );
 }
