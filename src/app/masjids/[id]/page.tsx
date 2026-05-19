@@ -2,7 +2,7 @@
 
 import { Suspense, useState, useEffect, use } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ArrowLeft, MapPin, Clock } from 'lucide-react';
+import { ArrowLeft, MapPin, Clock, AlertCircle } from 'lucide-react';
 import GlowCard from '@/components/GlowCard';
 import PrayerCountdown from '@/components/PrayerCountdown';
 
@@ -33,92 +33,31 @@ function getCurrentPrayerKey(): string {
   return 'isha';
 }
 
-function SkeletonRows() {
-  return (
-    <>
-      {Array.from({ length: 6 }).map((_, i) => (
-        <div key={i} className="skeleton" style={{ height: 52, borderRadius: 8, marginBottom: 4 }} />
-      ))}
-    </>
-  );
-}
-
 function MasjidContent({ masjidId }: { masjidId: string }) {
   const router       = useRouter();
   const searchParams = useSearchParams();
 
   const name    = decodeURIComponent(searchParams.get('name') ?? '');
   const address = decodeURIComponent(searchParams.get('addr') ?? '');
-  const lat     = parseFloat(searchParams.get('lat') ?? '0');
-  const lng     = parseFloat(searchParams.get('lng') ?? '0');
 
   const [timings,      setTimings]      = useState<Timings | null>(null);
+  const [hasTimes,     setHasTimes]     = useState(false);
   const [loadingTimes, setLoadingTimes] = useState(true);
-  const [lastUpdated,  setLastUpdated]  = useState('');
   const currentPrayer = getCurrentPrayerKey();
 
   useEffect(() => {
     let cancelled = false;
-
-    async function load() {
-      // Step 1: calculated prayer times from aladhan.com (always works if lat/lng present)
-      if (lat && lng) {
-        try {
-          const now     = new Date();
-          const dateStr = `${now.getDate()}-${now.getMonth() + 1}-${now.getFullYear()}`;
-          const res     = await fetch(
-            `https://api.aladhan.com/v1/timings/${dateStr}?latitude=${lat}&longitude=${lng}&method=2`,
-          );
-          const json = await res.json();
-          const t    = json?.data?.timings;
-          if (t && !cancelled) {
-            setTimings({
-              fajr:    { azaan: t.Fajr,    iqamah: '' },
-              zuhar:   { azaan: t.Dhuhr,   iqamah: '' },
-              asar:    { azaan: t.Asr,     iqamah: '' },
-              maghrib: { azaan: t.Maghrib, iqamah: '' },
-              isha:    { azaan: t.Isha,    iqamah: '' },
-              jummah:  { azaan: t.Dhuhr,   iqamah: '' },
-            });
-          }
-        } catch { /* leave timings null */ }
-      }
-
-      // Step 2: Mihrab API for mosque-specific iqamah times
-      try {
-        const res  = await fetch(`/api/masjids/${masjidId}`);
-        const data = await res.json();
-        if (!cancelled && data?.timings) {
-          setLastUpdated(data.lastUpdated ?? '');
-          if (data.hasTimes) {
-            // Merge iqamah (and azaan if aladhan didn't load) from Mihrab
-            setTimings(prev => {
-              const base = prev ?? {
-                fajr:    { azaan: '', iqamah: '' },
-                zuhar:   { azaan: '', iqamah: '' },
-                asar:    { azaan: '', iqamah: '' },
-                maghrib: { azaan: '', iqamah: '' },
-                isha:    { azaan: '', iqamah: '' },
-                jummah:  { azaan: '', iqamah: '' },
-              };
-              const merged = { ...base };
-              for (const k of Object.keys(base) as (keyof Timings)[]) {
-                const mihrab = data.timings[k];
-                if (mihrab?.azaan  && !merged[k].azaan)  merged[k] = { ...merged[k], azaan:  mihrab.azaan };
-                if (mihrab?.iqamah)                      merged[k] = { ...merged[k], iqamah: mihrab.iqamah };
-              }
-              return merged;
-            });
-          }
-        }
-      } catch { /* iqamah unavailable */ }
-
-      if (!cancelled) setLoadingTimes(false);
-    }
-
-    load();
+    fetch(`/api/masjids/${masjidId}`)
+      .then(r => r.json())
+      .then(data => {
+        if (cancelled) return;
+        if (data?.timings) setTimings(data.timings);
+        setHasTimes(!!data?.hasTimes);
+      })
+      .catch(() => {})
+      .finally(() => { if (!cancelled) setLoadingTimes(false); });
     return () => { cancelled = true; };
-  }, [masjidId, lat, lng]);
+  }, [masjidId]);
 
   const displayName = name || `Masjid ${masjidId}`;
 
@@ -186,21 +125,38 @@ function MasjidContent({ masjidId }: { masjidId: string }) {
           <span className="divider-arabesque-icon" />
         </div>
 
-        {/* Prayer times table */}
+        {/* Prayer times */}
         {loadingTimes ? (
-          <SkeletonRows />
+          <>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="skeleton" style={{ height: 52, borderRadius: 8, marginBottom: 4 }} />
+            ))}
+          </>
+        ) : !hasTimes ? (
+          /* No times recorded for this masjid */
+          <div style={{
+            textAlign: 'center', padding: '2.5rem 1.5rem',
+            background: 'var(--surface-warm-white)', borderRadius: 'var(--radius-lg)',
+            border: '1px solid rgba(65,194,220,0.15)',
+          }}>
+            <AlertCircle size={32} color="var(--text-muted)" style={{ margin: '0 auto 0.75rem' }} aria-hidden="true" />
+            <p style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: '1.15rem', fontWeight: 600,
+              color: 'var(--text-headline)', margin: '0 0 0.4rem',
+            }}>
+              No prayer times listed
+            </p>
+            <p style={{
+              fontFamily: "'DM Sans', sans-serif", fontSize: '0.875rem',
+              color: 'var(--text-muted)', margin: 0, lineHeight: 1.6,
+            }}>
+              This masjid has not yet listed their salah timings.<br />
+              Download the Mihrab app to check for updates.
+            </p>
+          </div>
         ) : (
           <GlowCard style={{ padding: 0, overflow: 'hidden' }}>
-            {lastUpdated && (
-              <div style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
-                padding: '0.75rem 1rem 0',
-                fontFamily: "'DM Sans', sans-serif", fontSize: '0.75rem', color: 'var(--text-muted)',
-              }}>
-                Updated Just now
-              </div>
-            )}
-
             <table
               className="prayer-times-table"
               style={{ width: '100%', borderCollapse: 'collapse' }}
@@ -225,7 +181,7 @@ function MasjidContent({ masjidId }: { masjidId: string }) {
               <tbody>
                 {prayerMeta.map((prayer, i) => {
                   const isCurrent = prayer.key === currentPrayer;
-                  const times     = (timings as any)?.[prayer.key];
+                  const times = (timings as any)?.[prayer.key];
                   return (
                     <tr key={prayer.key} style={{
                       background: isCurrent
