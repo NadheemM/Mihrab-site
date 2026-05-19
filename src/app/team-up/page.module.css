@@ -19,7 +19,7 @@
 }
 
 .heading {
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Inter', sans-serif;
   font-size: clamp(2.8rem, 6vw, 4.25rem);
   font-weight: 700;
   line-height: 1.05;
@@ -36,7 +36,7 @@
 }
 
 .body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1rem;
   color: var(--text-body);
   line-height: 1.75;
@@ -71,7 +71,7 @@
 }
 
 .partnersTitle {
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Inter', sans-serif;
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 700;
   color: var(--text-headline);
@@ -81,7 +81,7 @@
 }
 
 .partnersSubtitle {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1rem;
   color: var(--text-muted);
   line-height: 1.7;
@@ -157,7 +157,7 @@
 }
 
 .partnerInitial {
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Inter', sans-serif;
   font-size: 2rem;
   font-weight: 700;
   color: var(--brand-teal-dark);
@@ -169,7 +169,7 @@
 }
 
 .partnerName {
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1.3rem;
   font-weight: 600;
   color: var(--text-headline);
@@ -177,7 +177,7 @@
 }
 
 .partnerDesc {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.875rem;
   color: var(--text-muted);
   line-height: 1.65;

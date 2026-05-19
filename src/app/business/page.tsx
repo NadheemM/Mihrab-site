@@ -85,7 +85,7 @@ export default async function BusinessDirectory() {
           <div>
             <span className="text-gold-label" style={{ marginBottom: '0.5rem' }}>Muslim-Owned Businesses</span>
             <h1 style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontFamily: "'Inter', sans-serif",
               fontSize: 'clamp(2rem, 5vw, 3rem)',
               fontWeight: 700,
               color: 'var(--text-headline)',
@@ -96,7 +96,7 @@ export default async function BusinessDirectory() {
               Business Directory
             </h1>
             <p style={{
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "'Inter', sans-serif",
               fontSize: '0.9375rem',
               color: 'var(--text-muted)',
               margin: 0,
@@ -131,7 +131,7 @@ export default async function BusinessDirectory() {
               <Briefcase size={28} aria-hidden="true" />
             </div>
             <h3 style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontFamily: "'Inter', sans-serif",
               fontSize: '1.5rem',
               fontWeight: 600,
               color: 'var(--text-headline)',
@@ -140,7 +140,7 @@ export default async function BusinessDirectory() {
               No Businesses Listed Yet
             </h3>
             <p style={{
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "'Inter', sans-serif",
               fontSize: '0.9375rem',
               color: 'var(--text-muted)',
               marginBottom: '2rem',
@@ -187,7 +187,7 @@ export default async function BusinessDirectory() {
                     }}
                   >
                     <span style={{
-                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      fontFamily: "'Inter', sans-serif",
                       fontSize: '1.75rem',
                       fontWeight: 700,
                       color: 'var(--brand-teal-dark)',
@@ -201,7 +201,7 @@ export default async function BusinessDirectory() {
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.4rem', flexWrap: 'wrap' }}>
                       <h3 style={{
-                        fontFamily: "'Cormorant Garamond', Georgia, serif",
+                        fontFamily: "'Inter', sans-serif",
                         fontSize: '1.25rem',
                         fontWeight: 600,
                         color: 'var(--text-headline)',
@@ -211,7 +211,7 @@ export default async function BusinessDirectory() {
                         <span className="sr-only"> (listing {i + 1})</span>
                       </h3>
                       <span style={{
-                        fontFamily: "'DM Sans', sans-serif",
+                        fontFamily: "'Inter', sans-serif",
                         fontSize: '0.7rem',
                         fontWeight: 600,
                         letterSpacing: '0.07em',
@@ -226,7 +226,7 @@ export default async function BusinessDirectory() {
                       </span>
                     </div>
                     <p style={{
-                      fontFamily: "'DM Sans', sans-serif",
+                      fontFamily: "'Inter', sans-serif",
                       fontSize: '0.9rem',
                       color: 'var(--text-muted)',
                       margin: '0 0 0.6rem',
@@ -239,7 +239,7 @@ export default async function BusinessDirectory() {
                         display: 'flex',
                         alignItems: 'center',
                         gap: '0.3rem',
-                        fontFamily: "'DM Sans', sans-serif",
+                        fontFamily: "'Inter', sans-serif",
                         fontSize: '0.8125rem',
                         color: 'var(--text-muted)',
                       }}>
@@ -249,7 +249,7 @@ export default async function BusinessDirectory() {
                         display: 'flex',
                         alignItems: 'center',
                         gap: '0.3rem',
-                        fontFamily: "'DM Sans', sans-serif",
+                        fontFamily: "'Inter', sans-serif",
                         fontSize: '0.8125rem',
                         color: 'var(--text-muted)',
                       }}>

@@ -11,7 +11,7 @@
 }
 
 .title {
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Inter', sans-serif;
   font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 700;
   color: var(--text-headline);
@@ -55,7 +55,7 @@
 }
 
 .infoTitle {
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1.75rem;
   font-weight: 600;
   color: var(--text-inverse);
@@ -64,7 +64,7 @@
 }
 
 .infoSubtitle {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.9375rem;
   color: rgba(250,246,238,0.6);
   line-height: 1.6;
@@ -97,7 +97,7 @@
 }
 
 .infoRowLabel {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.07em;
@@ -106,7 +106,7 @@
 }
 
 .infoRowValue {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.9375rem;
   color: var(--text-inverse);
 }
@@ -139,7 +139,7 @@
   padding: 0.875rem 1rem;
   margin-bottom: 1.5rem;
   border-radius: var(--radius-md);
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.9375rem;
   text-align: center;
 }
@@ -176,7 +176,7 @@
 }
 
 .label {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--text-body);
@@ -190,7 +190,7 @@
   border: var(--border-warm);
   background: var(--surface-cream);
   color: var(--text-body);
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1rem;
   transition: border-color var(--duration-base) ease, box-shadow var(--duration-base) ease;
   box-sizing: border-box;

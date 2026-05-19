@@ -244,7 +244,7 @@ export default function MasjidsPage() {
         <ScrollReveal variant="up">
           <div style={{ marginBottom: '2.25rem' }}>
             <h1 style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontFamily: "'Inter', sans-serif",
               fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 700,
               color: 'var(--text-headline)', letterSpacing: '-0.02em', lineHeight: 1.1,
               margin: '0.4rem 0 1rem',
@@ -281,7 +281,7 @@ export default function MasjidsPage() {
               style={{
                 width: '100%', padding: '0.85rem 2.5rem 0.85rem 2.875rem',
                 borderRadius: 'var(--radius-pill)', border: 'var(--border-warm)',
-                fontSize: '0.9375rem', fontFamily: "'DM Sans', sans-serif",
+                fontSize: '0.9375rem', fontFamily: "'Inter', sans-serif",
                 background: 'var(--surface-warm-white)', color: 'var(--text-body)',
                 outline: 'none', boxShadow: 'var(--shadow-sm)',
                 transition: 'border-color var(--duration-base) ease, box-shadow var(--duration-base) ease',
@@ -308,7 +308,7 @@ export default function MasjidsPage() {
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Navigation size={15} color="var(--brand-teal-dark)" aria-hidden="true" />
-              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.875rem', color: 'var(--text-body)' }}>
+              <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.875rem', color: 'var(--text-body)' }}>
                 Enable location to find masjids near you
               </span>
             </div>
@@ -324,7 +324,7 @@ export default function MasjidsPage() {
             display: 'flex', alignItems: 'center', gap: '0.5rem',
             background: 'rgba(65,194,220,0.05)', border: '1px solid rgba(65,194,220,0.22)',
             borderRadius: 'var(--radius-lg)', padding: '0.875rem 1.25rem', marginBottom: '1.25rem',
-            fontFamily: "'DM Sans', sans-serif", fontSize: '0.875rem', color: 'var(--brand-teal-dark)',
+            fontFamily: "'Inter', sans-serif", fontSize: '0.875rem', color: 'var(--brand-teal-dark)',
           }}>
             <Navigation size={15} aria-hidden="true" /> Requesting your location…
           </div>
@@ -334,7 +334,7 @@ export default function MasjidsPage() {
             display: 'flex', alignItems: 'center', gap: '0.5rem',
             background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.22)',
             borderRadius: 'var(--radius-lg)', padding: '0.875rem 1.25rem', marginBottom: '1.25rem',
-            fontFamily: "'DM Sans', sans-serif", fontSize: '0.875rem', color: '#b91c1c',
+            fontFamily: "'Inter', sans-serif", fontSize: '0.875rem', color: '#b91c1c',
           }}>
             <Navigation size={15} aria-hidden="true" />
             Location access was denied. Please allow it in your browser settings.
@@ -345,7 +345,7 @@ export default function MasjidsPage() {
         <div ref={listTopRef} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
           <div>
             <h2 style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontFamily: "'Inter', sans-serif",
               fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-headline)', margin: 0,
             }}>
               {searchQuery
@@ -353,7 +353,7 @@ export default function MasjidsPage() {
                 : nearbyToggle && userCoords ? 'Nearby Masjids' : 'All Masjids'}
             </h2>
             {!isBusy && fullList.length > 0 && (
-              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+              <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                 {fullList.length} masjid{fullList.length !== 1 ? 's' : ''} found
               </span>
             )}
@@ -384,7 +384,7 @@ export default function MasjidsPage() {
             display: 'flex', alignItems: 'center', gap: '0.5rem',
             background: 'rgba(65,194,220,0.05)', border: '1px solid rgba(65,194,220,0.22)',
             borderRadius: 'var(--radius-lg)', padding: '0.875rem 1.25rem', marginBottom: '1.25rem',
-            fontFamily: "'DM Sans', sans-serif", fontSize: '0.875rem', color: 'var(--brand-teal-dark)',
+            fontFamily: "'Inter', sans-serif", fontSize: '0.875rem', color: 'var(--brand-teal-dark)',
           }}>
             <Navigation size={15} aria-hidden="true" /> Finding masjids near you…
           </div>
@@ -400,10 +400,10 @@ export default function MasjidsPage() {
               textAlign: 'center', padding: '2.5rem 1.5rem',
               background: 'var(--surface-warm-white)', borderRadius: 'var(--radius-lg)', border: 'var(--border-warm)', marginBottom: '1rem',
             }}>
-              <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: '1.2rem', fontWeight: 600, color: 'var(--text-headline)', margin: '0 0 0.5rem' }}>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '1.2rem', fontWeight: 600, color: 'var(--text-headline)', margin: '0 0 0.5rem' }}>
                 Unable to load masjids
               </p>
-              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.875rem', color: 'var(--text-muted)', margin: 0 }}>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.875rem', color: 'var(--text-muted)', margin: 0 }}>
                 The masjid directory is temporarily unavailable. Please try again shortly.
               </p>
             </div>
@@ -412,7 +412,7 @@ export default function MasjidsPage() {
           {!isBusy && !apiError && fullList.length === 0 && (
             <div style={{
               textAlign: 'center', padding: '3rem 1rem',
-              fontFamily: "'DM Sans', sans-serif", color: 'var(--text-muted)', fontSize: '0.9375rem',
+              fontFamily: "'Inter', sans-serif", color: 'var(--text-muted)', fontSize: '0.9375rem',
             }}>
               {searchQuery
                 ? `No masjids match "${searchQuery}".`
@@ -444,21 +444,21 @@ export default function MasjidsPage() {
                       clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                     }}>
-                      <span style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: '1.75rem', fontWeight: 700, color: avatarText, lineHeight: 1 }}>
+                      <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '1.75rem', fontWeight: 700, color: avatarText, lineHeight: 1 }}>
                         {masjid.name.charAt(0)}
                       </span>
                     </div>
 
                     <div>
-                      <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: '1.2rem', fontWeight: 600, color: 'var(--text-headline)', margin: '0 0 0.25rem', lineHeight: 1.2 }}>
+                      <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: '1.2rem', fontWeight: 600, color: 'var(--text-headline)', margin: '0 0 0.25rem', lineHeight: 1.2 }}>
                         {masjid.name}
                       </h3>
-                      <p style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontFamily: "'DM Sans', sans-serif", fontSize: '0.8125rem', color: 'var(--text-muted)', margin: 0 }}>
+                      <p style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontFamily: "'Inter', sans-serif", fontSize: '0.8125rem', color: 'var(--text-muted)', margin: 0 }}>
                         <MapPin size={12} aria-hidden="true" />
                         {masjid.address || 'Address not available'}
                       </p>
                       {distKm !== null && (
-                        <p style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontFamily: "'DM Sans', sans-serif", fontSize: '0.75rem', color: 'var(--brand-teal-dark)', margin: '0.25rem 0 0', fontWeight: 500 }}>
+                        <p style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'var(--brand-teal-dark)', margin: '0.25rem 0 0', fontWeight: 500 }}>
                           <Navigation size={11} aria-hidden="true" />
                           {distKm < 1 ? `${(distKm * 1000).toFixed(0)} m away` : `${distKm.toFixed(1)} km away`}
                         </p>
@@ -518,7 +518,7 @@ export default function MasjidsPage() {
                     width: 36, height: 36, borderRadius: '50%', border: 'none',
                     background: page === p ? 'var(--brand-teal)' : 'var(--surface-warm-white)',
                     color: page === p ? '#ffffff' : 'var(--text-muted)',
-                    fontFamily: "'DM Sans', sans-serif", fontSize: '0.875rem', fontWeight: 600,
+                    fontFamily: "'Inter', sans-serif", fontSize: '0.875rem', fontWeight: 600,
                     cursor: 'pointer', boxShadow: page === p ? '0 4px 12px rgba(65,194,220,0.35)' : 'var(--shadow-sm)',
                     transition: 'background 200ms ease, color 200ms ease',
                   }}
@@ -563,10 +563,10 @@ export default function MasjidsPage() {
                 }}>
                   <Smartphone size={24} color="var(--brand-teal)" aria-hidden="true" />
                 </div>
-                <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: '1.3rem', fontWeight: 600, color: 'var(--text-headline)', margin: '0 0 0.4rem' }}>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '1.3rem', fontWeight: 600, color: 'var(--text-headline)', margin: '0 0 0.4rem' }}>
                   Discover All 74,000+ Masjids
                 </p>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.875rem', color: 'var(--text-muted)', margin: '0 0 1.5rem', lineHeight: 1.6 }}>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.875rem', color: 'var(--text-muted)', margin: '0 0 1.5rem', lineHeight: 1.6 }}>
                   Get live prayer alerts, the full masjid directory, Qibla finder, and community updates — all in the Mihrab app.
                 </p>
                 <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>

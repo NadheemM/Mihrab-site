@@ -31,7 +31,7 @@
 }
 
 .heroTitle {
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Inter', sans-serif;
   font-style: italic;
   font-size: clamp(2.25rem, 5vw, 3.5rem);
   font-weight: 600;
@@ -86,7 +86,7 @@
 }
 
 .pullQuoteText {
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Inter', sans-serif;
   font-style: italic;
   font-size: 1.6rem;
   font-weight: 600;
@@ -96,7 +96,7 @@
 }
 
 .pullQuoteAttr {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -106,7 +106,7 @@
 
 /* RIGHT — body copy */
 .body p {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1.0625rem;
   color: var(--text-body);
   line-height: 1.75;
@@ -118,7 +118,7 @@
 }
 
 .bodyHeading {
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1.5rem;
   font-weight: 600;
   color: var(--text-headline);
@@ -126,7 +126,7 @@
 }
 
 .offerList {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1.0625rem;
   color: var(--text-body);
   line-height: 1.75;
@@ -176,7 +176,7 @@
 .statBox:nth-child(3)::before { background: var(--fajr-color); }
 
 .statNumber {
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Inter', sans-serif;
   font-size: 3rem;
   font-weight: 700;
   color: var(--text-headline);
@@ -186,7 +186,7 @@
 }
 
 .statLabel {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: 0.06em;

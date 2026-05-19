@@ -58,18 +58,18 @@ export default function PrayerTimesWidget() {
         justifyContent: 'space-between',
       }}>
         <div>
-          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(15,26,48,0.65)', margin: 0 }}>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(15,26,48,0.65)', margin: 0 }}>
             Today&apos;s Schedule
           </p>
-          <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: '1.5rem', fontWeight: 700, color: '#0F1A30', margin: 0, lineHeight: 1.2 }}>
+          <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: '1.5rem', fontWeight: 700, color: '#0F1A30', margin: 0, lineHeight: 1.2 }}>
             Prayer Times
           </h3>
         </div>
         <div style={{ textAlign: 'right' }}>
-          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(15,26,48,0.55)', margin: 0 }}>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(15,26,48,0.55)', margin: 0 }}>
             Now Active
           </p>
-          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '1rem', fontWeight: 700, color: '#0F1A30', margin: 0 }}>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '1rem', fontWeight: 700, color: '#0F1A30', margin: 0 }}>
             {activePrayer ?? '—'}
           </p>
         </div>
@@ -97,15 +97,15 @@ export default function PrayerTimesWidget() {
                 {p.icon}
               </span>
               <div style={{ flex: 1 }}>
-                <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: '1.05rem', fontWeight: 600, color: isActive ? '#007A7A' : '#0F1A30', margin: 0, lineHeight: 1.2 }}>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '1.05rem', fontWeight: 600, color: isActive ? '#007A7A' : '#0F1A30', margin: 0, lineHeight: 1.2 }}>
                   {p.name}
                 </p>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.7rem', color: '#718096', margin: 0, letterSpacing: '0.05em' }}>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.7rem', color: '#718096', margin: 0, letterSpacing: '0.05em' }}>
                   {p.label}
                 </p>
               </div>
               <span style={{
-                fontFamily: "'DM Sans', sans-serif",
+                fontFamily: "'Inter', sans-serif",
                 fontVariantNumeric: 'tabular-nums',
                 fontSize: '1.05rem',
                 fontWeight: 700,
@@ -120,7 +120,7 @@ export default function PrayerTimesWidget() {
                   background: '#41C2DC',
                   color: '#0F1A30',
                   fontSize: '0.625rem',
-                  fontFamily: "'DM Sans', sans-serif",
+                  fontFamily: "'Inter', sans-serif",
                   fontWeight: 700,
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',

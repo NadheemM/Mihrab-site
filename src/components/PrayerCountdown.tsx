@@ -85,7 +85,7 @@ export default function PrayerCountdown() {
       </span>
 
       <span style={{
-        fontFamily: "'DM Sans', sans-serif",
+        fontFamily: "'Inter', sans-serif",
         fontSize: '0.8125rem',
         color: '#718096',
         letterSpacing: '0.03em',
@@ -95,7 +95,7 @@ export default function PrayerCountdown() {
       </span>
 
       <span style={{
-        fontFamily: "'DM Sans', sans-serif",
+        fontFamily: "'Inter', sans-serif",
         fontVariantNumeric: 'tabular-nums',
         fontSize: '1rem',
         fontWeight: 700,

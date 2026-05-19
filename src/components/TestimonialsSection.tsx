@@ -55,7 +55,7 @@ export default function TestimonialsSection() {
             <h2
               id="testimonials-heading"
               style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontFamily: "'Inter', sans-serif",
                 fontSize: 'clamp(1.875rem, 3.5vw, 2.5rem)',
                 fontWeight: 700,
                 color: '#0F1A30',
@@ -93,7 +93,7 @@ export default function TestimonialsSection() {
 
                 <blockquote style={{ margin: 0 }}>
                   <p style={{
-                    fontFamily: "'Cormorant Garamond', Georgia, serif",
+                    fontFamily: "'Inter', sans-serif",
                     fontSize: '1.05rem',
                     lineHeight: 1.7,
                     color: '#2D3748',
@@ -113,7 +113,7 @@ export default function TestimonialsSection() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: "'Inter', sans-serif",
                     fontWeight: 700,
                     fontSize: '0.875rem',
                     color: '#0F1A30',
@@ -122,10 +122,10 @@ export default function TestimonialsSection() {
                     {t.name[0]}
                   </div>
                   <div>
-                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: '0.875rem', color: '#0F1A30', margin: 0 }}>
+                    <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: '0.875rem', color: '#0F1A30', margin: 0 }}>
                       {t.name}
                     </p>
-                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.75rem', color: '#718096', margin: 0 }}>
+                    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: '#718096', margin: 0 }}>
                       {t.city}
                     </p>
                   </div>

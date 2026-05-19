@@ -20,7 +20,7 @@ export default async function BlogPage() {
         <header style={{ textAlign: 'center', marginBottom: '3rem' }}>
           <span className="text-gold-label" style={{ marginBottom: '0.5rem' }}>Community News</span>
           <h1 style={{
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontFamily: "'Inter', sans-serif",
             fontSize: 'clamp(2rem, 5vw, 3rem)',
             fontWeight: 700,
             color: 'var(--text-headline)',
@@ -44,7 +44,7 @@ export default async function BlogPage() {
             margin: '0 auto',
           }}>
             <h3 style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontFamily: "'Inter', sans-serif",
               fontSize: '1.5rem',
               fontWeight: 600,
               color: 'var(--text-headline)',
@@ -53,7 +53,7 @@ export default async function BlogPage() {
               No posts yet
             </h3>
             <p style={{
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "'Inter', sans-serif",
               fontSize: '0.9375rem',
               color: 'var(--text-muted)',
             }}>
@@ -91,7 +91,7 @@ export default async function BlogPage() {
                     position: 'absolute',
                     bottom: '1rem',
                     left: '1.25rem',
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: "'Inter', sans-serif",
                     fontSize: '0.7rem',
                     fontWeight: 600,
                     letterSpacing: '0.08em',
@@ -109,7 +109,7 @@ export default async function BlogPage() {
                 {/* Card body */}
                 <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                   <h2 style={{
-                    fontFamily: "'Cormorant Garamond', Georgia, serif",
+                    fontFamily: "'Inter', sans-serif",
                     fontSize: '1.25rem',
                     fontWeight: 600,
                     color: 'var(--text-headline)',
@@ -120,7 +120,7 @@ export default async function BlogPage() {
                   </h2>
 
                   <p style={{
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: "'Inter', sans-serif",
                     fontSize: '0.9rem',
                     color: 'var(--text-muted)',
                     lineHeight: 1.65,
@@ -139,7 +139,7 @@ export default async function BlogPage() {
                       display: 'flex',
                       alignItems: 'center',
                       gap: '0.35rem',
-                      fontFamily: "'DM Sans', sans-serif",
+                      fontFamily: "'Inter', sans-serif",
                       fontSize: '0.8rem',
                       color: 'var(--text-muted)',
                     }}>
@@ -150,7 +150,7 @@ export default async function BlogPage() {
                       display: 'flex',
                       alignItems: 'center',
                       gap: '0.25rem',
-                      fontFamily: "'DM Sans', sans-serif",
+                      fontFamily: "'Inter', sans-serif",
                       fontSize: '0.8rem',
                       fontWeight: 500,
                       color: 'var(--brand-teal-dark)',

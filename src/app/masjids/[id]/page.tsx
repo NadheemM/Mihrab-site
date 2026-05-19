@@ -84,7 +84,7 @@ function MasjidContent({ masjidId }: { masjidId: string }) {
           </button>
           <div style={{ flex: 1 }}>
             <h1 style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontFamily: "'Inter', sans-serif",
               fontSize: 'clamp(1.5rem, 4vw, 2rem)',
               fontWeight: 700, color: 'var(--text-headline)',
               margin: 0, lineHeight: 1.15,
@@ -94,7 +94,7 @@ function MasjidContent({ masjidId }: { masjidId: string }) {
             {address && (
               <p style={{
                 display: 'flex', alignItems: 'center', gap: '0.3rem',
-                fontFamily: "'DM Sans', sans-serif", fontSize: '0.875rem',
+                fontFamily: "'Inter', sans-serif", fontSize: '0.875rem',
                 color: 'var(--text-muted)', margin: '0.3rem 0 0',
               }}>
                 <MapPin size={13} aria-hidden="true" /> {address}
@@ -112,7 +112,7 @@ function MasjidContent({ masjidId }: { masjidId: string }) {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'var(--brand-teal-dark)', flexShrink: 0 }}>
             <Clock size={15} aria-hidden="true" />
-            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
               Next Prayer
             </span>
           </div>
@@ -141,14 +141,14 @@ function MasjidContent({ masjidId }: { masjidId: string }) {
           }}>
             <AlertCircle size={32} color="var(--text-muted)" style={{ margin: '0 auto 0.75rem' }} aria-hidden="true" />
             <p style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontFamily: "'Inter', sans-serif",
               fontSize: '1.15rem', fontWeight: 600,
               color: 'var(--text-headline)', margin: '0 0 0.4rem',
             }}>
               No prayer times listed
             </p>
             <p style={{
-              fontFamily: "'DM Sans', sans-serif", fontSize: '0.875rem',
+              fontFamily: "'Inter', sans-serif", fontSize: '0.875rem',
               color: 'var(--text-muted)', margin: 0, lineHeight: 1.6,
             }}>
               This masjid has not yet listed their salah timings.<br />
@@ -168,7 +168,7 @@ function MasjidContent({ masjidId }: { masjidId: string }) {
                   {['Prayer', 'Azaan', 'Iqamah'].map((col, ci) => (
                     <th key={col} scope="col" style={{
                       padding: '0.75rem 1rem',
-                      fontFamily: "'DM Sans', sans-serif", fontSize: '0.7rem',
+                      fontFamily: "'Inter', sans-serif", fontSize: '0.7rem',
                       fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase',
                       color: 'var(--text-inverse)',
                       textAlign: ci === 0 ? 'left' : 'center',
@@ -192,7 +192,7 @@ function MasjidContent({ masjidId }: { masjidId: string }) {
                     }}>
                       <th scope="row" style={{
                         padding: '0.9rem 1rem',
-                        fontFamily: "'Cormorant Garamond', Georgia, serif",
+                        fontFamily: "'Inter', sans-serif",
                         fontSize: '1.1rem', fontWeight: 600,
                         color: 'var(--text-headline)', textAlign: 'left',
                       }}>
@@ -200,7 +200,7 @@ function MasjidContent({ masjidId }: { masjidId: string }) {
                         {isCurrent && (
                           <span style={{
                             marginLeft: '0.5rem',
-                            fontFamily: "'DM Sans', sans-serif",
+                            fontFamily: "'Inter', sans-serif",
                             fontSize: '0.6rem', fontWeight: 700,
                             letterSpacing: '0.08em', textTransform: 'uppercase',
                             color: 'var(--brand-teal)', verticalAlign: 'middle',
@@ -210,7 +210,7 @@ function MasjidContent({ masjidId }: { masjidId: string }) {
                       {(['azaan', 'iqamah'] as const).map(field => (
                         <td key={field} style={{
                           padding: '0.9rem 1rem', textAlign: 'center',
-                          fontFamily: "'DM Sans', sans-serif",
+                          fontFamily: "'Inter', sans-serif",
                           fontVariantNumeric: 'tabular-nums',
                           fontSize: '1rem', color: 'var(--text-body)',
                         }}>

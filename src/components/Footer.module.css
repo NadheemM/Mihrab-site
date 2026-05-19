@@ -42,7 +42,7 @@
 }
 
 .brandTagline {
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Inter', sans-serif;
   font-style: italic;
   font-size: 1.05rem;
   color: var(--brand-teal, #41C2DC);
@@ -51,7 +51,7 @@
 }
 
 .brandDesc {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
   color: var(--text-body, #2D3748);
   line-height: 1.7;
@@ -60,7 +60,7 @@
 
 /* Section headings */
 .sectionHeading {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.10em;
@@ -79,7 +79,7 @@
 }
 
 .linksSection a {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.9375rem;
   color: var(--text-muted, #718096);
   transition: color var(--duration-fast, 150ms) ease;
@@ -143,7 +143,7 @@
 }
 
 .copyrightText {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.8125rem;
   color: var(--text-muted, #718096);
 }
