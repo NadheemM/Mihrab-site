@@ -4,12 +4,12 @@ import Image from 'next/image';
 import { useIsMobile } from '@/lib/useIsMobile';
 
 const screens = [
-  { src: '/first.png',  label: 'Home Screen',  feature: 'Prayer Times & Daily Tracker' },
-  { src: '/second.jpg', label: 'App Features',  feature: 'All Your Islamic Tools in One Place' },
-  { src: '/third.jpg',  label: 'Daily Content', feature: 'Daily Hadith, Dua & Quranic Verse' },
-  { src: '/fourth.jpg', label: 'Hadith & Dua',  feature: 'Authentic Hadith from Trusted Sources' },
-  { src: '/fifth.jpg',  label: 'Quran',         feature: 'Read the Holy Quran with Ease' },
-  { src: '/sixth.jpg',  label: 'Tracker',       feature: 'Salah Tracker & Fasting Reminder' },
+  { src: '/first.png',  label: 'Home Screen',  feature: 'Access prayer times, Quran, duas, and Islamic essentials in one place.' },
+  { src: '/second.jpg', label: 'App Features',  feature: 'Explore Islamic knowledge, Qibla guidance, and spiritual resources effortlessly.' },
+  { src: '/third.jpg',  label: 'Daily Content', feature: 'Receive daily reminders, verses, and the beautiful Names of Allah every day.' },
+  { src: '/fourth.jpg', label: 'Hadith & Dua',  feature: 'Strengthen your faith daily with authentic Hadith and meaningful duas.' },
+  { src: '/fifth.jpg',  label: 'Tracker',       feature: 'Stay consistent in your worship with smart Salah and fasting tracking.' },
+  { src: '/sixth.jpg',  label: 'Quran',         feature: 'Read and navigate the Holy Quran with clarity, simplicity, and focus.' },
 ];
 
 const N = screens.length;
@@ -208,26 +208,26 @@ export default function ScreenshotCarousel() {
 
       {/* ── Feature label ── */}
       <div style={{
-        height:          '1.75rem',
+        minHeight:       '2.75rem',
         margin:          '1.5rem 0 1rem',
         display:         'flex',
         alignItems:      'center',
         justifyContent:  'center',
-        overflow:        'hidden',
-        padding:         '0 1rem',
+        padding:         '0 1.5rem',
       }}>
         <span style={{
           fontFamily:    "'Inter', sans-serif",
-          fontSize:      isMobile ? '0.875rem' : '1rem',
-          fontWeight:    600,
+          fontSize:      isMobile ? '0.8125rem' : '0.9375rem',
+          fontWeight:    500,
           color:         'var(--text-headline)',
-          letterSpacing: '0.02em',
+          letterSpacing: '0.01em',
           textAlign:     'center',
+          lineHeight:    1.55,
           opacity:       labelVisible ? 1 : 0,
           transform:     labelVisible ? 'translateY(0)' : 'translateY(8px)',
           transition:    'opacity 0.22s ease, transform 0.22s ease',
           display:       'block',
-          whiteSpace:    'nowrap',
+          maxWidth:      '36rem',
         }}>
           {shownFeature}
         </span>
