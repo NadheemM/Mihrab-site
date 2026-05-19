@@ -84,8 +84,10 @@ export default function ScreenshotCarousel() {
     <div style={{ width: '100%' }}>
 
       {/* ── Track ── */}
+      {/* Outer wrapper: clips horizontal overflow; 100 px bottom buffer lets box-shadows fade naturally */}
+      <div style={{ overflow: 'hidden', paddingBottom: 100, marginBottom: -100 }}>
       <div
-        style={{ position: 'relative', height: PH + 90, overflow: 'hidden' }}
+        style={{ position: 'relative', height: PH + 90 }}
         onMouseEnter={pauseAuto}
         onMouseLeave={resumeAuto}
         onTouchStart={e => {
@@ -96,7 +98,6 @@ export default function ScreenshotCarousel() {
         onTouchEnd={e => {
           const dx = e.changedTouches[0].clientX - swipeStartX.current;
           const dy = Math.abs(e.changedTouches[0].clientY - swipeStartY.current);
-          // Only trigger on horizontal swipes > 50 px that aren't vertical scrolls
           if (Math.abs(dx) > 50 && Math.abs(dx) > dy) {
             dx < 0 ? next() : prev();
           }
@@ -203,6 +204,7 @@ export default function ScreenshotCarousel() {
           );
         })}
       </div>
+      </div>{/* end shadow-buffer wrapper */}
 
       {/* ── Feature label ── */}
       <div style={{
