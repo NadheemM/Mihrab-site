@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useIsMobile } from '@/lib/useIsMobile';
 
 const screens = [
-  { src: '/2.jpeg', label: 'Home Screen' },
+  { src: '/first.png', label: 'Home Screen' },
   { src: '/3.jpeg', label: 'App Features' },
   { src: '/4.jpeg', label: 'Daily Content' },
   { src: '/5.jpeg', label: 'Hadith & Dua' },
