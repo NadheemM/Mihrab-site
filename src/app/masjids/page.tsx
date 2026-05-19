@@ -61,6 +61,7 @@ function AppCTA() {
       background:   'var(--surface-cream)',
     }}>
       {/* ── Skeleton cards — absolute at top, never push CTA down ── */}
+      {/* Override --surface-muted so shimmer is visible on white cards */}
       <div aria-hidden="true" style={{
         position:      'absolute',
         top:           0,
@@ -72,7 +73,8 @@ function AppCTA() {
         gap:           '0.625rem',
         pointerEvents: 'none',
         zIndex:        0,
-      }}>
+        '--surface-muted': 'rgba(65,194,220,0.28)',
+      } as React.CSSProperties}>
         {[0, 1, 2].map(i => (
           <div key={i} style={{
             background:   'var(--surface-warm-white)',
