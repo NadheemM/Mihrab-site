@@ -33,9 +33,14 @@ export default function Footer() {
             <span className={styles.sectionHeading}>Quick Links</span>
             <ul>
               <li><Link href="/">Home</Link></li>
-              <li><Link href="/about">About Us</Link></li>
               <li><Link href="/features">Features</Link></li>
+              <li><Link href="/gallery">Gallery</Link></li>
               <li><Link href="/masjids">Masjids</Link></li>
+              <li><Link href="/blog">Blog</Link></li>
+              <li><Link href="/business">Business</Link></li>
+              <li><Link href="/shop">Shop</Link></li>
+              <li><Link href="/about">About Us</Link></li>
+              <li><Link href="/team-up">Collaborate</Link></li>
               <li><Link href="/contact">Contact</Link></li>
               <li><a href="https://chat.whatsapp.com/BziYMJFezhcF74rl7lqqnd" target="_blank" rel="noopener noreferrer">Feedback</a></li>
             </ul>

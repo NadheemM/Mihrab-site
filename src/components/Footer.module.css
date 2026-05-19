@@ -18,7 +18,7 @@
 
 @media (min-width: 768px) {
   .footerContainer {
-    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-columns: 2fr 1.6fr 1fr;
   }
 }
 
@@ -73,9 +73,14 @@
 /* Quick links */
 .linksSection ul {
   list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
+  columns: 2;
+  column-gap: 1.75rem;
+  gap: 0;
+}
+
+.linksSection li {
+  break-inside: avoid;
+  margin-bottom: 0.65rem;
 }
 
 .linksSection a {
