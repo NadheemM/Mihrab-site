@@ -102,21 +102,21 @@ function AppCTA() {
         ))}
       </div>
 
-      {/* ── Gradient — transparent at very top, fully opaque ~55 % down ── */}
+      {/* ── Gradient — 200 px of skeleton visible, sharp fade after that ── */}
       <div style={{
         position:      'absolute',
         inset:         0,
-        background:    'linear-gradient(to bottom, rgba(250,247,242,0) 0%, rgba(250,247,242,0) 18%, rgba(250,247,242,0.55) 38%, rgba(250,247,242,0.93) 52%, rgba(250,247,242,1) 62%)',
+        background:    'linear-gradient(to bottom, transparent 0px, transparent 200px, rgba(250,247,242,0.75) 225px, rgba(250,247,242,1) 248px)',
         pointerEvents: 'none',
         zIndex:        1,
       }} />
 
-      {/* ── CTA content — paddingTop creates the skeleton peek zone ── */}
+      {/* ── CTA content — starts just after the fade ── */}
       <div style={{
         position:    'relative',
         zIndex:      2,
         textAlign:   'center',
-        paddingTop:  '130px',
+        paddingTop:  '248px',
         paddingBottom: '2rem',
         paddingLeft:  '1.5rem',
         paddingRight: '1.5rem',
