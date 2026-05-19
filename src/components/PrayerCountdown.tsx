@@ -1,61 +1,50 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { usePrayerTimes } from '@/lib/usePrayerTimes';
 
-interface PrayerEntry { name: string; h: number; m: number; }
-
-function parseTime(t: string): { h: number; m: number } {
-  const [h, m] = t.split(':').map(Number);
-  return { h, m };
-}
-
-function buildCountdown(prayers: PrayerEntry[]) {
-  const now = new Date();
-  const nowSecs = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
-  for (const p of prayers) {
-    const pSecs = p.h * 3600 + p.m * 60;
-    if (pSecs > nowSecs) {
-      const diff = pSecs - nowSecs;
-      return { name: p.name, h: Math.floor(diff / 3600), m: Math.floor((diff % 3600) / 60), s: diff % 60 };
-    }
-  }
-  const fajrSecs = prayers[0].h * 3600 + prayers[0].m * 60;
-  const diff = (86400 - nowSecs) + fajrSecs;
-  return { name: prayers[0].name, h: Math.floor(diff / 3600), m: Math.floor((diff % 3600) / 60), s: diff % 60 };
-}
+const PRAYER_ORDER = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'] as const;
 
 function pad(n: number) { return String(n).padStart(2, '0'); }
 
+function fmt12(time: string): string {
+  const [h, m] = time.split(':').map(Number);
+  return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
+}
+
+function buildCountdown(raw: Record<string, string>) {
+  const now     = new Date();
+  const nowSecs = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+  const entries = PRAYER_ORDER
+    .filter(name => raw[name])
+    .map(name => {
+      const [h, m] = raw[name].split(':').map(Number);
+      return { name, secs: h * 3600 + m * 60 };
+    });
+
+  const next   = entries.find(e => e.secs > nowSecs);
+  const target = next ?? entries[0];
+  const diff   = next ? target.secs - nowSecs : (86400 - nowSecs) + target.secs;
+
+  return {
+    name: target.name,
+    time: fmt12(raw[target.name]),
+    h: Math.floor(diff / 3600),
+    m: Math.floor((diff % 3600) / 60),
+    s: diff % 60,
+  };
+}
+
 export default function PrayerCountdown() {
-  const [prayers, setPrayers] = useState<PrayerEntry[] | null>(null);
+  const prayer = usePrayerTimes();
   const [cd, setCd] = useState<ReturnType<typeof buildCountdown> | null>(null);
 
   useEffect(() => {
-    if (!navigator.geolocation) return;
-    navigator.geolocation.getCurrentPosition(async (pos) => {
-      try {
-        const { latitude, longitude } = pos.coords;
-        const res = await fetch(
-          `https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=2`
-        );
-        const json = await res.json();
-        const t = json.data.timings;
-        setPrayers([
-          { name: 'Fajr',    ...parseTime(t.Fajr) },
-          { name: 'Dhuhr',   ...parseTime(t.Dhuhr) },
-          { name: 'Asr',     ...parseTime(t.Asr) },
-          { name: 'Maghrib', ...parseTime(t.Maghrib) },
-          { name: 'Isha',    ...parseTime(t.Isha) },
-        ]);
-      } catch { /* silently ignore — pill stays hidden */ }
-    });
-  }, []);
-
-  useEffect(() => {
-    if (!prayers) return;
-    setCd(buildCountdown(prayers));
-    const id = setInterval(() => setCd(buildCountdown(prayers)), 1000);
+    if (!prayer?.raw) return;
+    const tick = () => setCd(buildCountdown(prayer.raw));
+    tick();
+    const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, [prayers]);
+  }, [prayer]);
 
   if (!cd) return null;
 
@@ -92,6 +81,7 @@ export default function PrayerCountdown() {
       }}>
         Next:&nbsp;
         <span style={{ color: '#41C2DC', fontWeight: 600 }}>{cd.name}</span>
+        &nbsp;{cd.time}
       </span>
 
       <span style={{
