@@ -36,15 +36,14 @@ const REVIEWS = [
   },
 ];
 
-const N = REVIEWS.length;
+const N = REVIEWS.length; // 5
 
-const AVATAR_COLORS: Record<string, string> = {
-  N: '#41C2DC',
-  J: '#6366f1',
-  A: '#f59e0b',
-  S: '#10b981',
-};
+// Triple the array so rapid clicks can never escape to an empty zone.
+// Safe range: [N, 2N). Snap back to middle copy after each transition.
+const extended = [...REVIEWS, ...REVIEWS, ...REVIEWS];
+const TOTAL = extended.length; // 15
 
+// ── Stars ─────────────────────────────────────────────────────────────────────
 function Stars({ count }: { count: number }) {
   return (
     <div style={{ display: 'flex', gap: 3 }} aria-label={`${count} out of 5 stars`}>
@@ -58,49 +57,49 @@ function Stars({ count }: { count: number }) {
   );
 }
 
+// ── Review card ───────────────────────────────────────────────────────────────
 function ReviewCard({ r }: { r: typeof REVIEWS[0] }) {
-  const initial = r.name[0];
-  const avatarBg = AVATAR_COLORS[initial] ?? '#41C2DC';
-
   return (
     <div style={{
-      background: '#FFFFFF',
-      border: '1px solid rgba(0,0,0,0.08)',
-      borderRadius: 16,
-      padding: '1.5rem',
-      boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100%',
-      boxSizing: 'border-box',
+      background:     '#FFFFFF',
+      border:         '1px solid rgba(0,0,0,0.08)',
+      borderRadius:   16,
+      padding:        '1.5rem',
+      boxShadow:      '0 2px 16px rgba(0,0,0,0.06)',
+      display:        'flex',
+      flexDirection:  'column',
+      height:         '100%',
+      boxSizing:      'border-box',
     }}>
-      {/* Header: avatar + name + Play badge */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.875rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <div
-            style={{
-              width: 44, height: 44, borderRadius: '50%',
-              background: avatarBg,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontFamily: "'Inter', sans-serif", fontWeight: 700,
-              fontSize: '1.0625rem', color: '#0F1A30', flexShrink: 0,
-            }}
-            aria-hidden="true"
-          >
-            {initial}
-          </div>
-          <div>
-            <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: '0.9375rem', color: '#0F1A30', margin: 0, lineHeight: 1.3 }}>
-              {r.name}
-            </p>
-            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: '#9CA3AF', margin: 0 }}>
-              {r.date}
-            </p>
-          </div>
+      {/* Avatar + name */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.875rem' }}>
+        <div
+          style={{
+            width:          44,
+            height:         44,
+            borderRadius:   '50%',
+            background:     '#41C2DC',
+            display:        'flex',
+            alignItems:     'center',
+            justifyContent: 'center',
+            fontFamily:     "'Inter', sans-serif",
+            fontWeight:     700,
+            fontSize:       '1.0625rem',
+            color:          '#0F1A30',
+            flexShrink:     0,
+          }}
+          aria-hidden="true"
+        >
+          {r.name[0]}
         </div>
-        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.6875rem', color: '#9CA3AF', letterSpacing: '0.03em', flexShrink: 0 }}>
-          Google Play
-        </span>
+        <div>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: '0.9375rem', color: '#0F1A30', margin: 0, lineHeight: 1.3 }}>
+            {r.name}
+          </p>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: '#9CA3AF', margin: 0 }}>
+            {r.date}
+          </p>
+        </div>
       </div>
 
       {/* Stars */}
@@ -111,11 +110,11 @@ function ReviewCard({ r }: { r: typeof REVIEWS[0] }) {
       {/* Text */}
       <p style={{
         fontFamily: "'Inter', sans-serif",
-        fontSize: '0.9375rem',
+        fontSize:   '0.9375rem',
         lineHeight: 1.7,
-        color: '#374151',
-        margin: 0,
-        flex: 1,
+        color:      '#374151',
+        margin:     0,
+        flex:       1,
       }}>
         {r.text}
       </p>
@@ -123,52 +122,46 @@ function ReviewCard({ r }: { r: typeof REVIEWS[0] }) {
   );
 }
 
+// ── Section ───────────────────────────────────────────────────────────────────
 export default function TestimonialsSection() {
   const isMobile = useIsMobile();
   const VISIBLE  = isMobile ? 1 : 3;
-  const CLONES   = VISIBLE;
 
-  // Extended track: [last CLONES clones] + real reviews + [first CLONES clones]
-  const extended = [
-    ...REVIEWS.slice(N - CLONES),
-    ...REVIEWS,
-    ...REVIEWS.slice(0, CLONES),
-  ];
-  const TOTAL = extended.length; // N + 2*CLONES
-
-  // idx = first visible slide index; starts at CLONES (= first real slide)
-  const [idx,  setIdx]  = useState(CLONES);
+  // Start in the middle copy so there is a full copy's buffer on each side.
+  const [idx,  setIdx]  = useState(N);
   const [anim, setAnim] = useState(true);
   const pausedRef = useRef(false);
 
   const next = useCallback(() => { setAnim(true); setIdx(i => i + 1); }, []);
   const prev = useCallback(() => { setAnim(true); setIdx(i => i - 1); }, []);
 
-  // After a transition ends, snap from clone zone back to real zone
+  // After each transition: if we've drifted into an outer copy, snap back to
+  // the equivalent position in the middle copy (instant, no animation).
   const onTransEnd = useCallback(() => {
     setIdx(i => {
-      if (i >= N + CLONES) { setAnim(false); return i - N; }
-      if (i < CLONES)      { setAnim(false); return i + N; }
+      if (i >= 2 * N) { setAnim(false); return i - N; }
+      if (i <      N) { setAnim(false); return i + N; }
       return i;
     });
-  }, [CLONES]);
+  }, []);
 
-  // Re-enable animation one frame after a no-anim snap
+  // Re-enable animation one double-frame after a no-anim snap so the DOM has
+  // painted the new position before transitions can start again.
   useEffect(() => {
     if (anim) return;
-    const r1 = requestAnimationFrame(() => {
+    const id = requestAnimationFrame(() => {
       requestAnimationFrame(() => setAnim(true));
     });
-    return () => cancelAnimationFrame(r1);
+    return () => cancelAnimationFrame(id);
   }, [anim]);
 
-  // Reset carousel when responsive breakpoint crosses
+  // Reset to middle-copy start whenever the visible count changes (mobile ↔ desktop).
   useEffect(() => {
     setAnim(false);
-    setIdx(VISIBLE);
+    setIdx(N);
   }, [VISIBLE]);
 
-  // Auto-advance every 5 s
+  // Auto-advance every 5 s; pauses on hover.
   useEffect(() => {
     if (typeof window !== 'undefined' &&
         window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -178,9 +171,9 @@ export default function TestimonialsSection() {
     return () => clearInterval(id);
   }, []);
 
-  // track width = TOTAL/VISIBLE * 100% of container
-  // translateX: -idx/TOTAL * 100% of track = -idx/VISIBLE * container  (verified)
-  const trackW   = `${(TOTAL / VISIBLE) * 100}%`;
+  // Track fills TOTAL / VISIBLE container-widths; each card = 1 / VISIBLE container.
+  // translateX: -idx / TOTAL of track = -idx / VISIBLE of container (exact, no gaps needed).
+  const trackW     = `${(TOTAL / VISIBLE) * 100}%`;
   const translateX = `translateX(${(-idx / TOTAL) * 100}%)`;
 
   return (
@@ -190,7 +183,7 @@ export default function TestimonialsSection() {
     >
       <div className="container">
 
-        {/* Header row: heading left, nav buttons right */}
+        {/* Header */}
         <div style={{
           display:        'flex',
           alignItems:     'flex-end',
@@ -218,9 +211,8 @@ export default function TestimonialsSection() {
             </div>
           </ScrollReveal>
 
-          {/* Primary-color nav buttons */}
           <div style={{ display: 'flex', gap: '0.625rem', flexShrink: 0 }}>
-            <NavBtn onClick={prev} label="Previous review" dir="left" />
+            <NavBtn onClick={prev} label="Previous review" dir="left"  />
             <NavBtn onClick={next} label="Next review"     dir="right" />
           </div>
         </div>
@@ -248,9 +240,9 @@ export default function TestimonialsSection() {
               <div
                 key={i}
                 style={{
-                  flex:       `0 0 calc(100% / ${TOTAL})`,
-                  padding:    '0 0.75rem',
-                  boxSizing:  'border-box',
+                  flex:      `0 0 calc(100% / ${TOTAL})`,
+                  padding:   '0 0.75rem',
+                  boxSizing: 'border-box',
                 }}
               >
                 <ReviewCard r={r} />
@@ -264,8 +256,10 @@ export default function TestimonialsSection() {
   );
 }
 
-// ── Nav button ───────────────────────────────────────────────────────────────
-function NavBtn({ onClick, label, dir }: { onClick: () => void; label: string; dir: 'left' | 'right' }) {
+// ── Nav button ────────────────────────────────────────────────────────────────
+function NavBtn({
+  onClick, label, dir,
+}: { onClick: () => void; label: string; dir: 'left' | 'right' }) {
   return (
     <button
       onClick={onClick}
